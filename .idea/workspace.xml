@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="61f8d84b-562f-45e3-8552-7ac500d65d3f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +89,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -201,7 +201,8 @@
       <option name="presentableId" value="Default" />
       <updated>1596981255354</updated>
       <workItem from="1596981257170" duration="24000" />
-      <workItem from="1596981290161" duration="10675000" />
+      <workItem from="1596981290161" duration="11680000" />
+      <workItem from="1596995624001" duration="213000" />
     </task>
     <servers />
   </component>
@@ -213,22 +214,22 @@
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
     <state x="100" y="123" width="1624" height="803" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.23.1824.1003@0.23.1824.1003" timestamp="1596988905765" />
-    <state width="1782" height="272" key="GridCell.Tab.0.bottom" timestamp="1596993708212">
+    <state width="1782" height="272" key="GridCell.Tab.0.bottom" timestamp="1596995609754">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state width="1782" height="272" key="GridCell.Tab.0.bottom/0.23.1824.1003@0.23.1824.1003" timestamp="1596993708212" />
-    <state width="1782" height="272" key="GridCell.Tab.0.center" timestamp="1596993708211">
+    <state width="1782" height="272" key="GridCell.Tab.0.bottom/0.23.1824.1003@0.23.1824.1003" timestamp="1596995609754" />
+    <state width="1782" height="272" key="GridCell.Tab.0.center" timestamp="1596995609753">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state width="1782" height="272" key="GridCell.Tab.0.center/0.23.1824.1003@0.23.1824.1003" timestamp="1596993708211" />
-    <state width="1782" height="272" key="GridCell.Tab.0.left" timestamp="1596993708211">
+    <state width="1782" height="272" key="GridCell.Tab.0.center/0.23.1824.1003@0.23.1824.1003" timestamp="1596995609753" />
+    <state width="1782" height="272" key="GridCell.Tab.0.left" timestamp="1596995609753">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state width="1782" height="272" key="GridCell.Tab.0.left/0.23.1824.1003@0.23.1824.1003" timestamp="1596993708211" />
-    <state width="1782" height="272" key="GridCell.Tab.0.right" timestamp="1596993708212">
+    <state width="1782" height="272" key="GridCell.Tab.0.left/0.23.1824.1003@0.23.1824.1003" timestamp="1596995609753" />
+    <state width="1782" height="272" key="GridCell.Tab.0.right" timestamp="1596995609753">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state width="1782" height="272" key="GridCell.Tab.0.right/0.23.1824.1003@0.23.1824.1003" timestamp="1596993708212" />
+    <state width="1782" height="272" key="GridCell.Tab.0.right/0.23.1824.1003@0.23.1824.1003" timestamp="1596995609753" />
     <state width="1782" height="272" key="GridCell.Tab.1.bottom" timestamp="1596989764331">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
@@ -245,18 +246,18 @@
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
     <state width="1782" height="272" key="GridCell.Tab.1.right/0.23.1824.1003@0.23.1824.1003" timestamp="1596989764330" />
-    <state x="421" y="163" key="SettingsEditor" timestamp="1596994068638">
+    <state x="421" y="163" key="SettingsEditor" timestamp="1596995593403">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state x="421" y="163" key="SettingsEditor/0.23.1824.1003@0.23.1824.1003" timestamp="1596994068638" />
+    <state x="421" y="163" key="SettingsEditor/0.23.1824.1003@0.23.1824.1003" timestamp="1596995593403" />
     <state x="675" y="376" key="cloudConfig.SelfSettingsDialog" timestamp="1596981495016">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
     <state x="675" y="376" key="cloudConfig.SelfSettingsDialog/0.23.1824.1003@0.23.1824.1003" timestamp="1596981495016" />
-    <state x="591" y="357" key="com.intellij.ide.util.TipDialog" timestamp="1596981297431">
+    <state x="591" y="357" key="com.intellij.ide.util.TipDialog" timestamp="1596995661373">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state x="591" y="357" key="com.intellij.ide.util.TipDialog/0.23.1824.1003@0.23.1824.1003" timestamp="1596981297431" />
+    <state x="591" y="357" key="com.intellij.ide.util.TipDialog/0.23.1824.1003@0.23.1824.1003" timestamp="1596995661373" />
     <state x="646" y="274" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1596984287453">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
