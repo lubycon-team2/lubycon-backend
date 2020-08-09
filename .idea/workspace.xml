@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="61f8d84b-562f-45e3-8552-7ac500d65d3f" name="Default Changelist" comment="" />
+    <list default="true" id="61f8d84b-562f-45e3-8552-7ac500d65d3f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +20,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -31,31 +39,19 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="rubycon-team2" type="f1a62948:ProjectNode" />
                 <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
+                <item name="main" type="396b929e:GradleViewContributor$SourceSetNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="rubycon-team2" type="f1a62948:ProjectNode" />
                 <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
+                <item name="main" type="396b929e:GradleViewContributor$SourceSetNode" />
                 <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="rubycon-team2" type="f1a62948:ProjectNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="org.springframework.boot:spring-boot-starter-test:2.3.2.RELEASE" type="cfea851d:ExternalSystemViewDefaultContributor$LibraryDependencyDataExternalSystemNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="rubycon-team2" type="f1a62948:ProjectNode" />
-                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
-                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
-                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
-                <item name="org.springframework.boot:spring-boot-starter-test:2.3.2.RELEASE" type="cfea851d:ExternalSystemViewDefaultContributor$LibraryDependencyDataExternalSystemNode" />
-                <item name="org.junit.jupiter:junit-jupiter:5.6.2" type="cfea851d:ExternalSystemViewDefaultContributor$LibraryDependencyDataExternalSystemNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
               </path>
             </expand>
             <select />
@@ -72,7 +68,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1frfi55Vd7ZfRBECWZrHP0uwfcV" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -84,11 +84,12 @@
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
-    <property name="settings.editor.selected.configurable" value="project.propCompiler" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -200,7 +201,7 @@
       <option name="presentableId" value="Default" />
       <updated>1596981255354</updated>
       <workItem from="1596981257170" duration="24000" />
-      <workItem from="1596981290161" duration="7190000" />
+      <workItem from="1596981290161" duration="10675000" />
     </task>
     <servers />
   </component>
@@ -212,22 +213,22 @@
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
     <state x="100" y="123" width="1624" height="803" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.23.1824.1003@0.23.1824.1003" timestamp="1596988905765" />
-    <state width="1782" height="272" key="GridCell.Tab.0.bottom" timestamp="1596989764329">
+    <state width="1782" height="272" key="GridCell.Tab.0.bottom" timestamp="1596993708212">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state width="1782" height="272" key="GridCell.Tab.0.bottom/0.23.1824.1003@0.23.1824.1003" timestamp="1596989764329" />
-    <state width="1782" height="272" key="GridCell.Tab.0.center" timestamp="1596989764329">
+    <state width="1782" height="272" key="GridCell.Tab.0.bottom/0.23.1824.1003@0.23.1824.1003" timestamp="1596993708212" />
+    <state width="1782" height="272" key="GridCell.Tab.0.center" timestamp="1596993708211">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state width="1782" height="272" key="GridCell.Tab.0.center/0.23.1824.1003@0.23.1824.1003" timestamp="1596989764329" />
-    <state width="1782" height="272" key="GridCell.Tab.0.left" timestamp="1596989764329">
+    <state width="1782" height="272" key="GridCell.Tab.0.center/0.23.1824.1003@0.23.1824.1003" timestamp="1596993708211" />
+    <state width="1782" height="272" key="GridCell.Tab.0.left" timestamp="1596993708211">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state width="1782" height="272" key="GridCell.Tab.0.left/0.23.1824.1003@0.23.1824.1003" timestamp="1596989764329" />
-    <state width="1782" height="272" key="GridCell.Tab.0.right" timestamp="1596989764329">
+    <state width="1782" height="272" key="GridCell.Tab.0.left/0.23.1824.1003@0.23.1824.1003" timestamp="1596993708211" />
+    <state width="1782" height="272" key="GridCell.Tab.0.right" timestamp="1596993708212">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state width="1782" height="272" key="GridCell.Tab.0.right/0.23.1824.1003@0.23.1824.1003" timestamp="1596989764329" />
+    <state width="1782" height="272" key="GridCell.Tab.0.right/0.23.1824.1003@0.23.1824.1003" timestamp="1596993708212" />
     <state width="1782" height="272" key="GridCell.Tab.1.bottom" timestamp="1596989764331">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
@@ -244,10 +245,10 @@
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
     <state width="1782" height="272" key="GridCell.Tab.1.right/0.23.1824.1003@0.23.1824.1003" timestamp="1596989764330" />
-    <state x="421" y="163" key="SettingsEditor" timestamp="1596989563464">
+    <state x="421" y="163" key="SettingsEditor" timestamp="1596994068638">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
-    <state x="421" y="163" key="SettingsEditor/0.23.1824.1003@0.23.1824.1003" timestamp="1596989563464" />
+    <state x="421" y="163" key="SettingsEditor/0.23.1824.1003@0.23.1824.1003" timestamp="1596994068638" />
     <state x="675" y="376" key="cloudConfig.SelfSettingsDialog" timestamp="1596981495016">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
@@ -260,6 +261,10 @@
       <screen x="0" y="23" width="1824" height="1003" />
     </state>
     <state x="646" y="274" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.23.1824.1003@0.23.1824.1003" timestamp="1596984287453" />
+    <state x="577" y="242" width="670" height="675" key="run.anything.popup" timestamp="1596994061156">
+      <screen x="0" y="23" width="1824" height="1003" />
+    </state>
+    <state x="577" y="242" width="670" height="675" key="run.anything.popup/0.23.1824.1003@0.23.1824.1003" timestamp="1596994061156" />
     <state x="577" y="244" width="670" height="676" key="search.everywhere.popup" timestamp="1596985203180">
       <screen x="0" y="23" width="1824" height="1003" />
     </state>

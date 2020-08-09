@@ -40,6 +40,9 @@ dependencies {
 test {
 	outputs.dir snippetsDir
 	useJUnitPlatform()
+	testLogging {
+		exceptionFormat = 'full'
+	}
 }
 
 asciidoctor {

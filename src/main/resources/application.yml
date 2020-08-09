@@ -9,3 +9,11 @@ spring:
     user:
       name: admin
       password: admin
+
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  level:
+    root: info
