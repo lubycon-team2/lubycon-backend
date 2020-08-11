@@ -1,8 +1,9 @@
 plugins {
 	id 'org.springframework.boot' version '2.3.2.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'org.asciidoctor.convert' version '1.5.8'
 	id 'java'
+	// QueryDSL
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.rubycon'
@@ -23,13 +24,43 @@ ext {
 	set('snippetsDir', file("build/generated-snippets"))
 }
 
+// Start QueryDSL Settings
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+// End QueryDSL
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	runtimeOnly 'mysql:mysql-connector-java'
+
+	// QueryDSL
+	implementation 'com.querydsl:querydsl-jpa'
+
+	// ModelMapper
+	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
@@ -43,9 +74,4 @@ test {
 	testLogging {
 		exceptionFormat = 'full'
 	}
-}
-
-asciidoctor {
-	inputs.dir snippetsDir
-	dependsOn test
 }
