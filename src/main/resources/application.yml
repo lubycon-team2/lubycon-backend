@@ -1,8 +1,12 @@
+# Elastic Beanstalk maps the internal port 5000 to the external port 80 to expose the application to the internet.
+server:
+  port: 5000
+
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/orm-test?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://ec2-3-34-140-244.ap-northeast-2.compute.amazonaws.com:3306/rubycon-team2-dev?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password: root
+    password: habitbread!!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   security:
