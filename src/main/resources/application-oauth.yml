@@ -1,0 +1,23 @@
+spring:
+  security:
+    user:
+      name: admin
+      password: admin
+
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 302029212221-riavrmh7t28gsta51kccq5oi89p2drjo.apps.googleusercontent.com
+            client-secret: 4xmNbKIWmzhSR-5JerXwFWbx
+            scope: profile,email
+
+oauth2:
+  kakao:
+    client-id: f6483e57984641ea06ebcc97692d9a41
+    client-secret: 3os7fO2EvHT5bFFx6FGixvbiN3yGUc9C
+
+app:
+  auth:
+    tokenSecret: 5dRYNzaQUzF1c7Vr2WijsPOE8KqXEBJE
+    tokenExpirationMsec: 864000000
