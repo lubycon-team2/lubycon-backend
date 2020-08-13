@@ -2,8 +2,8 @@ plugins {
 	id 'org.springframework.boot' version '2.3.2.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
-	// QueryDSL
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+//	// QueryDSL
+//	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.rubycon'
@@ -24,45 +24,54 @@ ext {
 	set('snippetsDir', file("build/generated-snippets"))
 }
 
-// Start QueryDSL Settings
-def querydslDir = "$buildDir/generated/querydsl"
-
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
-
-sourceSets {
-	main.java.srcDir querydslDir
-}
-
-configurations {
-	querydsl.extendsFrom compileClasspath
-}
-
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
-// End QueryDSL
+//// Start QueryDSL Settings
+//def querydslDir = "$buildDir/generated/querydsl"
+//
+//querydsl {
+//	jpa = true
+//	querydslSourcesDir = querydslDir
+//}
+//
+//sourceSets {
+//	main.java.srcDir querydslDir
+//}
+//
+//configurations {
+//	querydsl.extendsFrom compileClasspath
+//}
+//
+//compileQuerydsl {
+//	options.annotationProcessorPath = configurations.querydsl
+//}
+//// End QueryDSL
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	// 소셜 로그인 등 클라이언트 입장에서 소셜 기능 구현 시 필요한 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// Spring Security OAuth2
+	implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.3.2.RELEASE'
+
+	// Bean Validation
+	implementation('org.springframework.boot:spring-boot-starter-validation')
+
+	// JWT
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
 	runtimeOnly 'mysql:mysql-connector-java'
 
-	// QueryDSL
-	implementation 'com.querydsl:querydsl-jpa'
+//	// QueryDSL
+//	implementation 'com.querydsl:querydsl-jpa'
 
 	// ModelMapper
-	compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
-
-	// Spring Security OAuth2
-	compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.3.2.RELEASE'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

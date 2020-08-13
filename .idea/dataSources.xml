@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Mysql" uuid="c7470565-3d96-4ca4-a075-84ec8889f73b">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://ec2-3-34-140-244.ap-northeast-2.compute.amazonaws.com:3306/rubycon-team2-dev</jdbc-url>
+    </data-source>
+  </component>
+</project>
