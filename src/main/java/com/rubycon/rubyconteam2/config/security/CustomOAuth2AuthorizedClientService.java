@@ -9,7 +9,6 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 // OAuth2AuthorizedClientService : 인증 정보 저장을 위한 표준 인터페이스
 // 직접 생성한 구현 클래스 - 인증 정보를 DB에 저장
@@ -29,22 +28,21 @@ public class CustomOAuth2AuthorizedClientService implements OAuth2AuthorizedClie
         String name = oauth2User.getAttribute("name");
 
         User user = User.builder()
-                            .oauthKey(id)
-                            .name(name)
-//                            .accessToken(accessToken.getTokenValue())
-                            .providerName(providerType)
-                            .role(Role.USER)
-                            .build();
+                .oauthKey(id)
+                .name(name)
+//              .accessToken(accessToken.getTokenValue())
+                .providerName(providerType)
+                .role(Role.USER)
+                .build();
         userRepository.save(user);
     }
 
     @Override
-    public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String s, String s1) {
-        throw new NotImplementedException();
+    public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String clientRegistrationId, String principalName) {
+        return null;
     }
 
     @Override
-    public void removeAuthorizedClient(String s, String s1) {
-        throw new NotImplementedException();
+    public void removeAuthorizedClient(String clientRegistrationId, String principalName) {
     }
 }
