@@ -20,7 +20,7 @@ public class KakaoOAuth2User implements OAuth2User {
         Map<String, Object> attrs = new HashMap<>();
         attrs.put("id", this.id);
         attrs.put("name", this.properties.getNickname());
-        attrs.put("image", this.properties.getThumbnail_image());
+        attrs.put("image", this.properties.getProfile_image());
 
         return attrs;
     }
@@ -38,6 +38,6 @@ public class KakaoOAuth2User implements OAuth2User {
     @Getter
     private static class KakaoProperties {
         private String nickname;
-        private String thumbnail_image;
+        private String profile_image;
     }
 }

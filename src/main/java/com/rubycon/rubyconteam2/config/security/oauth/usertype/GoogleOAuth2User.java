@@ -22,8 +22,8 @@ public class GoogleOAuth2User implements OAuth2User {
     public Map<String, Object> getAttributes() {
         Map<String, Object> attrs = new HashMap<>();
         attrs.put("id", this.sub);
-        attrs.put("name", this.getName());
-        attrs.put("image", this.getPicture());
+        attrs.put("name", this.name);
+        attrs.put("image", this.picture);
 
         return attrs;
     }

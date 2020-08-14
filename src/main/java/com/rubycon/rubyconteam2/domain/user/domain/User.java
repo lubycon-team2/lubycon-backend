@@ -22,8 +22,8 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-//    @Column(nullable = false)
-//    private String accessToken;
+    @Column
+    private String profile_image;
 
     @Column(nullable = false)
     private String providerName;
@@ -32,10 +32,14 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
+    //    @Column(nullable = false)
+    //    private String accessToken;
+
     @Builder
-    public User(String name, String oauthKey, String providerName, Role role) {
+    public User(String name, String oauthKey, String profile_image, String providerName, Role role) {
         this.name = name;
         this.oauthKey = oauthKey;
+        this.profile_image = profile_image;
         this.providerName = providerName;
         this.role = role;
     }
