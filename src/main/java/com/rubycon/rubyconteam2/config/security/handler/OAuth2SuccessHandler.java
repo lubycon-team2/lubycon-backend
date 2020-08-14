@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.config.security;
+package com.rubycon.rubyconteam2.config.security.handler;
 
 import com.nimbusds.jwt.JWT;
 import io.jsonwebtoken.Jwt;

@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.config.security.kakao;
+package com.rubycon.rubyconteam2.config.security.social.kakao;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
