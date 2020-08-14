@@ -1,6 +1,7 @@
 package com.rubycon.rubyconteam2.config.security;
 
-import com.rubycon.rubyconteam2.config.security.social.kakao.KakaoOAuth2User;
+import com.rubycon.rubyconteam2.config.security.oauth.usertype.GoogleOAuth2User;
+import com.rubycon.rubyconteam2.config.security.oauth.usertype.KakaoOAuth2User;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,13 +23,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/oauth2/**", "/me").permitAll()
+                .antMatchers("/", "/oauth2/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
                     // customUserType을 추가하면, 내부적으로 'CustomUserTypesOAuth2UserService' 클래스 사용
                     .userInfoEndpoint()
                     .customUserType(KakaoOAuth2User.class, "kakao")
+                    .customUserType(GoogleOAuth2User.class, "google")
                 .and()
                     .defaultSuccessUrl("/loginSuccess")
                     .failureUrl("/loginFailure")

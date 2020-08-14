@@ -1,7 +1,7 @@
-package com.rubycon.rubyconteam2.config.security;
+package com.rubycon.rubyconteam2.config.security.oauth;
 
-import com.rubycon.rubyconteam2.config.security.provider.CustomOAuth2Provider;
-import com.rubycon.rubyconteam2.config.security.service.CustomOAuth2AuthorizedClientService;
+import com.rubycon.rubyconteam2.config.security.oauth.provider.CustomOAuth2Provider;
+import com.rubycon.rubyconteam2.config.security.oauth.service.CustomOAuth2AuthorizedClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
