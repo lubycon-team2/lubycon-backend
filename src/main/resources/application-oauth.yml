@@ -4,17 +4,17 @@ spring:
       client:
         registration:
           google:
-            client-id: 302029212221-riavrmh7t28gsta51kccq5oi89p2drjo.apps.googleusercontent.com
-            client-secret: 4xmNbKIWmzhSR-5JerXwFWbx
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
             scope: profile,email
 
 custom:
   oauth2:
     kakao:
-      client-id: f6483e57984641ea06ebcc97692d9a41
-      client-secret: 3os7fO2EvHT5bFFx6FGixvbiN3yGUc9C
+      client-id: ${KAKAO_CLIENT_ID}
+      client-secret: ${KAKAO_CLIENT_SECRET}
 
 app:
   auth:
-    tokenSecret: 5dRYNzaQUzF1c7Vr2WijsPOE8KqXEBJE
+    tokenSecret: ${JWT_SECRET}
     tokenExpirationMsec: 864000000

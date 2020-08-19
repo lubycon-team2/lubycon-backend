@@ -1,0 +1,16 @@
+spring:
+  profiles: prod
+
+  datasource:
+    url: jdbc:mysql://ec2-3-34-140-244.ap-northeast-2.compute.amazonaws.com:3306/rubycon-team2-dev?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: habitbread!!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    com:
+      rubycon:
+        rubyconteam2: info
+    root: info
+
