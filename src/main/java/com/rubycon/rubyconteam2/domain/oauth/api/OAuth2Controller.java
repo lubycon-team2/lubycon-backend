@@ -10,12 +10,13 @@ public class OAuth2Controller {
 
     @GetMapping("/me")
     public String me(@AuthenticationPrincipal OAuth2User oAuth2User) {
-        return oAuth2User.toString();
+        System.out.println(oAuth2User);
+        return "My profile";
     }
 
     @GetMapping({"/loginSuccess", "/hello"})
     public String loginSuccess() {
-        return "hello";
+        return "Hello Login Success !!";
     }
 
     @GetMapping("/loginFailure")
