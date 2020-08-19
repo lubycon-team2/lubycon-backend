@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.config.security.oauth.provider;
+package com.rubycon.rubyconteam2.core.config.oauth.provider;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;

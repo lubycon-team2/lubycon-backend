@@ -11,6 +11,6 @@ logging:
   level:
     com:
       rubycon:
-        rubyconteam2: info
+        rubyconteam2: debug
     root: info
 

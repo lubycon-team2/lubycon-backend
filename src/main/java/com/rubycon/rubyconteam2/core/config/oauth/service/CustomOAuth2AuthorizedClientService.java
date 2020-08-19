@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.config.security.oauth.service;
+package com.rubycon.rubyconteam2.core.config.oauth.service;
 
 import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.Role;
@@ -9,8 +9,6 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /*
  *   OAuth2AuthorizedClientService : 인증 정보 저장을 위한 표준 인터페이스

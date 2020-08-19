@@ -1,8 +1,9 @@
-package com.rubycon.rubyconteam2.config.security;
+package com.rubycon.rubyconteam2.core.config.security;
 
-import com.rubycon.rubyconteam2.config.security.oauth.handler.OAuth2SuccessHandler;
-import com.rubycon.rubyconteam2.config.security.oauth.usertype.GoogleOAuth2User;
-import com.rubycon.rubyconteam2.config.security.oauth.usertype.KakaoOAuth2User;
+import com.rubycon.rubyconteam2.core.config.oauth.handler.OAuth2SuccessHandler;
+import com.rubycon.rubyconteam2.core.config.oauth.usertype.GoogleOAuth2User;
+import com.rubycon.rubyconteam2.core.config.oauth.usertype.KakaoOAuth2User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private OAuth2SuccessHandler OAuth2SuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -24,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .headers().frameOptions().disable()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/oauth2/**").permitAll()
+                    .antMatchers("/", "/oauth2/**", "/jwt/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
@@ -34,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .customUserType(GoogleOAuth2User.class, "google")
                 .and()
                 // 이 부분에서 Success Handler를 설정합니다.
-                    .successHandler(new OAuth2SuccessHandler())
+                    .successHandler(OAuth2SuccessHandler)
                     .failureUrl("/loginFailure")
                 .and()
                     .exceptionHandling();
