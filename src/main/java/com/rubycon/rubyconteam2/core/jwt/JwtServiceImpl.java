@@ -12,7 +12,7 @@ import java.util.Map;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    @Value("${JWT_SECRET}")
+    @Value("${app.jwt.tokenSecret}")
     private String JWT_SECRET;
 
     private static final long EXPIRE_TIME = 1000 * 60 * 60 * 8; // 8시간

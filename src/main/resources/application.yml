@@ -4,7 +4,7 @@ server:
 
 spring:
   profiles:
-    active: ${SPRING_ENV}
+    active: ${SPRING_ENV:prod}
     include: oauth
 
   jpa:

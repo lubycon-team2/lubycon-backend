@@ -13,9 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private OAuth2SuccessHandler OAuth2SuccessHandler;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -38,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .customUserType(GoogleOAuth2User.class, "google")
                 .and()
                 // 이 부분에서 Success Handler를 설정합니다.
-                    .successHandler(OAuth2SuccessHandler)
+                    .successHandler(new OAuth2SuccessHandler())
                     .failureUrl("/loginFailure")
                 .and()
                     .exceptionHandling();
