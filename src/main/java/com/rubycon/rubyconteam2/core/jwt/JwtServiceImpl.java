@@ -1,5 +1,6 @@
 package com.rubycon.rubyconteam2.core.jwt;
 
+import com.rubycon.rubyconteam2.core.config.security.SecurityConstants;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,10 +13,7 @@ import java.util.Map;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    @Value("${app.jwt.tokenSecret}")
-    private String JWT_SECRET;
-
-    private static final long EXPIRE_TIME = 1000 * 60 * 60 * 8; // 8시간
+    @Value("${app.jwt.tokenSecret}") public String JWT_SECRET;
 
     @Override
     public String createToken(String oauthKey, String name) {
@@ -44,21 +42,24 @@ public class JwtServiceImpl implements JwtService {
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature");
+            return false;
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token");
+            return false;
         } catch (ExpiredJwtException e) {
             log.error("Expired JWT token");
+            return false;
         } catch (IllegalArgumentException e) {
             log.error("Empty JWT claims");
+            return false;
         }
-        return false;
     }
 
     private Map<String, Object> createHeader(){
         Map<String, Object> header = new HashMap<>();
 
-        header.put("typ", "JWT");
-        header.put("alg", "HS256");
+        header.put("typ", SecurityConstants.TOKEN_TYPE);
+        header.put("alg", SecurityConstants.TOKEN_ALGORITHM);
         header.put("regDate", System.currentTimeMillis());
 
         return header;

@@ -2,6 +2,7 @@ package com.rubycon.rubyconteam2.core.config.oauth;
 
 import com.rubycon.rubyconteam2.core.config.oauth.provider.CustomOAuth2Provider;
 import com.rubycon.rubyconteam2.core.config.oauth.service.CustomOAuth2AuthorizedClientService;
+import com.rubycon.rubyconteam2.core.config.security.SecurityConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
@@ -21,8 +22,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OAuth2Configuration {
 
-    @Value("${custom.oauth2.kakao.client-id}") String kakaoClientId;
-    @Value("${custom.oauth2.kakao.client-secret}") String kakaoClientSecret;
+    @Value("${custom.oauth2.kakao.client-id}") public String KAKAO_CLIENT_ID;
+    @Value("${custom.oauth2.kakao.client-secret}") public String KAKAO_CLIENT_SECRET;
 
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService() {
@@ -38,8 +39,8 @@ public class OAuth2Configuration {
                 .collect(Collectors.toList());
 
         registrations.add(CustomOAuth2Provider.KAKAO.getBuilder()
-                .clientId(kakaoClientId)
-                .clientSecret(kakaoClientSecret)
+                .clientId(KAKAO_CLIENT_ID)
+                .clientSecret(KAKAO_CLIENT_SECRET)
                 .jwkSetUri("temp")
                 .build());
 
