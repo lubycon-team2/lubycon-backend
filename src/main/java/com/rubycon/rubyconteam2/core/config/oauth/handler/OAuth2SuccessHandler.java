@@ -16,7 +16,11 @@ import java.io.IOException;
 // TODO: 여기서 JwtService 빈 주입하려면 어떻게..?!!
 
 @Slf4j
+@Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
+
+    @Autowired
+    private JwtService jwtService;
 
     // 상수만 따로 저장하는 클래스 만들어서 분리해야할 듯
     static final String HEADER_STRING = "token";
@@ -29,14 +33,13 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String id = authentication.getName();
         String name = oauth2User.getAttribute("name");
 
-//        String token = jwtService.createToken(id, name);
+        String token = jwtService.createToken(id, name);
 
         log.debug("Custom OAuth Handler  {} {}", id, name);
-//        log.debug("JWT token  {}", token);
+        log.debug("JWT token  {}", token);
 
-        response.sendRedirect("/loginSuccess");
-//        response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-//        response.setContentType("application/json");
-//        response.getWriter().print(token);
+        response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        response.setContentType("application/json");
+        response.getWriter().print(token);
     }
 }
