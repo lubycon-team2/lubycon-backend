@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +19,11 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String createToken(String oauthKey, String name) {
         return Jwts.builder()
+                        .signWith(SignatureAlgorithm.HS256, JWT_SECRET.getBytes())
                         .setHeader(createHeader())
                         .setClaims(createPayloads(oauthKey, name))
-                        .signWith(SignatureAlgorithm.HS256, JWT_SECRET.getBytes())
+                        .setIssuedAt(new Date(System.currentTimeMillis()))
+                        .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRE_TIME))
                         .compact();
     }
 
@@ -72,5 +75,9 @@ public class JwtServiceImpl implements JwtService {
         payloads.put("name", name);
 
         return payloads;
+    }
+
+    private boolean isTokenExpired(String token){
+        return getPayloadsFromToken(token).getExpiration().before(new Date());
     }
 }

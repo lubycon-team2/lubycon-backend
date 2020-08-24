@@ -1,5 +1,7 @@
-package com.rubycon.rubyconteam2.core.config.oauth.usertype;
+package com.rubycon.rubyconteam2.core.config.oauth.usertypes;
 
+import com.rubycon.rubyconteam2.domain.user.domain.User;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -14,9 +16,17 @@ import java.util.Map;
 
 @Getter
 public class GoogleOAuth2User implements OAuth2User {
+
     private String sub;
     private String name;
     private String picture;
+
+    public OAuth2User build(User user) {
+        this.sub = user.getOauthKey();
+        this.name = user.getName();
+        this.picture = user.getProfileImage();
+        return this;
+    }
 
     @Override
     public Map<String, Object> getAttributes() {

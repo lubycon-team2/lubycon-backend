@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.core.config.oauth.service;
+package com.rubycon.rubyconteam2.core.config.oauth.services;
 
 import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.Role;
@@ -36,10 +36,9 @@ public class CustomOAuth2AuthorizedClientService implements OAuth2AuthorizedClie
             User userBuilder = User.builder()
                     .oauthKey(id)
                     .name(name)
-                    .profile_image(image)
-                    .providerName(providerType)
+                    .profileImage(image)
+                    .providerType(providerType)
                     .role(Role.USER)
-                    // .accessToken(accessToken.getTokenValue())
                     .build();
             return userRepository.save(userBuilder);
         });
