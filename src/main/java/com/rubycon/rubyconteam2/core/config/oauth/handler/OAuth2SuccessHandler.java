@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired

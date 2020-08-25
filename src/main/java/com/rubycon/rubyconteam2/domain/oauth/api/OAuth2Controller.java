@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OAuth2Controller {
 
     @GetMapping("/me")
-    public String me(@AuthenticationPrincipal OAuth2User oAuth2User) {
-        System.out.println(oAuth2User.getAttributes());
-        System.out.println(oAuth2User.getAuthorities());
-        return "Success Access My profile";
+    public OAuth2User me(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        return oAuth2User;
     }
 }

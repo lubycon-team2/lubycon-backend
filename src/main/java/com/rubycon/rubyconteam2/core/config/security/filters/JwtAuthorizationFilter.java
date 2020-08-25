@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 @Slf4j
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
@@ -33,11 +32,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return new AntPathMatcher().match("/login", request.getServletPath());
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -64,7 +58,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         final String header = request.getHeader(SecurityConstants.TOKEN_HEADER);
 
         Claims claims = getUserClaimsFromToken(header);
-        String oauthKey = claims.get("id").toString();
+        if(claims == null) return null;
+        String oauthKey = (String) claims.get("id");
 
         User user = userRepository.findByOauthKey(oauthKey).orElseThrow(() -> new RuntimeException("Not Found User!"));
 
@@ -85,4 +80,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
+    //    @Override
+    //    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+    //        return new AntPathMatcher().match("/login", request.getServletPath());
+    //    }
 }

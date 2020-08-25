@@ -4,8 +4,6 @@ import com.rubycon.rubyconteam2.core.config.oauth.handler.OAuth2SuccessHandler;
 import com.rubycon.rubyconteam2.core.config.oauth.usertypes.GoogleOAuth2User;
 import com.rubycon.rubyconteam2.core.config.oauth.usertypes.KakaoOAuth2User;
 import com.rubycon.rubyconteam2.core.config.security.filters.JwtAuthorizationFilter;
-import com.rubycon.rubyconteam2.core.jwt.JwtService;
-import com.rubycon.rubyconteam2.core.jwt.JwtServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,17 +18,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    JwtAuthorizationFilter jwtAuthorizationFilter;
-
     @Bean
-    public AuthenticationSuccessHandler successHandler() {
+    public AuthenticationSuccessHandler successHandler(){
         return new OAuth2SuccessHandler();
     }
 
     @Bean
-    public JwtService jwtService(){
-        return new JwtServiceImpl();
+    public JwtAuthorizationFilter jwtFilter(){
+        return new JwtAuthorizationFilter();
     }
 
     @Override
@@ -38,13 +33,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                     .cors()
                 .and()
-                    .httpBasic().disable()
                     .formLogin().disable()
                     .csrf().disable()
                     .headers().frameOptions().disable()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/oauth2/**", "/jwt/**").permitAll()
+                    .antMatchers("/", "/login", "/oauth2/**", "/jwt/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
@@ -59,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .exceptionHandling();
 
-        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
