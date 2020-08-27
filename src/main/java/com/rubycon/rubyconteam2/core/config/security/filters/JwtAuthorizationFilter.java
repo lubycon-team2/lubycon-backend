@@ -1,5 +1,6 @@
 package com.rubycon.rubyconteam2.core.config.security.filters;
 
+import com.rubycon.rubyconteam2.core.config.oauth.usertypes.FacebookOAuth2User;
 import com.rubycon.rubyconteam2.core.config.oauth.usertypes.GoogleOAuth2User;
 import com.rubycon.rubyconteam2.core.config.oauth.usertypes.KakaoOAuth2User;
 import com.rubycon.rubyconteam2.core.config.security.SecurityConstants;
@@ -65,12 +66,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         OAuth2User oAuth2User = null;
 
+        String providerType = user.getProviderType();
         // TODO : ENUM으로 바꿔보기? + static inner class 이슈 없는지
-        if (user.getProviderType().equals("google")){
+        if (providerType.equals("google")){
             oAuth2User = new GoogleOAuth2User().build(user);
-        } else if(user.getProviderType().equals("kakao")){
-            KakaoOAuth2User.KakaoProperties kakaoProperties = new KakaoOAuth2User.KakaoProperties().build(user);
-            oAuth2User = new KakaoOAuth2User().build(user, kakaoProperties);
+        } else if(providerType.equals("kakao")){
+            oAuth2User = new KakaoOAuth2User().build(user);
+        } else if(providerType.equals("facebook")){
+            oAuth2User = new FacebookOAuth2User().build(user);
         }
 
         if (oAuth2User != null){

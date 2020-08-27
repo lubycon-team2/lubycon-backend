@@ -1,6 +1,7 @@
 package com.rubycon.rubyconteam2.core.config.security;
 
 import com.rubycon.rubyconteam2.core.config.oauth.handler.OAuth2SuccessHandler;
+import com.rubycon.rubyconteam2.core.config.oauth.usertypes.FacebookOAuth2User;
 import com.rubycon.rubyconteam2.core.config.oauth.usertypes.GoogleOAuth2User;
 import com.rubycon.rubyconteam2.core.config.oauth.usertypes.KakaoOAuth2User;
 import com.rubycon.rubyconteam2.core.config.security.filters.JwtAuthorizationFilter;
@@ -46,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .userInfoEndpoint()
                         .customUserType(KakaoOAuth2User.class, "kakao")
                         .customUserType(GoogleOAuth2User.class, "google")
+                        .customUserType(FacebookOAuth2User.class, "facebook")
                 .and()
                 // 이 부분에서 Success Handler를 설정합니다.
                     .successHandler(successHandler())

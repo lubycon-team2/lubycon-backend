@@ -7,6 +7,13 @@ spring:
             client-id: ${GOOGLE_CLIENT_ID:GOOGLE_CLIENT_ID_STRING}
             client-secret: ${GOOGLE_CLIENT_SECRET:GOOGLE_CLIENT_SECRET_STRING}
             scope: profile,email
+          facebook:
+            client-id: ${FACEBOOK_CLIENT_ID:FACEBOOK_CLIENT_ID_STRING}
+            client-secret: ${FACEBOOK_CLIENT_SECRET:FACEBOOK_CLIENT_SECRET_STRING}
+            scope: public_profile,email
+        provider:
+          facebook:
+            userInfoUri: https://graph.facebook.com/me?fields=id,name,email,link
 
 custom:
   oauth2:

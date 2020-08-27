@@ -25,10 +25,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
         String id = authentication.getName();
         String name = oauth2User.getAttribute("name");
+        String image = oauth2User.getAttribute("image");
 
         String token = jwtService.createToken(id, name);
 
-        log.debug("Login Success : {} {}", id, name);
+        log.debug("Login Success : {} {} {}", id, name, image);
         log.debug("JWT token : {}", token);
 
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);

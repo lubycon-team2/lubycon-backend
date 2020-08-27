@@ -12,14 +12,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class KakaoOAuth2User implements OAuth2User {
+public class FacebookOAuth2User implements OAuth2User {
 
     private String id;
-    private KakaoProperties properties;
+    private String name;
+    private FacebookFicture picture;
 
     public OAuth2User build(User user) {
         this.id = user.getOauthKey();
-        this.properties = new KakaoOAuth2User.KakaoProperties().build(user);
+        this.name = user.getName();
+        this.picture = new FacebookOAuth2User.FacebookFicture().build(user);
+
         return this;
     }
 
@@ -27,8 +30,8 @@ public class KakaoOAuth2User implements OAuth2User {
     public Map<String, Object> getAttributes() {
         Map<String, Object> attrs = new HashMap<>();
         attrs.put("id", this.id);
-        attrs.put("name", this.properties.getNickname());
-        attrs.put("image", this.properties.getProfile_image());
+        attrs.put("name", this.name);
+        attrs.put("image", this.picture.data.get("url"));
 
         return attrs;
     }
@@ -44,13 +47,12 @@ public class KakaoOAuth2User implements OAuth2User {
     }
 
     @Getter
-    public static class KakaoProperties {
-        private String nickname;
-        private String profile_image;
+    public static class FacebookFicture {
+        private Map<String, Object> data;
 
-        public KakaoProperties build(User user){
-            this.nickname = user.getName();
-            this.profile_image = user.getProfileImage();
+        public FacebookFicture build(User user) {
+            data = new HashMap<>();
+            data.put("url", user.getProfileImage());
             return this;
         }
     }

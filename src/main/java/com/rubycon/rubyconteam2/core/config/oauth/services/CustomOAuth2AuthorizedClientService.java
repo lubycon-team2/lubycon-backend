@@ -3,12 +3,16 @@ package com.rubycon.rubyconteam2.core.config.oauth.services;
 import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.Role;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 
 /*
  *   OAuth2AuthorizedClientService : 인증 정보 저장을 위한 표준 인터페이스
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
  *   직접 생성한 구현 클래스 - 인증 정보를 DB에 저장
  */
 @Service
+@Slf4j
 public class CustomOAuth2AuthorizedClientService implements OAuth2AuthorizedClientService {
 
     @Autowired

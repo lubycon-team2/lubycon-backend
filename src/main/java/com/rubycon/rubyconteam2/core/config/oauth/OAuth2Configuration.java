@@ -21,8 +21,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OAuth2Configuration {
 
-    @Value("${custom.oauth2.kakao.client-id}") public String KAKAO_CLIENT_ID;
-    @Value("${custom.oauth2.kakao.client-secret}") public String KAKAO_CLIENT_SECRET;
+    @Value("${custom.oauth2.kakao.client-id}")
+    public String KAKAO_CLIENT_ID;
+    @Value("${custom.oauth2.kakao.client-secret}")
+    public String KAKAO_CLIENT_SECRET;
 
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService() {
@@ -53,7 +55,16 @@ public class OAuth2Configuration {
             return CommonOAuth2Provider.GOOGLE.getBuilder(client)
                     .clientId(registration.getClientId())
                     .clientSecret(registration.getClientSecret())
-                    .scope("email", "profile")
+                    .scope(registration.getScope())
+                    .build();
+        } else if ("facebook".equals(client)) {
+            OAuth2ClientProperties.Registration registration = clientProperties.getRegistration().get("facebook");
+            OAuth2ClientProperties.Provider provider = clientProperties.getProvider().get("facebook");
+            return CommonOAuth2Provider.FACEBOOK.getBuilder(client)
+                    .clientId(registration.getClientId())
+                    .clientSecret(registration.getClientSecret())
+                    .userInfoUri("https://graph.facebook.com/me?fields=id,name,email,picture")
+                    .scope("public_profile", "email")
                     .build();
         }
 
