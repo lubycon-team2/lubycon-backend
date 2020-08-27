@@ -13,7 +13,7 @@ spring:
             scope: public_profile,email
         provider:
           facebook:
-            userInfoUri: https://graph.facebook.com/me?fields=id,name,email,link
+            userInfoUri: https://graph.facebook.com/me?fields=id,name,email,picture
 
 custom:
   oauth2:

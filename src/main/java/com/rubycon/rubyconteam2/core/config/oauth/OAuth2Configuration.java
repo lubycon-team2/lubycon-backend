@@ -63,8 +63,8 @@ public class OAuth2Configuration {
             return CommonOAuth2Provider.FACEBOOK.getBuilder(client)
                     .clientId(registration.getClientId())
                     .clientSecret(registration.getClientSecret())
-                    .userInfoUri("https://graph.facebook.com/me?fields=id,name,email,picture")
-                    .scope("public_profile", "email")
+                    .userInfoUri(provider.getUserInfoUri())
+                    .scope(registration.getScope())
                     .build();
         }
 
