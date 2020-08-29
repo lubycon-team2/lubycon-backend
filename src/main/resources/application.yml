@@ -5,7 +5,7 @@ server:
 spring:
   profiles:
     active: ${SPRING_ENV:prod}
-    include: oauth
+    include: config
 
   jpa:
     show-sql: true

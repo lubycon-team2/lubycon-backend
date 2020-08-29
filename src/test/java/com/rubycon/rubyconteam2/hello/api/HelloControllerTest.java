@@ -1,6 +1,6 @@
 package com.rubycon.rubyconteam2.hello.api;
 
-import com.rubycon.rubyconteam2.core.jwt.JwtService;
+import com.rubycon.rubyconteam2.global.core.jwt.JwtService;
 import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
 import com.rubycon.rubyconteam2.hello.dto.HelloResponseDto;
 import org.hamcrest.Matchers;
@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,6 +1,6 @@
 package com.rubycon.rubyconteam2.domain.user.domain;
 
-import com.rubycon.rubyconteam2.common.model.BaseTimeEntity;
+import com.rubycon.rubyconteam2.global.common.model.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
