@@ -1,5 +1,7 @@
 package com.rubycon.rubyconteam2.infra.sms;
 
+import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
+import com.rubycon.rubyconteam2.domain.user.services.UserService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,15 @@ public class NCPMessageController {
     @Autowired
     NCPMessageClient ncpMessageClient;
 
+    // TODO : UserService로 변경
+    @Autowired
+    UserRepository userRepository;
+
     @PostMapping("/authenticate/sms/send")
     public String sendSMS(HttpSession httpSession, @RequestBody NCPMessage ncpMessage) throws NoSuchAlgorithmException, InvalidKeyException {
         System.out.println(ncpMessage);
-        String result = ncpMessageClient.sendSMS(httpSession, ncpMessage);
-        return "Hello";
+        ncpMessageClient.sendSMS(httpSession, ncpMessage);
+        return "Success send SMS";
     }
 
     @PostMapping("/authenticate/sms/verify")
@@ -33,12 +39,7 @@ public class NCPMessageController {
 
         // 일치할 경우
         httpSession.removeAttribute(phoneNumber);
+        // TODO : DB 저장 로직 구현하기
         return "Success Auth phone number !";
-    }
-
-    @GetMapping("/authenticate/sms/check")
-    public String session(HttpSession httpSession){
-        String code = (String) httpSession.getAttribute("01065009697");
-        return code;
     }
 }

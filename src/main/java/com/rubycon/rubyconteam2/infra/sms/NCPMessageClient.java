@@ -49,7 +49,7 @@ public class NCPMessageClient {
     }
 
     // NCP SENS 서비스를 이용한 SMS 보내기
-    public String sendSMS(HttpSession httpSession, NCPMessage ncpMessage) throws InvalidKeyException, NoSuchAlgorithmException {
+    public void sendSMS(HttpSession httpSession, NCPMessage ncpMessage) throws InvalidKeyException, NoSuchAlgorithmException {
         String url = BASE_URL + SEND_REQUEST_URL;
         String message = "[Rubycon Party-ing]\n인증번호 : ";
         String authCode = generateAuthCode();
@@ -85,18 +85,15 @@ public class NCPMessageClient {
         try {
             ResponseEntity<String> response = this.restTemplate.postForEntity(url, entity, String.class);
             httpSession.setAttribute(ncpMessage.getTo(), authCode);
-            log.debug("session time {}",httpSession.getMaxInactiveInterval());
             System.out.println(response);
         } catch (Exception e) {
             log.error("Error : {}", e.getMessage());
         }
-        return "Exit";
     }
 
     // 현재 시각
     private String getTimestamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        log.debug("Current Time {}", timestamp);
         return String.valueOf(timestamp.getTime());
     }
 
