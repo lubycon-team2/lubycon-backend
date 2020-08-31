@@ -11,14 +11,12 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -46,16 +44,20 @@ public class NCPMessageClient {
     }
 
     @PostConstruct
-    public void init(){
-        this.SEND_REQUEST_URL =  "/sms/v2/services/" + NCP_SERVICE_ID + "/messages";
+    public void init() {
+        this.SEND_REQUEST_URL = "/sms/v2/services/" + NCP_SERVICE_ID + "/messages";
     }
 
-    public String sendSMS(String toPhoneNumber) throws InvalidKeyException, NoSuchAlgorithmException {
+    // NCP SENS 서비스를 이용한 SMS 보내기
+    public String sendSMS(HttpSession httpSession, NCPMessage ncpMessage) throws InvalidKeyException, NoSuchAlgorithmException {
         String url = BASE_URL + SEND_REQUEST_URL;
+        String message = "[Rubycon Party-ing]\n인증번호 : ";
+        String authCode = generateAuthCode();
 
+        // TODO : 더 좋은 방법?
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> user = new HashMap<>();
-        user.put("to", "number");
+        user.put("to", ncpMessage.getTo());
         list.add(user);
 
         // create headers
@@ -72,33 +74,37 @@ public class NCPMessageClient {
         map.put("type", "SMS");
         map.put("contentType", "COMM");
         map.put("countryCode", "82");
-        map.put("from", "number");
-        map.put("content", "content 입니다.");
+        map.put("from", "01065009697");
+        map.put("content", message + authCode);
         map.put("messages", list);
 
         // build the request
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
 
         // send POST request
-        try{
+        try {
             ResponseEntity<String> response = this.restTemplate.postForEntity(url, entity, String.class);
+            httpSession.setAttribute(ncpMessage.getTo(), authCode);
+            log.debug("session time {}",httpSession.getMaxInactiveInterval());
             System.out.println(response);
-        } catch (Exception e){
-            log.error("Error : {}",e.getMessage());
+        } catch (Exception e) {
+            log.error("Error : {}", e.getMessage());
         }
         return "Exit";
     }
 
+    // 현재 시각
     private String getTimestamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         log.debug("Current Time {}", timestamp);
         return String.valueOf(timestamp.getTime());
     }
 
+    // NCP SENS에서 설계한 Signature 설정
     private String getSignature() throws NoSuchAlgorithmException, InvalidKeyException {
 
         String space = " ";                                    // one space
-        String newLine = "\n";                                // new line
+        String newLine = "\n";                                 // new line
         String method = "POST";                                // method
 
         String message = new StringBuilder()
@@ -118,5 +124,13 @@ public class NCPMessageClient {
         byte[] rawHmac = mac.doFinal(message.getBytes(StandardCharsets.UTF_8));
 
         return Base64.encodeBase64String(rawHmac);
+    }
+
+    // 6자리 랜덤 인증 코드 메시지
+    private String generateAuthCode(){
+        Random generator = new Random();
+        generator.setSeed(System.currentTimeMillis());
+        int number = generator.nextInt(1000000) % 1000000;
+        return String.valueOf(number);
     }
 }

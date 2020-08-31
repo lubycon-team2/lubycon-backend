@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .headers().frameOptions().disable()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/login", "/oauth2/**", "/jwt/**", "/sendSMS").permitAll()
+                    .antMatchers("/", "/login", "/oauth2/**", "/jwt/**", "/authenticate/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .customUserType(GoogleOAuth2User.class, "google")
                         .customUserType(FacebookOAuth2User.class, "facebook")
                 .and()
-                // 이 부분에서 Success Handler를 설정합니다.
+                    // 이 부분에서 Success Handler를 설정합니다.
                     .successHandler(successHandler())
                     .failureUrl("/loginFailure")
                 .and()
