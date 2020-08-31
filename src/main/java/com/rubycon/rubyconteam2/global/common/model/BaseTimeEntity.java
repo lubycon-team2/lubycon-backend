@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.common.model;
+package com.rubycon.rubyconteam2.global.common.model;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

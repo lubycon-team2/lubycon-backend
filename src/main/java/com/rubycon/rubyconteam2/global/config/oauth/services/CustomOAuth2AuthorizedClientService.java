@@ -1,16 +1,15 @@
-package com.rubycon.rubyconteam2.config.security.oauth.service;
+package com.rubycon.rubyconteam2.global.config.oauth.services;
 
 import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.Role;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /*
  *   OAuth2AuthorizedClientService : 인증 정보 저장을 위한 표준 인터페이스
@@ -19,6 +18,7 @@ import java.util.Optional;
  *   직접 생성한 구현 클래스 - 인증 정보를 DB에 저장
  */
 @Service
+@Slf4j
 public class CustomOAuth2AuthorizedClientService implements OAuth2AuthorizedClientService {
 
     @Autowired
@@ -38,10 +38,9 @@ public class CustomOAuth2AuthorizedClientService implements OAuth2AuthorizedClie
             User userBuilder = User.builder()
                     .oauthKey(id)
                     .name(name)
-                    .profile_image(image)
-                    .providerName(providerType)
+                    .profileImage(image)
+                    .providerType(providerType)
                     .role(Role.USER)
-                    // .accessToken(accessToken.getTokenValue())
                     .build();
             return userRepository.save(userBuilder);
         });

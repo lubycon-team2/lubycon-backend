@@ -1,7 +1,7 @@
-package com.rubycon.rubyconteam2.config.security.oauth;
+package com.rubycon.rubyconteam2.global.config.oauth;
 
-import com.rubycon.rubyconteam2.config.security.oauth.provider.CustomOAuth2Provider;
-import com.rubycon.rubyconteam2.config.security.oauth.service.CustomOAuth2AuthorizedClientService;
+import com.rubycon.rubyconteam2.global.config.oauth.provider.CustomOAuth2Provider;
+import com.rubycon.rubyconteam2.global.config.oauth.services.CustomOAuth2AuthorizedClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
@@ -21,8 +21,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class OAuth2Configuration {
 
-    @Value("${custom.oauth2.kakao.client-id}") String kakaoClientId;
-    @Value("${custom.oauth2.kakao.client-secret}") String kakaoClientSecret;
+    @Value("${custom.oauth2.kakao.client-id}")
+    public String KAKAO_CLIENT_ID;
+    @Value("${custom.oauth2.kakao.client-secret}")
+    public String KAKAO_CLIENT_SECRET;
 
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService() {
@@ -38,8 +40,8 @@ public class OAuth2Configuration {
                 .collect(Collectors.toList());
 
         registrations.add(CustomOAuth2Provider.KAKAO.getBuilder()
-                .clientId(kakaoClientId)
-                .clientSecret(kakaoClientSecret)
+                .clientId(KAKAO_CLIENT_ID)
+                .clientSecret(KAKAO_CLIENT_SECRET)
                 .jwkSetUri("temp")
                 .build());
 
@@ -53,7 +55,16 @@ public class OAuth2Configuration {
             return CommonOAuth2Provider.GOOGLE.getBuilder(client)
                     .clientId(registration.getClientId())
                     .clientSecret(registration.getClientSecret())
-                    .scope("email", "profile")
+                    .scope(registration.getScope())
+                    .build();
+        } else if ("facebook".equals(client)) {
+            OAuth2ClientProperties.Registration registration = clientProperties.getRegistration().get("facebook");
+            OAuth2ClientProperties.Provider provider = clientProperties.getProvider().get("facebook");
+            return CommonOAuth2Provider.FACEBOOK.getBuilder(client)
+                    .clientId(registration.getClientId())
+                    .clientSecret(registration.getClientSecret())
+                    .userInfoUri(provider.getUserInfoUri())
+                    .scope(registration.getScope())
                     .build();
         }
 

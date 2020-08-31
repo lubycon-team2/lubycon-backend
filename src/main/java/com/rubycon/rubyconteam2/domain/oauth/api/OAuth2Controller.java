@@ -9,18 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OAuth2Controller {
 
     @GetMapping("/me")
-    public String me(@AuthenticationPrincipal OAuth2User oAuth2User) {
-        System.out.println(oAuth2User);
-        return "My profile";
-    }
-
-    @GetMapping({"/loginSuccess", "/hello"})
-    public String loginSuccess() {
-        return "Hello Login Success !!";
-    }
-
-    @GetMapping("/loginFailure")
-    public String loginFailure() {
-        return "loginFailure";
+    public OAuth2User me(@AuthenticationPrincipal OAuth2User oAuth2User) {
+        return oAuth2User;
     }
 }

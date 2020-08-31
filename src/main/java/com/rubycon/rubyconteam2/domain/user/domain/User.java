@@ -1,6 +1,6 @@
 package com.rubycon.rubyconteam2.domain.user.domain;
 
-import com.rubycon.rubyconteam2.common.model.BaseTimeEntity;
+import com.rubycon.rubyconteam2.global.common.model.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,17 +16,17 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique=true)
     private String oauthKey;
 
     @Column(nullable = false)
     private String name;
 
     @Column
-    private String profile_image;
+    private String profileImage;
 
     @Column(nullable = false)
-    private String providerName;
+    private String providerType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -36,11 +36,11 @@ public class User extends BaseTimeEntity {
     //    private String accessToken;
 
     @Builder
-    public User(String name, String oauthKey, String profile_image, String providerName, Role role) {
+    public User(String name, String oauthKey, String profileImage, String providerType, Role role) {
         this.name = name;
         this.oauthKey = oauthKey;
-        this.profile_image = profile_image;
-        this.providerName = providerName;
+        this.profileImage = profileImage;
+        this.providerType = providerType;
         this.role = role;
     }
 

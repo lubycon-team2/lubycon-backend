@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.config.web;
+package com.rubycon.rubyconteam2.global.config.web;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

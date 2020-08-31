@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.config.jpa;
+package com.rubycon.rubyconteam2.global.config.jpa;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

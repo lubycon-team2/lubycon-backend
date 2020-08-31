@@ -1,0 +1,15 @@
+spring:
+  profiles: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/rubycon-team2-dev?characterEncoding=UTF-8&serverTimezone=UTC
+    username: username
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    com:
+      rubycon:
+        rubyconteam2: debug
+    root: info

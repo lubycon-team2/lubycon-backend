@@ -1,5 +1,6 @@
-package com.rubycon.rubyconteam2.config.security.oauth.usertype;
+package com.rubycon.rubyconteam2.global.config.oauth.usertypes;
 
+import com.rubycon.rubyconteam2.domain.user.domain.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -12,8 +13,15 @@ import java.util.Map;
 
 @Getter
 public class KakaoOAuth2User implements OAuth2User {
+
     private String id;
     private KakaoProperties properties;
+
+    public OAuth2User build(User user) {
+        this.id = user.getOauthKey();
+        this.properties = new KakaoOAuth2User.KakaoProperties().build(user);
+        return this;
+    }
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -36,8 +44,14 @@ public class KakaoOAuth2User implements OAuth2User {
     }
 
     @Getter
-    private static class KakaoProperties {
+    public static class KakaoProperties {
         private String nickname;
         private String profile_image;
+
+        public KakaoProperties build(User user){
+            this.nickname = user.getName();
+            this.profile_image = user.getProfileImage();
+            return this;
+        }
     }
 }
