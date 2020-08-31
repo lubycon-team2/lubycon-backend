@@ -5,6 +5,7 @@ import lombok.Getter;
 import java.io.Serializable;
 
 @Getter
-public class NCPMessage implements Serializable {
+public class NCPAuthCode implements Serializable {
     private String to;
+    private String code;
 }
