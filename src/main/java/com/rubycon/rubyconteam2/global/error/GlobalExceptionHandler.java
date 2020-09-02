@@ -11,11 +11,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+/**
+ * extends ResponseEntityExceptionHandler
+ * 위 핸들러는 스프링에서 기본적으로 제공해주는 Exception을 제공
+ */
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     /**
      * javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
