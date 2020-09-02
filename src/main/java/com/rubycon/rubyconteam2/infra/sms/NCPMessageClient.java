@@ -49,7 +49,7 @@ public class NCPMessageClient {
     }
 
     // NCP SENS 서비스를 이용한 SMS 보내기
-    public void sendSMS(HttpSession httpSession, NCPMessage ncpMessage) throws InvalidKeyException, NoSuchAlgorithmException {
+    public void sendSMS(HttpSession httpSession, NCPSendRequest ncpSendRequest) throws InvalidKeyException, NoSuchAlgorithmException {
         String url = BASE_URL + SEND_REQUEST_URL;
         String message = "[Rubycon Party-ing]\n인증번호 : ";
         String authCode = generateAuthCode();
@@ -57,7 +57,7 @@ public class NCPMessageClient {
         // TODO : 더 좋은 방법?
         List<Map<String, String>> list = new ArrayList<>();
         Map<String, String> user = new HashMap<>();
-        user.put("to", ncpMessage.getTo());
+        user.put("to", ncpSendRequest.getTo());
         list.add(user);
 
         // create headers
@@ -84,7 +84,7 @@ public class NCPMessageClient {
         // send POST request
         try {
             ResponseEntity<String> response = this.restTemplate.postForEntity(url, entity, String.class);
-            httpSession.setAttribute(ncpMessage.getTo(), authCode);
+            httpSession.setAttribute(ncpSendRequest.getTo(), authCode);
             System.out.println(response);
         } catch (Exception e) {
             log.error("Error : {}", e.getMessage());

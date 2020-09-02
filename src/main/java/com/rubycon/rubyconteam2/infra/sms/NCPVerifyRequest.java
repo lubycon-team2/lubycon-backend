@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.io.Serializable;
 
 @Getter
-public class NCPAuthCode implements Serializable {
+public class NCPVerifyRequest implements Serializable {
     private String to;
     private String code;
 }
