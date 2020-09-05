@@ -24,6 +24,12 @@ ext {
 	set('snippetsDir', file("build/generated-snippets"))
 }
 
+// Start Zip with .ebextensions
+bootJar {
+	from('./.ebextensions') { into '.ebextensions' }
+}
+// End Zip with .ebextensions
+
 //// Start QueryDSL Settings
 //def querydslDir = "$buildDir/generated/querydsl"
 //

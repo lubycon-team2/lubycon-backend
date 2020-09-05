@@ -1,6 +1,7 @@
 # Elastic Beanstalk maps the internal port 5000 to the external port 80 to expose the application to the internet.
 server:
   port: 5000
+  forward-headers-strategy: native # for {baseUrl} apply 'https://'
 
 spring:
   profiles:
