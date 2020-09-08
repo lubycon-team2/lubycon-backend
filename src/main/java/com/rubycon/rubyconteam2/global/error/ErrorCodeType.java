@@ -9,11 +9,11 @@ public enum ErrorCodeType {
     INVALID_INPUT_VALUE(400, "COMMON_001", "Invalid Input Value"),
     METHOD_NOT_ALLOWED(405, "COMMON_002", "Method Not Allowed"),
     ENTITY_NOT_FOUND(400, "COMMON_003", "Entity Not Found"),
-    INTERNAL_SERVER_ERROR(500, "COMMON_004", "Server Error"),
+    INTERNAL_SERVER_ERROR(500, "COMMON_004", "Interval Server Error"),
     INVALID_TYPE_VALUE(400, "COMMON_005", "Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "COMMON_006", "Access is Denied"),
-    INVALID_TOKEN(400, "COMMON_007", "토큰이 올바르지 않습니다."),
-    METHOD_ARGUMENT_MISMATCHED(400, "COMMON_008", "Request Argument 타입이 일치하지 않습니다."),
+    INVALID_TOKEN(400, "COMMON_008", "토큰이 올바르지 않습니다."),
+    METHOD_ARGUMENT_MISMATCHED(400, "COMMON_009", "Request Argument 타입이 일치하지 않습니다."),
 
     // EX) Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),

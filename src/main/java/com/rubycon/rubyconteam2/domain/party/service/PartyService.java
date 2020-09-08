@@ -1,6 +1,7 @@
 package com.rubycon.rubyconteam2.domain.party.service;
 
 import com.rubycon.rubyconteam2.domain.party.domain.Party;
+import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ public class PartyService {
         return partyRepository.save(party).getPartyId();
     }
 
-    public List<Party> findAll() {
-        return partyRepository.findAll();
+    public List<Party> findAll(ServiceType serviceType) {
+        return partyRepository.findByServiceTypeIs(serviceType);
     }
 }

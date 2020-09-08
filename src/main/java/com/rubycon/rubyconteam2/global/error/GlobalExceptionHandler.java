@@ -1,6 +1,8 @@
 package com.rubycon.rubyconteam2.global.error;
 
 import com.rubycon.rubyconteam2.global.error.exception.BusinessException;
+import com.rubycon.rubyconteam2.global.error.exception.EntityNotFoundException;
+import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,6 +77,25 @@ public class GlobalExceptionHandler {
         ErrorCodeType errorCodeType = ErrorCodeType.HANDLE_ACCESS_DENIED;
         final ErrorResponse response = ErrorResponse.of(errorCodeType);
         return new ResponseEntity<>(response, HttpStatus.valueOf(errorCodeType.getStatus()));
+    }
+
+    /**
+     * Entity 를 찾지 못한 경우 발생하는 Exception
+     */
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e){
+        log.debug("handleEntityNotFoundException", e);
+        ErrorCodeType codeType = e.getErrorCodeType();
+        ErrorResponse response = ErrorResponse.of(codeType);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(codeType.getStatus()));
+    }
+
+    /**
+     * 리스트의 반환 값이 빈 배열일 때 발생하는 No Content 핸들러
+     */
+    @ExceptionHandler(NoContentException.class)
+    protected ResponseEntity<ErrorResponse> handleNoContentException(NoContentException e){
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
