@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.hello.api;
+package com.rubycon.rubyconteam2.hello.controller;
 
 import com.rubycon.rubyconteam2.hello.dto.HelloResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -38,7 +38,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .headers().frameOptions().disable()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/login", "/oauth2/**", "/jwt/**", "/authenticate/**").permitAll()
+                    .antMatchers(
+                            "/",
+                            "/login",
+                            "/oauth2/**",
+                            "/jwt/**",
+                            "/authenticate/**",
+                            "/party"
+                    ).permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .oauth2Login()

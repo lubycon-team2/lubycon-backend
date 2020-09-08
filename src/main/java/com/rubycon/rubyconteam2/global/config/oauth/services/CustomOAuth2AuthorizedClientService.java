@@ -1,6 +1,6 @@
 package com.rubycon.rubyconteam2.global.config.oauth.services;
 
-import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
+import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.Role;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class CustomOAuth2AuthorizedClientService implements OAuth2AuthorizedClie
             User userBuilder = User.builder()
                     .oauthKey(id)
                     .name(name)
-                    .profileImage(image)
+                    .profileUrl(image)
                     .providerType(providerType)
                     .role(Role.USER)
                     .build();

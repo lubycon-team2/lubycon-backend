@@ -52,7 +52,7 @@ public class FacebookOAuth2User implements OAuth2User {
 
         public FacebookFicture build(User user) {
             data = new HashMap<>();
-            data.put("url", user.getProfileImage());
+            data.put("url", user.getProfileUrl());
             return this;
         }
     }

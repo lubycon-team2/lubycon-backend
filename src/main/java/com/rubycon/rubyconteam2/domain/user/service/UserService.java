@@ -1,6 +1,6 @@
-package com.rubycon.rubyconteam2.domain.user.services;
+package com.rubycon.rubyconteam2.domain.user.service;
 
-import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
+import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

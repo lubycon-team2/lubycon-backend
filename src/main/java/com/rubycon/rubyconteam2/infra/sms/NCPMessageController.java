@@ -1,6 +1,6 @@
 package com.rubycon.rubyconteam2.infra.sms;
 
-import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
+import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -5,7 +5,7 @@ import com.rubycon.rubyconteam2.global.config.oauth.usertypes.GoogleOAuth2User;
 import com.rubycon.rubyconteam2.global.config.oauth.usertypes.KakaoOAuth2User;
 import com.rubycon.rubyconteam2.global.config.security.SecurityConstants;
 import com.rubycon.rubyconteam2.global.core.jwt.JwtService;
-import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
+import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;

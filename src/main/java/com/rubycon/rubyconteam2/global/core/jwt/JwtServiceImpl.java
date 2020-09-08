@@ -45,17 +45,14 @@ public class JwtServiceImpl implements JwtService {
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature");
-            return false;
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token");
-            return false;
         } catch (ExpiredJwtException e) {
             log.error("Expired JWT token");
-            return false;
         } catch (IllegalArgumentException e) {
             log.error("Empty JWT claims");
-            return false;
         }
+        return false;
     }
 
     private Map<String, Object> createHeader(){

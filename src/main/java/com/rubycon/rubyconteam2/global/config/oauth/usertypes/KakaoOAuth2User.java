@@ -50,7 +50,7 @@ public class KakaoOAuth2User implements OAuth2User {
 
         public KakaoProperties build(User user){
             this.nickname = user.getName();
-            this.profile_image = user.getProfileImage();
+            this.profile_image = user.getProfileUrl();
             return this;
         }
     }

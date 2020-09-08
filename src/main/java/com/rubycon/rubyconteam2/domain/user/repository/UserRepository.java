@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.domain.user.dao;
+package com.rubycon.rubyconteam2.domain.user.repository;
 
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

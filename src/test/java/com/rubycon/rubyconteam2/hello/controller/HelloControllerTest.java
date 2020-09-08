@@ -1,7 +1,7 @@
-package com.rubycon.rubyconteam2.hello.api;
+package com.rubycon.rubyconteam2.hello.controller;
 
 import com.rubycon.rubyconteam2.global.core.jwt.JwtService;
-import com.rubycon.rubyconteam2.domain.user.dao.UserRepository;
+import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.hello.dto.HelloResponseDto;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;

@@ -23,7 +23,7 @@ public class GoogleOAuth2User implements OAuth2User {
     public OAuth2User build(User user) {
         this.sub = user.getOauthKey();
         this.name = user.getName();
-        this.picture = user.getProfileImage();
+        this.picture = user.getProfileUrl();
         return this;
     }
 
