@@ -100,7 +100,7 @@ public class NCPMessageClient {
     }
 
     /**
-     * 인증 코드 검증 로직
+     * 인증 코드 검증 로직 TODO : 반환 값 수정해야함
      * @param httpSession, ncpVerifyRequest
      * @return 검증 성공 여부
      */

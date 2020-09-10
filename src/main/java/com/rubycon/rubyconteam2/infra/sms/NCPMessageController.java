@@ -1,9 +1,12 @@
 package com.rubycon.rubyconteam2.infra.sms;
 
+import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.service.UserService;
 import com.rubycon.rubyconteam2.infra.sms.dto.NCPSendRequest;
 import com.rubycon.rubyconteam2.infra.sms.dto.NCPVerifyRequest;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,10 @@ import java.security.NoSuchAlgorithmException;
 public class NCPMessageController {
 
     final NCPMessageClient ncpMessageClient;
+
+    final UserService userService;
+
+    final UserRepository userRepository;
 
     @PostMapping("/send")
     public String sendSMS(

@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -48,7 +47,7 @@ public class User extends BaseTimeEntity {
         return this.role.getKey();
     }
 
-    public void updatePhoneNumber(PasswordEncoder passwordEncoder, String phoneNumber){
-        this.phoneNumber = passwordEncoder.encode(phoneNumber);
+    public void updatePhoneNumber(String phoneNumber){
+        this.phoneNumber = phoneNumber;
     }
 }

@@ -5,8 +5,6 @@ import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.infra.sms.dto.NCPVerifyRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -16,8 +14,6 @@ import javax.servlet.http.HttpSession;
 public class UserService {
 
     final UserRepository userRepository;
-
-    final PasswordEncoder passwordEncoder;
 
     /**
      * User Phone Number 업데이트 메서드
@@ -30,7 +26,7 @@ public class UserService {
         User user = userRepository.findById(1L) // 임시로 1번 유저만
                 .orElseThrow(UserNotFoundException::new);
 
-        user.updatePhoneNumber(passwordEncoder, phoneNumber);
+        user.updatePhoneNumber(phoneNumber);
         return userRepository.save(user);
     }
 }
