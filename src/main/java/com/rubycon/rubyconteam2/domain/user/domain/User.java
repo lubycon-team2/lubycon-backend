@@ -1,10 +1,12 @@
 package com.rubycon.rubyconteam2.domain.user.domain;
 
+import com.rubycon.rubyconteam2.global.common.converter.StringAttributeConverter;
 import com.rubycon.rubyconteam2.global.common.model.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -25,7 +27,8 @@ public class User extends BaseTimeEntity {
     @Column
     private String email;
 
-    @Column(length = 45)
+    @Column
+    @Convert(converter = StringAttributeConverter.class)
     private String phoneNumber;
 
     @Column
@@ -45,4 +48,7 @@ public class User extends BaseTimeEntity {
         return this.role.getKey();
     }
 
+    public void updatePhoneNumber(PasswordEncoder passwordEncoder, String phoneNumber){
+        this.phoneNumber = passwordEncoder.encode(phoneNumber);
+    }
 }

@@ -15,6 +15,9 @@ public enum ErrorCodeType {
     INVALID_TOKEN(400, "COMMON_008", "토큰이 올바르지 않습니다."),
     METHOD_ARGUMENT_MISMATCHED(400, "COMMON_009", "Request Argument 타입이 일치하지 않습니다."),
 
+    // USER
+    USER_NOT_FOUND(400, "U001", "사용자를 찾을 수 없습니다."),
+
     // EX) Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
     LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),

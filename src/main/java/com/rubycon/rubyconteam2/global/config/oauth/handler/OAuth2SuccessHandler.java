@@ -34,7 +34,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         log.debug("Login Success : {} {} {}", id, name, image);
         log.debug("JWT token : {}", token);
 
-        String url = UriComponentsBuilder.fromUriString("https://www.naver.com")
+        String url = UriComponentsBuilder.fromUriString(SecurityConstants.CLIENT_REDIRECT_URL)
                 .queryParam("access_token", Base64.getEncoder().encodeToString(token.getBytes()))
                 .build().toUriString();
         log.debug("Redirect URL {}", url);

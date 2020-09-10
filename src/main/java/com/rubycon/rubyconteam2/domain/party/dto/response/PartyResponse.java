@@ -7,7 +7,8 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PartyListResponse {
+@ToString
+public class PartyResponse {
 
     private Long partyId;
     private String title;
@@ -17,7 +18,7 @@ public class PartyListResponse {
     private ServiceType serviceType;
     private PartyState partyState;
 
-    public PartyListResponse(Party party) {
+    public PartyResponse(Party party) {
         this.partyId = party.getPartyId();
         this.title = party.getTitle();
         this.maxPartyNumber = party.getMaxPartyNumber();
@@ -25,18 +26,5 @@ public class PartyListResponse {
         this.pricePerPerson = party.getPricePerPerson();
         this.serviceType = party.getServiceType();
         this.partyState = party.getPartyState();
-    }
-
-    @Override
-    public String toString() {
-        return "PartyListResponse{" +
-                "partyId=" + partyId +
-                ", title='" + title + '\'' +
-                ", maxPartyNumber=" + maxPartyNumber +
-                ", paymentCycle=" + paymentCycle +
-                ", pricePerPerson=" + pricePerPerson +
-                ", serviceType=" + serviceType +
-                ", partyState=" + partyState +
-                '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.rubycon.rubyconteam2.global.config.security.filters;
 
+import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.global.config.oauth.usertypes.FacebookOAuth2User;
 import com.rubycon.rubyconteam2.global.config.oauth.usertypes.GoogleOAuth2User;
 import com.rubycon.rubyconteam2.global.config.oauth.usertypes.KakaoOAuth2User;
@@ -7,6 +8,7 @@ import com.rubycon.rubyconteam2.global.config.security.SecurityConstants;
 import com.rubycon.rubyconteam2.global.core.jwt.JwtService;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.global.error.ErrorCodeType;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +62,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if(claims == null) return null;
         String oauthKey = (String) claims.get("id");
 
-        User user = userRepository.findByOauthKey(oauthKey).orElseThrow(() -> new RuntimeException("Not Found User!"));
+        User user = userRepository.findByOauthKey(oauthKey)
+                .orElseThrow(UserNotFoundException::new);
 
         OAuth2User oAuth2User = null;
 

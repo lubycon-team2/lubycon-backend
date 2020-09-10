@@ -1,10 +1,7 @@
 package com.rubycon.rubyconteam2.domain.party.domain;
 
 import com.rubycon.rubyconteam2.global.common.model.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Entity
 public class Party extends BaseTimeEntity {
     @Id
@@ -40,18 +38,4 @@ public class Party extends BaseTimeEntity {
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
     private PartyState partyState;
-
-    @Override
-    public String toString() {
-        return "Party{" +
-                "partyId=" + partyId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", maxPartyNumber=" + maxPartyNumber +
-                ", paymentCycle=" + paymentCycle +
-                ", pricePerPerson=" + pricePerPerson +
-                ", serviceType=" + serviceType +
-                ", partyState=" + partyState +
-                '}';
-    }
 }

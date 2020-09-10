@@ -3,36 +3,43 @@ package com.rubycon.rubyconteam2.domain.party.controller;
 import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
-import com.rubycon.rubyconteam2.domain.party.dto.response.PartyListResponse;
+import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
-import com.rubycon.rubyconteam2.global.error.ErrorCodeType;
 import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/party")
 public class PartyController {
 
     @Autowired
     PartyService partyService;
 
-    @PostMapping("/party")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveParty(@RequestBody PartyCreateRequest partyCreateRequest) {
-        partyService.save(partyCreateRequest);
+    public PartyResponse saveParty(
+            @RequestBody @Valid PartyCreateRequest partyCreateRequest
+    ) {
+        Party party = partyService.save(partyCreateRequest);
+        return new PartyResponse(party);
     }
 
-    @GetMapping("/party")
-    public List<PartyListResponse> findAllParty(@RequestParam("serviceType") ServiceType serviceType) {
+    @GetMapping
+    public List<PartyResponse> findAllParty(
+            @RequestParam("serviceType") @Valid @NotEmpty ServiceType serviceType
+    ) {
         List<Party> partyList = partyService.findAll(serviceType);
         if (partyList.isEmpty()) throw new NoContentException();
 
         return partyList.stream()
-                .map(PartyListResponse::new)
+                .map(PartyResponse::new)
                 .collect(Collectors.toList());
     }
 }

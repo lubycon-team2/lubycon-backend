@@ -1,7 +1,11 @@
 package com.rubycon.rubyconteam2.infra.sms;
 
+import com.rubycon.rubyconteam2.domain.user.service.UserService;
+import com.rubycon.rubyconteam2.infra.sms.dto.NCPSendRequest;
+import com.rubycon.rubyconteam2.infra.sms.dto.NCPVerifyRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -35,12 +39,16 @@ public class NCPMessageClient {
     private final String HEADER_TIMESTAMP = "x-ncp-apigw-timestamp";
     private final String HEADER_ACCESS_KEY = "x-ncp-iam-access-key";
     private final String HEADER_SIGNATURE = "x-ncp-apigw-signature-v2";
+
     private String SEND_REQUEST_URL;
 
     private final RestTemplate restTemplate;
 
-    public NCPMessageClient(RestTemplateBuilder restTemplateBuilder) {
+    private final UserService userService;
+
+    public NCPMessageClient(RestTemplateBuilder restTemplateBuilder, UserService userService) {
         this.restTemplate = restTemplateBuilder.build();
+        this.userService = userService;
     }
 
     @PostConstruct
@@ -91,13 +99,39 @@ public class NCPMessageClient {
         }
     }
 
-    // 현재 시각
+    /**
+     * 인증 코드 검증 로직
+     * @param httpSession, ncpVerifyRequest
+     * @return 검증 성공 여부
+     */
+    public String verifyAuthenticationCode (HttpSession httpSession, NCPVerifyRequest ncpVerifyRequest){
+        String phoneNumber = ncpVerifyRequest.getTo();
+        String code = (String) httpSession.getAttribute(phoneNumber);
+        if(code == null) return "Can't Authenticate phone number !"; // Exception
+
+        if (!ncpVerifyRequest.getCode().equals(code)) return "Not Matching AuthCode !"; // Exception
+
+        // 일치할 경우
+        httpSession.removeAttribute(phoneNumber);
+        userService.update(ncpVerifyRequest);
+        return "Success";
+    }
+
+    /**
+     * 현재 시각 반환 메서드
+     * @return 현재 시각
+     */
     private String getTimestamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return String.valueOf(timestamp.getTime());
     }
 
-    // NCP SENS에서 설계한 Signature 설정
+    /**
+     * NCP SENS에서 설계한 Signature 설정 반환 메서드
+     * @return NCP SENS Sigranture 반환
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeyException
+     */
     private String getSignature() throws NoSuchAlgorithmException, InvalidKeyException {
 
         String space = " ";                                    // one space
@@ -123,11 +157,14 @@ public class NCPMessageClient {
         return Base64.encodeBase64String(rawHmac);
     }
 
-    // 6자리 랜덤 인증 코드 메시지
+    /**
+     * 6자리 랜덤 인증 코드 생성 메서드
+     * @return 6자리 인증 코드
+     */
     private String generateAuthCode(){
         Random generator = new Random();
         generator.setSeed(System.currentTimeMillis());
-        int number = generator.nextInt(1000000) % 1000000;
+        int number = generator.nextInt(900000) + 100000;
         return String.valueOf(number);
     }
 }

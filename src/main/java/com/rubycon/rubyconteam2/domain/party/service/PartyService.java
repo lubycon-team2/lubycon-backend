@@ -19,10 +19,10 @@ public class PartyService {
     /**
      * 모집 중인 전체 파티 검색
      */
-    public Long save(PartyCreateRequest partyCreateRequest){
+    public Party save(PartyCreateRequest partyCreateRequest){
         Party party = partyCreateRequest.toEntity();
         log.debug(party.toString());
-        return partyRepository.save(party).getPartyId();
+        return partyRepository.save(party);
     }
 
     public List<Party> findAll(ServiceType serviceType) {

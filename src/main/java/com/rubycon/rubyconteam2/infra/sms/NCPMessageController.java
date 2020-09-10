@@ -1,43 +1,42 @@
 package com.rubycon.rubyconteam2.infra.sms;
 
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
+import com.rubycon.rubyconteam2.domain.user.service.UserService;
+import com.rubycon.rubyconteam2.infra.sms.dto.NCPSendRequest;
+import com.rubycon.rubyconteam2.infra.sms.dto.NCPVerifyRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
+@RequestMapping("/authenticate/sms")
+@RequiredArgsConstructor
 @Slf4j
 public class NCPMessageController {
 
-    @Autowired
-    NCPMessageClient ncpMessageClient;
+    final NCPMessageClient ncpMessageClient;
 
-    // TODO : UserService로 변경
-    @Autowired
-    UserRepository userRepository;
-
-    @PostMapping("/authenticate/sms/send")
-    public String sendSMS(HttpSession httpSession, @RequestBody NCPSendRequest ncpSendRequest) throws NoSuchAlgorithmException, InvalidKeyException {
+    @PostMapping("/send")
+    public String sendSMS(
+            HttpSession httpSession,
+            @RequestBody @Valid NCPSendRequest ncpSendRequest
+    ) throws NoSuchAlgorithmException, InvalidKeyException {
         System.out.println(ncpSendRequest);
         ncpMessageClient.sendSMS(httpSession, ncpSendRequest);
         return "Success send SMS";
     }
 
-    @PostMapping("/authenticate/sms/verify")
-    public String verify(HttpSession httpSession, @RequestBody NCPVerifyRequest ncpVerifyRequest){
-        String phoneNumber = ncpVerifyRequest.getTo();
-        String code = (String) httpSession.getAttribute(phoneNumber);
-        if(code == null) return "Can't Authenticate phone number !";
-
-        if (!ncpVerifyRequest.getCode().equals(code)) return "Not Matching AuthCode !";
-
-        // 일치할 경우
-        httpSession.removeAttribute(phoneNumber);
-        // TODO : DB 저장 로직 구현하기
-        return "Success Auth phone number !";
+    @PostMapping("/verify")
+    public String verify(
+            HttpSession httpSession,
+            @RequestBody @Valid NCPVerifyRequest ncpVerifyRequest
+    ){
+        return ncpMessageClient.verifyAuthenticationCode(httpSession, ncpVerifyRequest);
     }
 }
