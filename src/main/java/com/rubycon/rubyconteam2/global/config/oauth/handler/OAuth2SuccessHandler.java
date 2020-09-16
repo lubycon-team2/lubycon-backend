@@ -1,10 +1,9 @@
 package com.rubycon.rubyconteam2.global.config.oauth.handler;
 
 import com.rubycon.rubyconteam2.global.config.security.constants.SecurityConstants;
-import com.rubycon.rubyconteam2.global.core.jwt.JwtService;
+import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

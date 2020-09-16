@@ -1,5 +1,6 @@
-package com.rubycon.rubyconteam2.global.core.jwt;
+package com.rubycon.rubyconteam2.global.core.jwt.controller;
 
+import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

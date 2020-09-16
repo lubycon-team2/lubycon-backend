@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.global.config.oauth.services;
+package com.rubycon.rubyconteam2.global.config.oauth.service;
 
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.Role;

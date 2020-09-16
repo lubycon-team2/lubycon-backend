@@ -5,7 +5,6 @@ import com.rubycon.rubyconteam2.global.error.ErrorCode;
 import com.rubycon.rubyconteam2.global.error.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

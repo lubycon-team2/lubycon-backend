@@ -1,13 +1,14 @@
-package com.rubycon.rubyconteam2.global.config.security.filters;
+package com.rubycon.rubyconteam2.global.config.security.filter;
 
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
-import com.rubycon.rubyconteam2.global.config.oauth.usertypes.FacebookOAuth2User;
-import com.rubycon.rubyconteam2.global.config.oauth.usertypes.GoogleOAuth2User;
-import com.rubycon.rubyconteam2.global.config.oauth.usertypes.KakaoOAuth2User;
+import com.rubycon.rubyconteam2.global.config.oauth.usertype.FacebookOAuth2User;
+import com.rubycon.rubyconteam2.global.config.oauth.usertype.GoogleOAuth2User;
+import com.rubycon.rubyconteam2.global.config.oauth.usertype.KakaoOAuth2User;
 import com.rubycon.rubyconteam2.global.config.security.constants.SecurityConstants;
-import com.rubycon.rubyconteam2.global.core.jwt.JwtService;
+import com.rubycon.rubyconteam2.global.core.jwt.exception.*;
+import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
 import com.rubycon.rubyconteam2.global.error.ErrorCode;
 import com.rubycon.rubyconteam2.global.error.exception.BusinessException;
 import io.jsonwebtoken.*;
@@ -56,15 +57,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 return jwtService.getPayloadsFromToken(token);
             }
         } catch (SignatureException e) {
-            throw new BusinessException(ErrorCode.TOKEN_SIGNATURE_INVALID);
+            throw new JwtSignatureException();
         } catch (MalformedJwtException e) {
-            throw new BusinessException(ErrorCode.TOKEN_MALFORMED);
+            throw new JwtMalformedException();
         } catch (ExpiredJwtException e) {
-            throw new BusinessException(ErrorCode.TOKEN_EXPIRED);
+            throw new JwtExpiredException();
         } catch (UnsupportedJwtException e) {
-            throw new BusinessException(ErrorCode.TOKEN_UNSUPPORTED);
+            throw new JwtUnsupportedException();
         } catch (IllegalArgumentException e) {
-            throw new BusinessException(ErrorCode.TOKEN_ILLEGAL_ARGUMENT);
+            throw new JwtIllegalArgumentException();
         }
         return null;
     }

@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.global.config.oauth.usertypes;
+package com.rubycon.rubyconteam2.global.config.oauth.usertype;
 
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import lombok.Getter;
@@ -11,27 +11,28 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
-public class FacebookOAuth2User implements OAuth2User {
+// CustomUserType 추가 - OAuth2User 인터페이스를 구현해서 생성
 
-    private String id;
+@Getter
+public class GoogleOAuth2User implements OAuth2User {
+
+    private String sub;
     private String name;
-    private FacebookFicture picture;
+    private String picture;
 
     public OAuth2User build(User user) {
-        this.id = user.getOauthKey();
+        this.sub = user.getOauthKey();
         this.name = user.getName();
-        this.picture = new FacebookOAuth2User.FacebookFicture().build(user);
-
+        this.picture = user.getProfileUrl();
         return this;
     }
 
     @Override
     public Map<String, Object> getAttributes() {
         Map<String, Object> attrs = new HashMap<>();
-        attrs.put("id", this.id);
+        attrs.put("id", this.sub);
         attrs.put("name", this.name);
-        attrs.put("image", this.picture.data.get("url"));
+        attrs.put("image", this.picture);
 
         return attrs;
     }
@@ -43,17 +44,6 @@ public class FacebookOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return this.id;
-    }
-
-    @Getter
-    public static class FacebookFicture {
-        private Map<String, Object> data;
-
-        public FacebookFicture build(User user) {
-            data = new HashMap<>();
-            data.put("url", user.getProfileUrl());
-            return this;
-        }
+        return this.sub;
     }
 }

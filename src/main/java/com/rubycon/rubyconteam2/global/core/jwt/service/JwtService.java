@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.global.core.jwt;
+package com.rubycon.rubyconteam2.global.core.jwt.service;
 
 import io.jsonwebtoken.Claims;
 

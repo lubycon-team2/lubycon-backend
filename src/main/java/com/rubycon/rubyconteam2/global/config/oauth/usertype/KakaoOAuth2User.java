@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.global.config.oauth.usertypes;
+package com.rubycon.rubyconteam2.global.config.oauth.usertype;
 
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import lombok.Getter;

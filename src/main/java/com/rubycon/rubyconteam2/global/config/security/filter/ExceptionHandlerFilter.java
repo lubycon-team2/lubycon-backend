@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.global.config.security.filters;
+package com.rubycon.rubyconteam2.global.config.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rubycon.rubyconteam2.global.error.ErrorCode;
@@ -6,7 +6,6 @@ import com.rubycon.rubyconteam2.global.error.ErrorResponse;
 import com.rubycon.rubyconteam2.global.error.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

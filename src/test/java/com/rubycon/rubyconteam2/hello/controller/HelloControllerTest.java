@@ -1,6 +1,6 @@
 package com.rubycon.rubyconteam2.hello.controller;
 
-import com.rubycon.rubyconteam2.global.core.jwt.JwtService;
+import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.hello.dto.HelloResponseDto;
 import org.hamcrest.Matchers;
