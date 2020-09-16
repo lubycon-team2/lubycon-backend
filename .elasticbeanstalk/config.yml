@@ -1,8 +1,5 @@
-branch-defaults:
-  feature/sprint-2/jwt-authentication:
-    environment: RubyconTeam2-env-1
 environment-defaults:
-  RubyconTeam2-env-1:
+  partying:
     branch: null
     repository: null
 global:
