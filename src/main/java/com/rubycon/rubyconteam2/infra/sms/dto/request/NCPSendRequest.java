@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.infra.sms.dto;
+package com.rubycon.rubyconteam2.infra.sms.dto.request;
 
 import lombok.*;
 

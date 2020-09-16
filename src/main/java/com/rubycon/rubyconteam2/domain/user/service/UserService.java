@@ -3,11 +3,9 @@ package com.rubycon.rubyconteam2.domain.user.service;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
-import com.rubycon.rubyconteam2.infra.sms.dto.NCPVerifyRequest;
+import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPVerifyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpSession;
 
 @Service
 @RequiredArgsConstructor

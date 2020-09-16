@@ -1,11 +1,14 @@
-package com.rubycon.rubyconteam2.infra.sms;
+package com.rubycon.rubyconteam2.infra.sms.service;
 
 import com.rubycon.rubyconteam2.domain.user.service.UserService;
-import com.rubycon.rubyconteam2.infra.sms.dto.NCPSendRequest;
-import com.rubycon.rubyconteam2.infra.sms.dto.NCPVerifyRequest;
+import com.rubycon.rubyconteam2.global.error.ErrorCode;
+import com.rubycon.rubyconteam2.global.error.exception.BusinessException;
+import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPSendRequest;
+import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPVerifyRequest;
+import com.rubycon.rubyconteam2.infra.sms.exception.SMSCodeExpiredException;
+import com.rubycon.rubyconteam2.infra.sms.exception.SMSNotMatchingCodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
@@ -24,7 +27,7 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class NCPMessageClient {
+public class NCPMessageService {
 
     @Value("${app.sms.ncp.access-key}")
     private String NCP_ACCESS_KEY;
@@ -46,7 +49,7 @@ public class NCPMessageClient {
 
     private final UserService userService;
 
-    public NCPMessageClient(RestTemplateBuilder restTemplateBuilder, UserService userService) {
+    public NCPMessageService(RestTemplateBuilder restTemplateBuilder, UserService userService) {
         this.restTemplate = restTemplateBuilder.build();
         this.userService = userService;
     }
@@ -92,29 +95,30 @@ public class NCPMessageClient {
         // send POST request
         try {
             ResponseEntity<String> response = this.restTemplate.postForEntity(url, entity, String.class);
+            log.info(String.valueOf(response));
+
             httpSession.setAttribute(ncpSendRequest.getTo(), authCode);
-            System.out.println(response);
+            httpSession.setMaxInactiveInterval(60); // 5분
         } catch (Exception e) {
-            log.error("Error : {}", e.getMessage());
+            throw new BusinessException(e, ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * 인증 코드 검증 로직 TODO : 반환 값 수정해야함
+     * 인증 코드 검증 로직
      * @param httpSession, ncpVerifyRequest
      * @return 검증 성공 여부
      */
-    public String verifyAuthenticationCode (HttpSession httpSession, NCPVerifyRequest ncpVerifyRequest){
+    public void verifyAuthenticationCode (HttpSession httpSession, NCPVerifyRequest ncpVerifyRequest){
         String phoneNumber = ncpVerifyRequest.getTo();
         String code = (String) httpSession.getAttribute(phoneNumber);
-        if(code == null) return "Can't Authenticate phone number !"; // Exception
+        if(code == null) throw new SMSCodeExpiredException();
 
-        if (!ncpVerifyRequest.getCode().equals(code)) return "Not Matching AuthCode !"; // Exception
+        if (!ncpVerifyRequest.getCode().equals(code)) throw new SMSNotMatchingCodeException();
 
         // 일치할 경우
         httpSession.removeAttribute(phoneNumber);
         userService.update(ncpVerifyRequest);
-        return "Success";
     }
 
     /**
