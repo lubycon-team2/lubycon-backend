@@ -8,6 +8,10 @@ import javax.persistence.AttributeConverter;
 import java.security.Key;
 import java.util.Base64;
 
+/**
+ * String Type Encrypt Converter
+ */
+
 public class StringAttributeConverter implements AttributeConverter<String, String> {
 
     private static final String AES = "AES";

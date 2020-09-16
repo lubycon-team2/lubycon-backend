@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 @Slf4j
-public class OAuth2Configuration {
+public class OAuth2Config {
 
     @Value("${custom.oauth2.kakao.client-id}")
     public String KAKAO_CLIENT_ID;

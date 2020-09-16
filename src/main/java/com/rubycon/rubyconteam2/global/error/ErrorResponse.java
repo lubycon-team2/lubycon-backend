@@ -25,17 +25,19 @@ public class ErrorResponse {
         this.errors = errors;
     }
 
-    public static ErrorResponse of(final ErrorCodeType errorCodeType) {
+    public static ErrorResponse of(final ErrorCode errorCode) {
         return ErrorResponse.builder()
-                .code(errorCodeType.getCode())
-                .message(errorCodeType.getMessage())
-                .status(errorCodeType.getStatus())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .status(errorCode.getStatus())
                 .errors(new ArrayList<>())
                 .build();
     }
 
-    public static ErrorResponse of(final ErrorCodeType errorCodeType, final BindingResult bindingResult){
+    // MethodArgumentNotValid Exception 처리 메서드
+    public static ErrorResponse of(final ErrorCode errorCode, final BindingResult bindingResult){
         final List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
+
         List<FieldError> errors = fieldErrors.stream()
                 .map(error -> ErrorResponse.FieldError.builder()
                         .reason(error.getDefaultMessage())
@@ -45,9 +47,9 @@ public class ErrorResponse {
                 .collect(Collectors.toList());
 
         return ErrorResponse.builder()
-                .code(errorCodeType.getCode())
-                .message(errorCodeType.getMessage())
-                .status(errorCodeType.getStatus())
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .status(errorCode.getStatus())
                 .errors(errors)
                 .build();
     }

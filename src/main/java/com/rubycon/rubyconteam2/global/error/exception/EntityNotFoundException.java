@@ -1,10 +1,10 @@
 package com.rubycon.rubyconteam2.global.error.exception;
 
-import com.rubycon.rubyconteam2.global.error.ErrorCodeType;
+import com.rubycon.rubyconteam2.global.error.ErrorCode;
 
 public class EntityNotFoundException extends BusinessException {
 
-    public EntityNotFoundException(ErrorCodeType errorCodeType) {
-        super(errorCodeType);
+    public EntityNotFoundException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }

@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.global.config.security;
+package com.rubycon.rubyconteam2.global.config.security.constants;
 
 public final class SecurityConstants {
 

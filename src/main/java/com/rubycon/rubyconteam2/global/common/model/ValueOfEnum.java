@@ -6,6 +6,10 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
+/**
+ * Enum Type Validation Anotation
+ */
+
 @Target({
         ElementType.METHOD,
         ElementType.FIELD,

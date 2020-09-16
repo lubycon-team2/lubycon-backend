@@ -33,7 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.debug("handleMethodArgumentNotValid : {}", ex.getMessage());
         final BindingResult bindingResult = ex.getBindingResult();
-        final ErrorResponse response = ErrorResponse.of(ErrorCodeType.INVALID_TYPE_VALUE, bindingResult);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_TYPE_VALUE, bindingResult);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected ErrorResponse handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         log.debug("handleMethodArgumentTypeMismatchException : {}", e.getMessage());
-        return ErrorResponse.of(ErrorCodeType.METHOD_ARGUMENT_MISMATCHED);
+        return ErrorResponse.of(ErrorCode.METHOD_ARGUMENT_MISMATCHED);
     }
 
     /**
@@ -55,20 +55,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
         log.debug("handleAccessDeniedException : {}", e.getMessage());
-        final ErrorResponse response = ErrorResponse.of(ErrorCodeType.HANDLE_ACCESS_DENIED);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.HANDLE_ACCESS_DENIED);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
-
-//    /**
-//     * Entity 를 찾지 못한 경우 발생하는 Exception
-//     */
-//    @ExceptionHandler(EntityNotFoundException.class)
-//    protected ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e){
-//        log.debug("handleEntityNotFoundException", e);
-//        ErrorCodeType codeType = e.getErrorCodeType();
-//        ErrorResponse response = ErrorResponse.of(codeType);
-//        return new ResponseEntity<>(response, HttpStatus.valueOf(codeType.getStatus()));
-//    }
 
     /**
      * 리스트의 반환 값이 빈 배열일 때 발생하는 No Content 핸들러
@@ -85,7 +74,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusinessLoginException(BusinessException e) {
         log.debug("handleBusinessLoginException : {}", e.getMessage());
-        final ErrorResponse response = ErrorResponse.of(e.getErrorCodeType());
+        final ErrorResponse response = ErrorResponse.of(e.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
@@ -96,7 +85,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleIntervalException(Exception e) {
         log.error("handleIntervalException {}", e.getMessage());
-        return ErrorResponse.of(ErrorCodeType.INTERNAL_SERVER_ERROR);
+        return ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
 }

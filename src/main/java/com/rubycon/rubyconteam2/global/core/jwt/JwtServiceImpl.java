@@ -1,7 +1,9 @@
 package com.rubycon.rubyconteam2.global.core.jwt;
 
-import com.rubycon.rubyconteam2.global.config.security.SecurityConstants;
-import io.jsonwebtoken.*;
+import com.rubycon.rubyconteam2.global.config.security.constants.SecurityConstants;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,26 +37,18 @@ public class JwtServiceImpl implements JwtService {
                 .getBody();
     }
 
-    // TODO: Error 처리 수정해야함
+    // 토큰의 검증 + 만료일자 체크
     @Override
     public boolean verifyToken(String token) {
         try {
-            Jwts.parser()
-                    .setSigningKey(JWT_SECRET.getBytes())
-                    .parseClaimsJws(token);
-            return true;
-        } catch (SignatureException e) {
-            log.error("Invalid JWT signature");
-        } catch (MalformedJwtException e) {
-            log.error("Invalid JWT token");
-        } catch (ExpiredJwtException e) {
-            log.error("Expired JWT token");
-        } catch (IllegalArgumentException e) {
-            log.error("Empty JWT claims");
+            Claims claims = getPayloadsFromToken(token);
+            return !claims.getExpiration().before(new Date());
+        } catch (Exception e) {
+            return false;
         }
-        return false;
     }
 
+    // 토큰 헤더 생성
     private Map<String, Object> createHeader(){
         Map<String, Object> header = new HashMap<>();
 
@@ -65,6 +59,7 @@ public class JwtServiceImpl implements JwtService {
         return header;
     }
 
+    // 토큰 페이로드 생성
     private Map<String, Object> createPayloads(String oauthKey, String name){
         Map<String, Object> payloads = new HashMap<>();
 
@@ -72,9 +67,5 @@ public class JwtServiceImpl implements JwtService {
         payloads.put("name", name);
 
         return payloads;
-    }
-
-    private boolean isTokenExpired(String token){
-        return getPayloadsFromToken(token).getExpiration().before(new Date());
     }
 }
