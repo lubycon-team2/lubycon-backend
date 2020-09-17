@@ -1,5 +1,6 @@
 package com.rubycon.rubyconteam2.domain.party.domain;
 
+import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
 import com.rubycon.rubyconteam2.global.common.model.BaseTimeEntity;
 import lombok.*;
 
@@ -38,4 +39,14 @@ public class Party extends BaseTimeEntity {
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
     private PartyState partyState;
+
+    public void updateMyParty(PartyUpdateRequest partyDto){
+        this.title = partyDto.getTitle();
+        this.description = partyDto.getDescription();
+        this.maxPartyNumber = partyDto.getMaxPartyNumber();
+        this.paymentCycle = partyDto.getPaymentCycle();
+        this.pricePerPerson = partyDto.getPricePerPerson();
+        this.serviceType = partyDto.getServiceType();
+        this.partyState = partyDto.getPartyState();
+    }
 }

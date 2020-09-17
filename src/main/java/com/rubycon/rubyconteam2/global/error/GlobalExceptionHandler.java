@@ -10,11 +10,18 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
+import javax.validation.metadata.ConstraintDescriptor;
+import java.util.Set;
 
 /**
  * extends ResponseEntityExceptionHandler
@@ -27,13 +34,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * @Override
-     * javax.validation 에 해당되는 에러
+     * RequestBody의 javax.validation 에러
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.debug("handleMethodArgumentNotValid : {}", ex.getMessage());
         final BindingResult bindingResult = ex.getBindingResult();
         final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_TYPE_VALUE, bindingResult);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+    }
+
+    /**
+     * Path Variables & Request Parameters의 javax.validation 에러
+     * @Validated 로 검증하기 때문에 MethodArgumentNotValidException이 아님
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
+        log.debug("handleConstraintViolationException {}", e.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_TYPE_VALUE, e);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 

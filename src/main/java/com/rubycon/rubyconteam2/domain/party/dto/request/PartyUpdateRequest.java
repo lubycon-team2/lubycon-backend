@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class PartyCreateRequest {
+public class PartyUpdateRequest {
 
     @NotEmpty(message = "파티 제목을 입력해주세요.")
     private String title;
@@ -37,6 +37,18 @@ public class PartyCreateRequest {
     @ValueOfEnum(enumClass = ServiceType.class)
     private String serviceType;
 
+    @NotEmpty(message = "파티 상태를 입력해주세요 \nRECRUITING | START | END")
+    @ValueOfEnum(enumClass = PartyState.class)
+    private String partyState;
+
+    public ServiceType getServiceType(){
+        return ServiceType.valueOf(serviceType);
+    }
+
+    public PartyState getPartyState(){
+        return PartyState.valueOf(partyState);
+    }
+
     public Party toEntity() {
         return Party.builder()
                 .title(title)
@@ -45,7 +57,8 @@ public class PartyCreateRequest {
                 .paymentCycle(paymentCycle)
                 .pricePerPerson(pricePerPerson)
                 .serviceType(ServiceType.valueOf(serviceType))
-                .partyState(PartyState.RECRUITING)
+                .partyState(PartyState.valueOf(partyState))
                 .build();
     }
 }
+

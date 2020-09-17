@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/oauth2/**",
                         "/jwt/**",
                         "/authenticate/**",
-                        "/party"
+                        "/party/**"
                     ).permitAll()
                     .anyRequest().authenticated()
                 .and()
