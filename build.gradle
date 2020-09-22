@@ -30,27 +30,6 @@ bootJar {
 }
 // End Zip with .ebextensions
 
-//// Start QueryDSL Settings
-//def querydslDir = "$buildDir/generated/querydsl"
-//
-//querydsl {
-//	jpa = true
-//	querydslSourcesDir = querydslDir
-//}
-//
-//sourceSets {
-//	main.java.srcDir querydslDir
-//}
-//
-//configurations {
-//	querydsl.extendsFrom compileClasspath
-//}
-//
-//compileQuerydsl {
-//	options.annotationProcessorPath = configurations.querydsl
-//}
-//// End QueryDSL
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -66,13 +45,15 @@ dependencies {
 	// JWT
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
+	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	// Mysql
 	runtimeOnly 'mysql:mysql-connector-java'
 
-//	// QueryDSL
-//	implementation 'com.querydsl:querydsl-jpa'
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
 	// ModelMapper
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'

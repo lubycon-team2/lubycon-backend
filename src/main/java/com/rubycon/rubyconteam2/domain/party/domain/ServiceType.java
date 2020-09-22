@@ -13,4 +13,6 @@ public enum ServiceType {
     ;
 
     private final String title;
+//    // 회의 후 최대 파티 인원 수 정리하기
+//    private final int maxServiceNumber;
 }

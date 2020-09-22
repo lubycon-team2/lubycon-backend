@@ -4,6 +4,7 @@ import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
+import com.rubycon.rubyconteam2.domain.party.dto.response.PartyDetailResponse;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
 import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
@@ -29,8 +30,6 @@ public class PartyController {
     public List<PartyResponse> findAllParty(
             @RequestParam("serviceType") @Valid PartyFindRequest partyDto
     ) {
-        System.out.println(partyDto);
-
         List<Party> partyList = partyService.findAll(partyDto.getServiceType());
         if (partyList.isEmpty()) throw new NoContentException();
 
@@ -47,6 +46,16 @@ public class PartyController {
         Party party = partyService.save(partyDto);
         return new PartyResponse(party);
     }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PartyDetailResponse findParty(
+            @PathVariable final Long id
+    ){
+        Party party = partyService.findById(id);
+        return new PartyDetailResponse(party);
+    }
+
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
