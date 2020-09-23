@@ -45,12 +45,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/party/**",
                         // Swagger settings
                         "/v2/api-docs",
-                        "/swagger-resources",
                         "/swagger-resources/**",
                         "/configuration/ui",
                         "/configuration/security",
-                        "/swagger-ui.html",
-                        "/webjars/**"
+                        "/webjars/**",
+                        // Static files
+                        "/*.html",
+                        "/favicon.ico",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js"
                     ).permitAll()
                     .anyRequest().authenticated()
                 .and()

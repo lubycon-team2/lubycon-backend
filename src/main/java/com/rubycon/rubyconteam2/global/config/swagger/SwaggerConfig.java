@@ -2,12 +2,16 @@ package com.rubycon.rubyconteam2.global.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -28,6 +32,19 @@ public class SwaggerConfig {
         version = "V1";
         title = "Rubycon Party-ing API " + version;
 
+        // Global Parameter
+        ParameterBuilder aParameterBuilder = new ParameterBuilder();
+        aParameterBuilder.name(HttpHeaders.AUTHORIZATION) //헤더 이름
+                .description("Bearer Access Token") //설명
+                .modelRef(new ModelRef("string"))
+                .parameterType("header")
+                .required(true)
+                .build();
+
+        List<Parameter> aParameters = new ArrayList<>();
+        aParameters.add(aParameterBuilder.build());
+
+        // Global Error 응답
         List<ResponseMessage> responseMessages = new ArrayList<>();
         responseMessages.add(new ResponseMessageBuilder()
                 .code(200)
@@ -45,10 +62,11 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(version)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.rubycon.rubyconteam2"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo(title, version))
+                .globalOperationParameters(aParameters)
                 .globalResponseMessage(RequestMethod.GET, responseMessages);
     }
 

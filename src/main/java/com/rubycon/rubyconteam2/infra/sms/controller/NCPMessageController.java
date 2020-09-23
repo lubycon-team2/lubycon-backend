@@ -6,10 +6,15 @@ import com.rubycon.rubyconteam2.infra.sms.dto.response.NCPResponse;
 import com.rubycon.rubyconteam2.infra.sms.service.NCPMessageService;
 import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPSendRequest;
 import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPVerifyRequest;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -30,8 +35,9 @@ public class NCPMessageController {
 
     @PostMapping("/send")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "NCP SENS 휴대폰 인증 코드 보내기 API", notes = "요청을 보내면 6자리 랜덤 인증 코드가 특정 핸드폰 번호로 보내집니다.")
     public NCPResponse sendSMS(
-            HttpSession httpSession,
+            @ApiIgnore HttpSession httpSession,
             @RequestBody @Valid NCPSendRequest ncpSendRequest
     ) throws NoSuchAlgorithmException, InvalidKeyException {
         ncpMessageService.sendSMS(httpSession, ncpSendRequest);
@@ -40,8 +46,9 @@ public class NCPMessageController {
 
     @PostMapping("/verify")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "NCP SENS 휴대폰 인증 코드 검증 API", notes = "6자리 랜덤 인증 코드와 핸드폰 번호를 넘겨주면 서버에서 인증 코드를 검증해줍니다.")
     public NCPResponse verify(
-            HttpSession httpSession,
+            @ApiIgnore HttpSession httpSession,
             @RequestBody @Valid NCPVerifyRequest ncpVerifyRequest
     ){
         ncpMessageService.verifyAuthenticationCode(httpSession, ncpVerifyRequest);

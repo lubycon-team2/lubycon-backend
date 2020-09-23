@@ -8,6 +8,9 @@ import com.rubycon.rubyconteam2.domain.party.dto.response.PartyDetailResponse;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
 import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +30,8 @@ public class PartyController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "서비스 별 파티 목록 조회 API")
+    @ApiImplicitParam(name = "Authorization", value = "Not Required")
     public List<PartyResponse> findAllParty(
             @RequestParam("serviceType") @Valid PartyFindRequest partyDto
     ) {
@@ -40,6 +45,7 @@ public class PartyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "파티 생성 API")
     public PartyResponse saveParty(
             @RequestBody @Valid PartyCreateRequest partyDto
     ) {
@@ -49,6 +55,7 @@ public class PartyController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "특정 파티 조회 API")
     public PartyDetailResponse findParty(
             @PathVariable final Long id
     ){
@@ -59,6 +66,7 @@ public class PartyController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "파티 업데이트 API")
     public PartyResponse updateParty(
             @PathVariable final Long id,
             @RequestBody @Valid PartyUpdateRequest partyDto
@@ -69,6 +77,7 @@ public class PartyController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "파티 삭제 API")
     public void deleteParty(
             @PathVariable final Long id
     ){

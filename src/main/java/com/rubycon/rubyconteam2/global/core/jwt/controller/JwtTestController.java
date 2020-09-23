@@ -7,20 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/jwt/verify")
+@RequestMapping(value = "/jwt")
 @Slf4j
 public class JwtTestController {
 
     @Autowired
     private JwtService jwtService;
 
-    @GetMapping
+    @GetMapping("/verify")
     public Claims isValidToken(@RequestHeader("token") String token) {
         log.debug("isValidate {}", jwtService.verifyToken(token));
         return jwtService.getPayloadsFromToken(token);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public String createJwtToken(
             @RequestParam("name") String name,
             @RequestParam("oauthKey") String key){
