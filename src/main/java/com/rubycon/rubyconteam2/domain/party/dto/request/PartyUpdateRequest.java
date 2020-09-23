@@ -1,12 +1,13 @@
 package com.rubycon.rubyconteam2.domain.party.dto.request;
 
-import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
-import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
+import com.rubycon.rubyconteam2.domain.party.domain.PaymentCycle;
 import com.rubycon.rubyconteam2.global.common.model.ValueOfEnum;
 import lombok.*;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,48 +18,28 @@ public class PartyUpdateRequest {
     @NotEmpty(message = "파티 제목을 입력해주세요.")
     private String title;
 
-    @Size(max = 4000, message
-            = "파티 설명글은 4000자보다 작아야합니다.")
-    private String description;
-
-    @NotNull(message= "파티의 최대 인원을 입력해주세요.")
-    @Min(0) @Max(8)
-    private Integer maxPartyNumber;
-
-    @NotNull(message= "결제 주기를 입력해주세요.")
+    @NotNull(message = "파티장 금액을 입력해주세요.")
     @Min(0)
-    private Integer paymentCycle;
+    private Integer leaderPrice;
 
-    @NotNull(message= "1인 당 결제 금액을 입력해주세요.")
+    @NotNull(message = "파티원 금액을 입력해주세요.")
     @Min(0)
-    private Integer pricePerPerson;
+    private Integer memberPrice;
 
-    @NotEmpty(message = "서비스 타입을 입력해주세요 \nNETFLIX | WATCHA | WAAVE | APPLE_MUSIC")
-    @ValueOfEnum(enumClass = ServiceType.class)
-    private String serviceType;
+    @NotEmpty(message = "결제 주기를 입력해주세요 \nMONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
+    @ValueOfEnum(enumClass = PaymentCycle.class)
+    private String paymentCycle;
 
     @NotEmpty(message = "파티 상태를 입력해주세요 \nRECRUITING | START | END")
     @ValueOfEnum(enumClass = PartyState.class)
     private String partyState;
 
-    public ServiceType getServiceType(){
-        return ServiceType.valueOf(serviceType);
+    public PaymentCycle getPaymentCycle() {
+        return PaymentCycle.valueOf(paymentCycle);
     }
 
-    public PartyState getPartyState(){
+    public PartyState getPartyState() {
         return PartyState.valueOf(partyState);
-    }
-
-    public Party toEntity() {
-        return Party.builder()
-                .title(title)
-                .description(description)
-                .maxPartyNumber(maxPartyNumber)
-                .paymentCycle(paymentCycle)
-                .pricePerPerson(pricePerPerson)
-                .serviceType(ServiceType.valueOf(serviceType))
-                .partyState(PartyState.valueOf(partyState))
-                .build();
     }
 }
 

@@ -4,12 +4,10 @@ import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
-import com.rubycon.rubyconteam2.domain.party.dto.response.PartyDetailResponse;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
 import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -56,11 +54,11 @@ public class PartyController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "특정 파티 조회 API")
-    public PartyDetailResponse findParty(
+    public PartyResponse findParty(
             @PathVariable final Long id
     ){
         Party party = partyService.findById(id);
-        return new PartyDetailResponse(party);
+        return new PartyResponse(party);
     }
 
 

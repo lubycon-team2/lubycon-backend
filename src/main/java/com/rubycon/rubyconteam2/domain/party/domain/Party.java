@@ -20,17 +20,22 @@ public class Party extends BaseTimeEntity {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 4000)
-    private String description;
+    @Column(nullable = false)
+    private int leaderPrice;
+
+    @Column(nullable = false)
+    private int memberPrice;
 
     @Column
-    private int maxPartyNumber;
+    private int memberCount;
 
-    @Column
-    private int paymentCycle;
+    // TODO : serviceType에 최대 파티 인원 추가하기
+//    @Column
+//    private int maxPartyNumber;
 
-    @Column
-    private int pricePerPerson;
+    @Column(nullable = false, length = 45)
+    @Enumerated(EnumType.STRING)
+    private PaymentCycle paymentCycle;
 
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
@@ -42,11 +47,9 @@ public class Party extends BaseTimeEntity {
 
     public void updateMyParty(PartyUpdateRequest partyDto){
         this.title = partyDto.getTitle();
-        this.description = partyDto.getDescription();
-        this.maxPartyNumber = partyDto.getMaxPartyNumber();
+        this.leaderPrice = partyDto.getLeaderPrice();
+        this.memberPrice = partyDto.getMemberPrice();
         this.paymentCycle = partyDto.getPaymentCycle();
-        this.pricePerPerson = partyDto.getPricePerPerson();
-        this.serviceType = partyDto.getServiceType();
         this.partyState = partyDto.getPartyState();
     }
 }
