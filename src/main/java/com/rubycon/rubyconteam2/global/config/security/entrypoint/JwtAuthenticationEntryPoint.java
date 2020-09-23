@@ -17,6 +17,7 @@ import java.io.IOException;
 
 /**
  * AuthenticationEntryPoint 인터페이스를 사용하며 인증이 필요한 resource에 엑세스 하려고 시도 할 때 실행됨
+ * For 인증 실패 시 '/login' 페이지로 이동하는 것을 해결
  */
 
 @Component
@@ -27,7 +28,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest req, HttpServletResponse res, AuthenticationException e) throws IOException {
         log.error(e.getMessage());
         res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         res.setContentType(MediaType.APPLICATION_JSON.toString());

@@ -51,34 +51,33 @@ public class PartyController {
         return new PartyResponse(party);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{partyId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "특정 파티 조회 API")
     public PartyResponse findParty(
-            @PathVariable final Long id
+            @PathVariable final Long partyId
     ){
-        Party party = partyService.findById(id);
+        Party party = partyService.findById(partyId);
         return new PartyResponse(party);
     }
 
-
-    @PutMapping("/{id}")
+    @PutMapping("/{partyId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "파티 업데이트 API")
     public PartyResponse updateParty(
-            @PathVariable final Long id,
+            @PathVariable final Long partyId,
             @RequestBody @Valid PartyUpdateRequest partyDto
     ){
-        Party party = partyService.update(id, partyDto);
+        Party party = partyService.update(partyId, partyDto);
         return new PartyResponse(party);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{partyId}")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "파티 삭제 API")
     public void deleteParty(
-            @PathVariable final Long id
+            @PathVariable final Long partyId
     ){
-        partyService.delete(id);
+        partyService.delete(partyId);
     }
 }

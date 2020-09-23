@@ -31,6 +31,7 @@ public class StringAttributeConverter implements AttributeConverter<String, Stri
     @Override
     public String convertToDatabaseColumn(String attribute) {
         try {
+            if (attribute == null) return null;
             return Base64.getEncoder().encodeToString(encryptCipher.doFinal(attribute.getBytes()));
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new IllegalArgumentException(e);
@@ -40,6 +41,7 @@ public class StringAttributeConverter implements AttributeConverter<String, Stri
     @Override
     public String convertToEntityAttribute(String dbData) {
         try {
+            if (dbData == null) return null;
             return new String(decryptCipher.doFinal(Base64.getDecoder().decode(dbData)));
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new IllegalArgumentException(e);

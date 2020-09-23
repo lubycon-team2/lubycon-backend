@@ -49,12 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/configuration/ui",
                         "/configuration/security",
                         "/webjars/**",
-                        // Static files
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
+                        "/**/*.html"
                     ).permitAll()
                     .anyRequest().authenticated()
                 .and()
