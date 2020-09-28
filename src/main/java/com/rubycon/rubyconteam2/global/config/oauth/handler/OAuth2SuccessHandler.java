@@ -1,5 +1,6 @@
 package com.rubycon.rubyconteam2.global.config.oauth.handler;
 
+import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import com.rubycon.rubyconteam2.global.config.security.constants.SecurityConstants;
 import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
         String id = authentication.getName();
-        String name = oauth2User.getAttribute("name");
-        String image = oauth2User.getAttribute("image");
+        String name = oauth2User.getAttribute(OAuthConstants.NAME);
+        String image = oauth2User.getAttribute(OAuthConstants.IMAGE);
 
         String token = jwtService.createToken(id, name);
 

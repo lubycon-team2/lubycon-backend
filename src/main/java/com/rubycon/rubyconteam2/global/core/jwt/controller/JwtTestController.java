@@ -22,6 +22,8 @@ public class JwtTestController {
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
+    // TODO : Authorization 헤더 필요하도록 ! (유저 id 넘겨서 해당 유저 핸드폰 번호 업뎃)
+
     @GetMapping("/verify")
     @ApiImplicitParam(name = "Authorization", value = "Not Required")
     public Claims isValidToken(@RequestHeader("token") String token) {

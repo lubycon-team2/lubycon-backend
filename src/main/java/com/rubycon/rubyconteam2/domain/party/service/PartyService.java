@@ -55,7 +55,7 @@ public class PartyService {
 
     /**
      * 모집 파티 삭제
-     * TODO : 파티장만 삭제 가능하도록
+     * TODO : 파티장만 삭제 가능하도록 or 상태만 종료 상태로 변경되도록
      */
     public void delete(Long partyId){
         this.findById(partyId);

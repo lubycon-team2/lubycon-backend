@@ -1,6 +1,7 @@
 package com.rubycon.rubyconteam2.global.config.oauth.usertype;
 
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -26,9 +27,9 @@ public class KakaoOAuth2User implements OAuth2User {
     @Override
     public Map<String, Object> getAttributes() {
         Map<String, Object> attrs = new HashMap<>();
-        attrs.put("id", this.id);
-        attrs.put("name", this.properties.getNickname());
-        attrs.put("image", this.properties.getProfile_image());
+        attrs.put(OAuthConstants.ID, this.id);
+        attrs.put(OAuthConstants.NAME, this.properties.getNickname());
+        attrs.put(OAuthConstants.IMAGE, this.properties.getProfile_image());
 
         return attrs;
     }

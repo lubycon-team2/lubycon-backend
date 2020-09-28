@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/party")
 @RequiredArgsConstructor
-@Validated
+@Validated // For @RequestParam Exception
 public class PartyController {
 
     private final PartyService partyService;

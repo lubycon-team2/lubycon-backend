@@ -1,24 +1,33 @@
 package com.rubycon.rubyconteam2.domain.party.domain;
 
-
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
 
-//@Getter
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
-//@ToString
-//@Entity
-//public class PartyJoin {
-//
-//    @ManyToOne
-//    @JoinColumn(name = "partyId")
-//    private Party party;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "userId")
-//    private User user;
-//}
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
+@Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"partyId", "userId"})
+})
+public class PartyJoin {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long partyJoinId;
+
+    @ManyToOne
+    @JoinColumn(name = "partyId")
+    private Party party;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
+
+    @Column
+    private Role role;
+}

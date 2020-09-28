@@ -85,6 +85,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String providerType = user.getProviderType();
         // TODO : ENUM으로 바꿔보기? + static inner class 이슈 없는지
+        // TODO : 필요한 부분인지 다시 생각해보기
         if (providerType.equals("google")) {
             oAuth2User = new GoogleOAuth2User().build(user);
         } else if (providerType.equals("kakao")) {

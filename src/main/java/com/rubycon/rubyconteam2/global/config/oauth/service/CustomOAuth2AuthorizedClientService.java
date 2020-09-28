@@ -3,6 +3,7 @@ package com.rubycon.rubyconteam2.global.config.oauth.service;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.Role;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -31,8 +32,8 @@ public class CustomOAuth2AuthorizedClientService implements OAuth2AuthorizedClie
 
         OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
         String id = oauth2User.getName();
-        String name = oauth2User.getAttribute("name");
-        String image = oauth2User.getAttribute("image");
+        String name = oauth2User.getAttribute(OAuthConstants.NAME);
+        String image = oauth2User.getAttribute(OAuthConstants.IMAGE);
 
         userRepository.findByOauthKey(id).orElseGet(() -> {
             User userBuilder = User.builder()
