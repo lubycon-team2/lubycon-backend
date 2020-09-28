@@ -29,5 +29,6 @@ public class PartyJoin {
     private User user;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private Role role;
 }

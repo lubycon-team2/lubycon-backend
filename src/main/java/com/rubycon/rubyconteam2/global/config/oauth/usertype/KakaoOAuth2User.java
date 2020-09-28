@@ -18,8 +18,12 @@ public class KakaoOAuth2User implements OAuth2User {
     private String id;
     private KakaoProperties properties;
 
+    // Using for build method
+    private Long key;
+
     public OAuth2User build(User user) {
         this.id = user.getOauthKey();
+        this.key = user.getUserId();
         this.properties = new KakaoOAuth2User.KakaoProperties().build(user);
         return this;
     }
@@ -28,6 +32,7 @@ public class KakaoOAuth2User implements OAuth2User {
     public Map<String, Object> getAttributes() {
         Map<String, Object> attrs = new HashMap<>();
         attrs.put(OAuthConstants.ID, this.id);
+        attrs.put(OAuthConstants.KEY, this.key);
         attrs.put(OAuthConstants.NAME, this.properties.getNickname());
         attrs.put(OAuthConstants.IMAGE, this.properties.getProfile_image());
 

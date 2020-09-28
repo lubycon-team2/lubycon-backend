@@ -1,24 +1,15 @@
 package com.rubycon.rubyconteam2.domain.party.controller;
 
-import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
-import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyJoinResponse;
-import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
-import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/party")
@@ -34,7 +25,7 @@ public class PartyJoinController {
             @AuthenticationPrincipal OAuth2User oAuth2User,
             @PathVariable final Long partyId
     ) {
-        Long userId = oAuth2User.getAttribute(OAuthConstants.ID);
+        Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
         PartyJoin partyJoin = partyJoinService.join(userId, partyId);
         return new PartyJoinResponse(partyJoin);
     }
@@ -46,7 +37,7 @@ public class PartyJoinController {
             @AuthenticationPrincipal OAuth2User oAuth2User,
             @PathVariable final Long partyId
     ) {
-        Long userId = oAuth2User.getAttribute(OAuthConstants.ID);
+        Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
         partyJoinService.leave(userId, partyId);
     }
 }

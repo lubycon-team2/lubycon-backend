@@ -19,8 +19,12 @@ public class FacebookOAuth2User implements OAuth2User {
     private String name;
     private FacebookFicture picture;
 
+    // Using for build method
+    private Long key;
+
     public OAuth2User build(User user) {
         this.id = user.getOauthKey();
+        this.key = user.getUserId();
         this.name = user.getName();
         this.picture = new FacebookOAuth2User.FacebookFicture().build(user);
 
@@ -31,6 +35,7 @@ public class FacebookOAuth2User implements OAuth2User {
     public Map<String, Object> getAttributes() {
         Map<String, Object> attrs = new HashMap<>();
         attrs.put(OAuthConstants.ID, this.id);
+        attrs.put(OAuthConstants.KEY, this.key);
         attrs.put(OAuthConstants.NAME, this.name);
         attrs.put(OAuthConstants.IMAGE, this.picture.data.get("url"));
 

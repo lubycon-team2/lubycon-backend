@@ -21,8 +21,13 @@ public class GoogleOAuth2User implements OAuth2User {
     private String name;
     private String picture;
 
+    // Using for build method
+    // TODO : 어떻게 처리할지 ?, 인증에 oauthkey를 쓸지, userId를 쓸지 결정하기
+    private Long key;
+
     public OAuth2User build(User user) {
         this.sub = user.getOauthKey();
+        this.key = user.getUserId();
         this.name = user.getName();
         this.picture = user.getProfileUrl();
         return this;
@@ -32,6 +37,7 @@ public class GoogleOAuth2User implements OAuth2User {
     public Map<String, Object> getAttributes() {
         Map<String, Object> attrs = new HashMap<>();
         attrs.put(OAuthConstants.ID, this.sub);
+        attrs.put(OAuthConstants.KEY, this.key);
         attrs.put(OAuthConstants.NAME, this.name);
         attrs.put(OAuthConstants.IMAGE, this.picture);
 
