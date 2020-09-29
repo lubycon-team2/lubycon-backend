@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc(addFilters = false) // TODO : 실제 운영처럼 필터 넣고 WebMvcTest를 실행이 가능한가?
+@AutoConfigureMockMvc(addFilters = false)
 class HelloControllerTest {
 
     @Autowired

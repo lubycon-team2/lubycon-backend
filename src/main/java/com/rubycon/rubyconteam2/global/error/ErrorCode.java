@@ -32,6 +32,10 @@ public enum ErrorCode {
     // PARTY
     PARTY_NOT_FOUND(404, "P001", "파티를 찾을 수 없습니다."),
 
+    // PARTY_JOIN
+    PARTY_JOIN_NOT_FOUND(404, "PJ001", "해당 파티에 참여 중이지 않습니다."),
+    PARTY_JOIN_DUPLICATED(400, "PJ002", "이미 해당 파티에 참여 중입니다."),
+
     // EX) Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
     LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),

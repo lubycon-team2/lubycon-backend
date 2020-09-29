@@ -2,8 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.3.2.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
-//	// QueryDSL
-//	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id 'io.franzbecker.gradle-lombok' version '1.8'
 }
 
 group = 'com.rubycon'
@@ -52,6 +51,17 @@ dependencies {
 	// Mysql
 	runtimeOnly 'mysql:mysql-connector-java'
 
+	// H2
+	runtimeOnly 'com.h2database:h2'
+
+	// QueryDSL
+	implementation 'com.querydsl:querydsl-jpa'
+	implementation 'com.querydsl:querydsl-core'
+	annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa") // querydsl JPAAnnotationProcessor 사용 지정
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api") // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
+
+	// Swagger
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 

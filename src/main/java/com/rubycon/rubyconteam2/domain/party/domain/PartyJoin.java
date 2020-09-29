@@ -31,4 +31,12 @@ public class PartyJoin {
     @Column
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public static PartyJoin of(User user, Party party){
+        return PartyJoin.builder()
+                .user(user)
+                .party(party)
+                .role(Role.MEMBER)
+                .build();
+    }
 }

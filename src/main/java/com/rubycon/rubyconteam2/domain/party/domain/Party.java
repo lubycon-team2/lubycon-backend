@@ -29,10 +29,6 @@ public class Party extends BaseTimeEntity {
     @Column
     private int memberCount;
 
-    // TODO : serviceType에 최대 파티 인원 추가하기
-//    @Column
-//    private int maxPartyNumber;
-
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
     private PaymentCycle paymentCycle;
