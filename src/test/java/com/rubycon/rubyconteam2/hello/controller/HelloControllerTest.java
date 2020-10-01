@@ -22,6 +22,11 @@ class HelloControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    public void test() {
+
+    }
+
+    @Test
     @WithMockUser
     public void hello가_리턴된다() throws Exception {
         String hello = "hello";

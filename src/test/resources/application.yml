@@ -21,3 +21,8 @@ logging:
     root: info
     org:
       hibernate: debug
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8

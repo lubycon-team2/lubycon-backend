@@ -7,15 +7,14 @@ import com.rubycon.rubyconteam2.global.config.oauth.usertype.KakaoOAuth2User;
 import com.rubycon.rubyconteam2.global.config.security.entrypoint.JwtAuthenticationEntryPoint;
 import com.rubycon.rubyconteam2.global.config.security.filter.ExceptionHandlerFilter;
 import com.rubycon.rubyconteam2.global.config.security.filter.JwtAuthorizationFilter;
+import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -45,9 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/party/**",
                         // Swagger settings
                         "/v2/api-docs",
+                        "/api-docs/**",
                         "/swagger-resources/**",
-                        "/configuration/ui",
-                        "/configuration/security",
+                        "/configuration/**",
                         "/webjars/**",
                         "/**/*.html"
                     ).permitAll()

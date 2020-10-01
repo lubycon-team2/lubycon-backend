@@ -3,14 +3,11 @@ package com.rubycon.rubyconteam2.global.core.jwt.controller;
 import com.rubycon.rubyconteam2.domain.user.domain.Role;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
-import com.rubycon.rubyconteam2.domain.user.service.UserService;
 import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.swagger.annotations.ApiImplicitParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

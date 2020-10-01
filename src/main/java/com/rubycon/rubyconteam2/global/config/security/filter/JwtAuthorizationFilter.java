@@ -9,8 +9,6 @@ import com.rubycon.rubyconteam2.global.config.oauth.usertype.KakaoOAuth2User;
 import com.rubycon.rubyconteam2.global.config.security.constants.SecurityConstants;
 import com.rubycon.rubyconteam2.global.core.jwt.exception.*;
 import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
-import com.rubycon.rubyconteam2.global.error.ErrorCode;
-import com.rubycon.rubyconteam2.global.error.exception.BusinessException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +33,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    // TODO : 수정할 것
+    // TODO : UserService로 수정할 것
     private final UserRepository userRepository;
 
     @Override
