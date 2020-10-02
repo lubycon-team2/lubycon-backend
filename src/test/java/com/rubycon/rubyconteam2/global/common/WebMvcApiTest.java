@@ -9,6 +9,7 @@ import com.rubycon.rubyconteam2.global.config.security.entrypoint.JwtAuthenticat
 import com.rubycon.rubyconteam2.global.config.security.filter.ExceptionHandlerFilter;
 import com.rubycon.rubyconteam2.global.config.security.filter.JwtAuthorizationFilter;
 import com.rubycon.rubyconteam2.global.core.jwt.controller.JwtTestController;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,4 +34,7 @@ public abstract class WebMvcApiTest {
 
     @Autowired
     protected ObjectMapper objectMapper;
+
+    @Autowired
+    protected ModelMapper modelMapper;
 }
