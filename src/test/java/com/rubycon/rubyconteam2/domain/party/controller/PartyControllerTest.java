@@ -39,6 +39,7 @@ class PartyControllerTest extends WebMvcApiTest {
 
         List<Party> partyList = new ArrayList<>();
 
+        // TODO : 더 좋은 방법 -> Factory 패턴 사용해서?
         Party party1 = new Party(1L, "넷플릭스 파티 모집", 3600, 3400, 0, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.RECRUITING );
         Party party2 = new Party(2L, "넷플릭스 파티 모집 - 2", 3600, 3400, 0, PaymentCycle.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING );
         Party party3 = new Party(3L, "넷플릭스 파티 모집 - 3", 3600, 3400, 0, PaymentCycle.YEAR_1, ServiceType.NETFLIX, PartyState.RECRUITING );

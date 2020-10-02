@@ -48,4 +48,12 @@ public class Party extends BaseTimeEntity {
         this.paymentCycle = partyDto.getPaymentCycle();
         this.partyState = partyDto.getPartyState();
     }
+
+    public void plusMemberCount(){
+        this.memberCount++;
+    }
+
+    public void minusMemberCount(){
+        this.memberCount--;
+    }
 }
