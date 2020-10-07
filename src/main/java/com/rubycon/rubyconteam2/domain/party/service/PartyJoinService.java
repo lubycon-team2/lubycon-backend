@@ -2,6 +2,7 @@ package com.rubycon.rubyconteam2.domain.party.service;
 
 import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
 import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinDuplicatedException;
 import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinNotFoundException;
 import com.rubycon.rubyconteam2.domain.party.exception.PartyNotFoundException;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,5 +64,17 @@ public class PartyJoinService {
 
         party.minusMemberCount();
         partyJoinRepository.delete(partyJoin);
+    }
+
+    /**
+     * 특정 사용자가 가입한 파티 조회 ( 파티 상태 별 )
+     * TODO : 메서드 위치가 이곳이 맞는지?
+     */
+    @Transactional
+    public List<PartyJoin> findMyPartyByState(Long userId, PartyState partyState){
+        userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        return partyJoinQueryRepository.findMyPartyByState(userId, partyState);
     }
 }

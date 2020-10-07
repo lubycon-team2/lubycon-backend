@@ -41,6 +41,7 @@ public class PartyController {
                 .collect(Collectors.toList());
     }
 
+    // TODO : 파티 생성할 때 해당 유저 파티장으로 권한 상승하기
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "파티 생성 API")
