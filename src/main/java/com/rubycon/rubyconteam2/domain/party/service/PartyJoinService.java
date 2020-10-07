@@ -71,10 +71,10 @@ public class PartyJoinService {
      * TODO : 메서드 위치가 이곳이 맞는지?
      */
     @Transactional
-    public List<PartyJoin> findMyPartyByState(Long userId, PartyState partyState){
+    public List<PartyJoin> findAllMyPartyByState(Long userId, PartyState partyState){
         userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        return partyJoinQueryRepository.findMyPartyByState(userId, partyState);
+        return partyJoinQueryRepository.findAllMyPartyByState(userId, partyState);
     }
 }

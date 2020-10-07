@@ -37,7 +37,7 @@ public class ProfileController {
             @RequestParam("partyState") @Valid ProfilePartyRequest profileDto
     ){
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
-        List<PartyJoin> partyJoins = partyJoinService.findMyPartyByState(userId, profileDto.getPartyState());
+        List<PartyJoin> partyJoins = partyJoinService.findAllMyPartyByState(userId, profileDto.getPartyState());
 
         return partyJoins.stream()
                 .map(ProfilePartyResponse::new)

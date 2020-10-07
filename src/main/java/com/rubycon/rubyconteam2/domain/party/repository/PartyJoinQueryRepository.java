@@ -33,7 +33,7 @@ public class PartyJoinQueryRepository {
 
 
     // N+1 쿼리 나는 듯 (최대 4개이지만)
-    public List<PartyJoin> findMyPartyByState(Long userId, PartyState partyState) {
+    public List<PartyJoin> findAllMyPartyByState(Long userId, PartyState partyState) {
         return queryFactory.selectFrom(partyJoin)
                 .where(partyJoin.user.userId.eq(userId))
                 .where(partyJoin.party.partyState.eq(partyState))
