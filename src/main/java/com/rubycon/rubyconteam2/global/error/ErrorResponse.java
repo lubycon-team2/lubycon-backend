@@ -3,13 +3,19 @@ package com.rubycon.rubyconteam2.global.error;
 import lombok.*;
 import org.springframework.validation.BindingResult;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class ErrorResponse {
 
     private String code;
@@ -17,20 +23,21 @@ public class ErrorResponse {
     private int status;
     private List<FieldError> errors;
 
-    @Builder
-    public ErrorResponse(String code, String message, int status, List<FieldError> errors) {
-        this.code = code;
-        this.message = message;
-        this.status = status;
-        this.errors = errors;
-    }
-
     public static ErrorResponse of(final ErrorCode errorCode) {
         return ErrorResponse.builder()
                 .code(errorCode.getCode())
                 .message(errorCode.getMessage())
                 .status(errorCode.getStatus())
                 .errors(new ArrayList<>())
+                .build();
+    }
+
+    public static ErrorResponse of(final ErrorCode errorCode, final List<FieldError> errors) {
+        return ErrorResponse.builder()
+                .code(errorCode.getCode())
+                .message(errorCode.getMessage())
+                .status(errorCode.getStatus())
+                .errors(errors)
                 .build();
     }
 
@@ -46,12 +53,27 @@ public class ErrorResponse {
                         .build())
                 .collect(Collectors.toList());
 
-        return ErrorResponse.builder()
-                .code(errorCode.getCode())
-                .message(errorCode.getMessage())
-                .status(errorCode.getStatus())
-                .errors(errors)
-                .build();
+        return ErrorResponse.of(errorCode, errors);
+    }
+
+    // ConstraintViolationException Exception 처리 메서드
+    public static ErrorResponse of(final ErrorCode errorCode, final ConstraintViolationException e){
+        Set<ConstraintViolation<?>> descriptors = e.getConstraintViolations();
+        List<FieldError> errors = descriptors.stream()
+                .map(violation -> {
+                    String reason = violation.getMessage();
+                    String value = violation.getInvalidValue().toString();
+                    String field = null;
+                    for(Path.Node node : violation.getPropertyPath()) field = node.getName();
+
+                    return ErrorResponse.FieldError.builder()
+                            .reason(reason)
+                            .field(field)
+                            .value(value)
+                            .build();
+                })
+                .collect(Collectors.toList());
+        return ErrorResponse.of(errorCode, errors);
     }
 
     @Getter

@@ -15,13 +15,11 @@ public class UserService {
 
     /**
      * User Phone Number 업데이트 메서드
-     * TODO: 로그인 한 사용자만 사용 할 수 있도록 수정 ~!
-     * 임시로 id 받는 것
      */
-    public User update(NCPVerifyRequest ncpVerifyRequest){
+    public User update(Long userId, NCPVerifyRequest ncpVerifyRequest){
         String phoneNumber = ncpVerifyRequest.getTo();
 
-        User user = userRepository.findById(1L) // 임시로 1번 유저만
+        User user = userRepository.findById(userId) // 임시로 1번 유저만
                 .orElseThrow(UserNotFoundException::new);
 
         user.updatePhoneNumber(phoneNumber);

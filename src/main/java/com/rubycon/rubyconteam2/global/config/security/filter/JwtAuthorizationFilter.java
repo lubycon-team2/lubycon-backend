@@ -9,8 +9,6 @@ import com.rubycon.rubyconteam2.global.config.oauth.usertype.KakaoOAuth2User;
 import com.rubycon.rubyconteam2.global.config.security.constants.SecurityConstants;
 import com.rubycon.rubyconteam2.global.core.jwt.exception.*;
 import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
-import com.rubycon.rubyconteam2.global.error.ErrorCode;
-import com.rubycon.rubyconteam2.global.error.exception.BusinessException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +33,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
-    // TODO : 수정할 것
+    // TODO : UserService로 수정할 것
     private final UserRepository userRepository;
 
     @Override
@@ -85,6 +83,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String providerType = user.getProviderType();
         // TODO : ENUM으로 바꿔보기? + static inner class 이슈 없는지
+        // TODO : 필요한 부분인지 다시 생각해보기
         if (providerType.equals("google")) {
             oAuth2User = new GoogleOAuth2User().build(user);
         } else if (providerType.equals("kakao")) {

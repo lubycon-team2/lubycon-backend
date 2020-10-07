@@ -109,7 +109,7 @@ public class NCPMessageService {
      * @param httpSession, ncpVerifyRequest
      * @return 검증 성공 여부
      */
-    public void verifyAuthenticationCode (HttpSession httpSession, NCPVerifyRequest ncpVerifyRequest){
+    public void verifyAuthenticationCode (HttpSession httpSession, Long userId, NCPVerifyRequest ncpVerifyRequest){
         String phoneNumber = ncpVerifyRequest.getTo();
         String code = (String) httpSession.getAttribute(phoneNumber);
         if(code == null) throw new SMSCodeExpiredException();
@@ -118,7 +118,7 @@ public class NCPMessageService {
 
         // 일치할 경우
         httpSession.removeAttribute(phoneNumber);
-        userService.update(ncpVerifyRequest);
+        userService.update(userId, ncpVerifyRequest);
     }
 
     /**

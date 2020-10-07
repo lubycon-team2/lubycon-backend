@@ -1,6 +1,7 @@
 package com.rubycon.rubyconteam2.global.config.oauth.usertype;
 
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -20,8 +21,13 @@ public class GoogleOAuth2User implements OAuth2User {
     private String name;
     private String picture;
 
+    // Using for build method
+    // TODO : 어떻게 처리할지 ?, 인증에 oauthkey를 쓸지, userId를 쓸지 결정하기
+    private Long key;
+
     public OAuth2User build(User user) {
         this.sub = user.getOauthKey();
+        this.key = user.getUserId();
         this.name = user.getName();
         this.picture = user.getProfileUrl();
         return this;
@@ -30,9 +36,10 @@ public class GoogleOAuth2User implements OAuth2User {
     @Override
     public Map<String, Object> getAttributes() {
         Map<String, Object> attrs = new HashMap<>();
-        attrs.put("id", this.sub);
-        attrs.put("name", this.name);
-        attrs.put("image", this.picture);
+        attrs.put(OAuthConstants.ID, this.sub);
+        attrs.put(OAuthConstants.KEY, this.key);
+        attrs.put(OAuthConstants.NAME, this.name);
+        attrs.put(OAuthConstants.IMAGE, this.picture);
 
         return attrs;
     }

@@ -18,6 +18,7 @@ import java.io.IOException;
 
 /**
  * Security Exception Handler
+ * Security의 에러 핸들러 필터
  */
 
 @Component

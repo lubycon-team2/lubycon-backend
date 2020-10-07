@@ -8,7 +8,7 @@ public enum ErrorCode {
     // Common
     INVALID_INPUT_VALUE(400, "COMMON_001", "Invalid Input Value"),
     METHOD_NOT_ALLOWED(405, "COMMON_002", "Method Not Allowed"),
-    ENTITY_NOT_FOUND(400, "COMMON_003", "Entity Not Found"),
+    ENTITY_NOT_FOUND(404, "COMMON_003", "Entity Not Found"),
     INTERNAL_SERVER_ERROR(500, "COMMON_004", "Interval Server Error"),
     INVALID_TYPE_VALUE(400, "COMMON_005", "Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "COMMON_006", "Access is Denied"),
@@ -27,7 +27,14 @@ public enum ErrorCode {
     SMS_NOT_MATCHING_CODE(401, "S002", "인증 코드가 일치하지 않습니다."),
 
     // USER
-    USER_NOT_FOUND(400, "U001", "사용자를 찾을 수 없습니다."),
+    USER_NOT_FOUND(404, "U001", "사용자를 찾을 수 없습니다."),
+
+    // PARTY
+    PARTY_NOT_FOUND(404, "P001", "파티를 찾을 수 없습니다."),
+
+    // PARTY_JOIN
+    PARTY_JOIN_NOT_FOUND(404, "PJ001", "해당 파티에 참여 중이지 않습니다."),
+    PARTY_JOIN_DUPLICATED(400, "PJ002", "이미 해당 파티에 참여 중입니다."),
 
     // EX) Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),

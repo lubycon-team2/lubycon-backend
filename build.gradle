@@ -2,8 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.3.2.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
-//	// QueryDSL
-//	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id 'io.franzbecker.gradle-lombok' version '1.8'
 }
 
 group = 'com.rubycon'
@@ -30,27 +29,6 @@ bootJar {
 }
 // End Zip with .ebextensions
 
-//// Start QueryDSL Settings
-//def querydslDir = "$buildDir/generated/querydsl"
-//
-//querydsl {
-//	jpa = true
-//	querydslSourcesDir = querydslDir
-//}
-//
-//sourceSets {
-//	main.java.srcDir querydslDir
-//}
-//
-//configurations {
-//	querydsl.extendsFrom compileClasspath
-//}
-//
-//compileQuerydsl {
-//	options.annotationProcessorPath = configurations.querydsl
-//}
-//// End QueryDSL
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -66,13 +44,26 @@ dependencies {
 	// JWT
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
+	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	// Mysql
 	runtimeOnly 'mysql:mysql-connector-java'
 
-//	// QueryDSL
-//	implementation 'com.querydsl:querydsl-jpa'
+	// H2
+	runtimeOnly 'com.h2database:h2'
+
+	// QueryDSL
+	implementation 'com.querydsl:querydsl-jpa'
+	implementation 'com.querydsl:querydsl-core'
+	annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa") // querydsl JPAAnnotationProcessor 사용 지정
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api") // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api") // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
+
+	// Swagger
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
 	// ModelMapper
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
