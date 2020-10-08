@@ -1,25 +1,37 @@
 package com.rubycon.rubyconteam2.domain.party.service;
 
-import com.rubycon.rubyconteam2.domain.party.domain.Party;
-import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
+import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
+import com.rubycon.rubyconteam2.domain.party.exception.PartyAccessDeniedException;
+import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinDuplicatedException;
+import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinNotFoundException;
 import com.rubycon.rubyconteam2.domain.party.exception.PartyNotFoundException;
+import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinQueryRepository;
+import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
+import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
+import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.Part;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class PartyService {
 
+    private final UserRepository userRepository;
     private final PartyRepository partyRepository;
+    private final PartyJoinRepository partyJoinRepository;
+    private final PartyJoinQueryRepository partyJoinQueryRepository;
 
     /**
      * 서비스 타입에 따른 전체 모집 중 파티 검색
@@ -39,12 +51,19 @@ public class PartyService {
     }
 
     /**
-     * 모집 파티 생성
+     * 모집 파티 생성 + 파티장 권한으로 가입
+     * TODO : 파티는 각 서비스별 1개씩만 가입 되어있어야함!!
      */
     @Transactional
-    public Party save(PartyCreateRequest partyDto){
-        Party party = partyDto.toEntity();
-        return partyRepository.save(party);
+    public Party save(Long userId, PartyCreateRequest partyDto){
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        Party partyEntity = partyDto.toEntity();
+        Party party = partyRepository.save(partyEntity);
+
+        partyJoinRepository.save(PartyJoin.of(user, party));
+        return party;
     }
 
     /**
@@ -59,12 +78,20 @@ public class PartyService {
     }
 
     /**
-     * 모집 파티 삭제
-     * TODO : 파티장만 삭제 가능하도록 or 상태만 종료 상태로 변경되도록
+     * 모집 파티 삭제 + 파티장 권한을 가질 때만
      */
     @Transactional
-    public void delete(Long partyId){
-        this.findById(partyId);
-        partyRepository.deleteById(partyId);
+    public void delete(Long userId, Long partyId){
+        userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        Party party = this.findById(partyId);
+
+        PartyJoin partyJoin = partyJoinQueryRepository.exists(userId, partyId)
+                .orElseThrow(PartyJoinNotFoundException::new);
+
+        Role role = partyJoin.getRole();
+        if (!role.deleteAuthorization()) throw new PartyAccessDeniedException();
+
+        party.setStateEnd();
     }
 }

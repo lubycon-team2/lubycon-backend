@@ -50,7 +50,7 @@ public class PartyJoinService {
 
     /**
      * 특정 사용자가 특정 파티에 탈퇴하기
-     * TODO : 파티가 진행 중인 상태에만 !
+     * TODO : 파티가 진행 중인 상태에만 ! + 파티원만!
      */
     @Transactional
     public void leave(Long userId, Long partyId) {

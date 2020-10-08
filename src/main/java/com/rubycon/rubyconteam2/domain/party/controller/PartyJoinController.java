@@ -6,6 +6,7 @@ import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/party")
 @RequiredArgsConstructor
+@Slf4j
 public class PartyJoinController {
 
     private final PartyJoinService partyJoinService;

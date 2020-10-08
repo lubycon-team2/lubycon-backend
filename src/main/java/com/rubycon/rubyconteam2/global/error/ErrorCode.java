@@ -31,6 +31,7 @@ public enum ErrorCode {
 
     // PARTY
     PARTY_NOT_FOUND(404, "P001", "파티를 찾을 수 없습니다."),
+    PARTY_ACCESS_DENIED(403, "P002", "파티원은 파티를 삭제할 수 없습니다."),
 
     // PARTY_JOIN
     PARTY_JOIN_NOT_FOUND(404, "PJ001", "해당 파티에 참여 중이지 않습니다."),

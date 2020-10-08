@@ -24,39 +24,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class PartyJoinControllerTest extends WebMvcApiTest {
 
-    @MockBean
-    private PartyService partyService;
+    @Test
+    @WithMockUser
+    void joinParty() throws Exception {
+        // Given
+        User user = User.builder()
+                .userId(1L)
+                .build();
+        Party party = Party.builder()
+                .partyId(1L)
+                .build();
+        PartyJoin partyJoin = PartyJoin.builder()
+                .user(user)
+                .party(party)
+                .build();
+        given(partyJoinService.join(any(Long.class), any(Long.class)))
+                .willReturn(partyJoin);
 
-    @MockBean
-    private PartyJoinService partyJoinService;
-
-//    @Test
-//    @WithMockUser
-//    void joinParty() throws Exception {
-//        // Given
-//        User user = User.builder()
-//                .userId(1L)
-//                .build();
-//        Party party = Party.builder()
-//                .partyId(1L)
-//                .build();
-//        PartyJoin partyJoin = PartyJoin.builder()
-//                .user(user)
-//                .party(party)
-//                .build();
-//        given(partyJoinService.join(any(Long.class), any(Long.class)))
-//                .willReturn(partyJoin);
-//
-//        int partyId = 1;
-//        // When & Then
-//        mockMvc.perform(post("/party/" + partyId + "/join")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .characterEncoding("UTF-8"))
-//                .andDo(print())
-//                .andExpect(status().isCreated())
-//        ;
-//    }
+        int partyId = 1;
+        // When & Then
+        mockMvc.perform(post("/party/" + partyId + "/join")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8"))
+                .andDo(print())
+                .andExpect(status().isCreated())
+        ;
+    }
 
     @Test
     @WithMockUser

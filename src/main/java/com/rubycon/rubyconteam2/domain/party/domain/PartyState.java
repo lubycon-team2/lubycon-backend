@@ -6,8 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum PartyState {
-    RECRUITING("파티 모집 중"),
-    START("파티 시작"),
+    PROCEEDING("파티 진행 중"),
     END("파티 종료")
     ;
 

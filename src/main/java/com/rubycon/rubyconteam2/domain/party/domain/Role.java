@@ -11,4 +11,9 @@ public enum Role {
 
     private final String key;
     private final String title;
+
+    public Boolean deleteAuthorization(){
+        if (this.equals(Role.MEMBER)) return Boolean.FALSE;
+        else return Boolean.TRUE;
+    }
 }

@@ -1,13 +1,9 @@
 package com.rubycon.rubyconteam2.domain.user.controller;
 
-import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
-import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
-import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
 import com.rubycon.rubyconteam2.domain.user.dto.request.ProfilePartyRequest;
 import com.rubycon.rubyconteam2.domain.user.dto.response.ProfilePartyResponse;
-import com.rubycon.rubyconteam2.domain.user.service.UserService;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

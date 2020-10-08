@@ -6,11 +6,14 @@ import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
+import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,15 +49,17 @@ public class PartyController {
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "파티 생성 API")
     public PartyResponse saveParty(
+            @AuthenticationPrincipal OAuth2User oAuth2User,
             @RequestBody @Valid PartyCreateRequest partyDto
     ) {
-        Party party = partyService.save(partyDto);
+        Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
+        Party party = partyService.save(userId, partyDto);
         return new PartyResponse(party);
     }
 
     @GetMapping("/{partyId}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "특정 파티 조회 API")
+    @ApiOperation(value = "특정 파티 1개 조회 API")
     public PartyResponse findParty(
             @PathVariable final Long partyId
     ){
@@ -77,8 +82,10 @@ public class PartyController {
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "파티 삭제 API")
     public void deleteParty(
+            @AuthenticationPrincipal OAuth2User oAuth2User,
             @PathVariable final Long partyId
     ){
-        partyService.delete(partyId);
+        Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
+        partyService.delete(userId, partyId);
     }
 }

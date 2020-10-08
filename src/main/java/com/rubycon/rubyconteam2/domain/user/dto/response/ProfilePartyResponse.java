@@ -1,6 +1,5 @@
 package com.rubycon.rubyconteam2.domain.user.dto.response;
 
-import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party.domain.Role;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
