@@ -12,8 +12,13 @@ public enum Role {
     private final String key;
     private final String title;
 
-    public Boolean deleteAuthorization(){
-        if (this.equals(Role.MEMBER)) return Boolean.FALSE;
-        else return Boolean.TRUE;
+    public Boolean isMember(){
+        if (this.equals(Role.MEMBER)) return Boolean.TRUE;
+        else return Boolean.FALSE;
+    }
+
+    public Boolean isLeader(){
+        if (this.equals(Role.LEADER)) return Boolean.TRUE;
+        else return Boolean.FALSE;
     }
 }

@@ -11,4 +11,14 @@ public enum PartyState {
     ;
 
     private final String title;
+
+    public Boolean isProceeding(){
+        if (this.equals(PartyState.PROCEEDING)) return Boolean.TRUE;
+        else return Boolean.FALSE;
+    }
+
+    public Boolean isEnd(){
+        if (this.equals(PartyState.END)) return Boolean.TRUE;
+        else return Boolean.FALSE;
+    }
 }

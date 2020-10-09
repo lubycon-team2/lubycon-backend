@@ -3,9 +3,8 @@ package com.rubycon.rubyconteam2.domain.party.service;
 import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinDuplicatedException;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinNotFoundException;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyNotFoundException;
+import com.rubycon.rubyconteam2.domain.party.domain.Role;
+import com.rubycon.rubyconteam2.domain.party.exception.*;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinQueryRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
@@ -49,8 +48,7 @@ public class PartyJoinService {
     }
 
     /**
-     * 특정 사용자가 특정 파티에 탈퇴하기
-     * TODO : 파티가 진행 중인 상태에만 ! + 파티원만!
+     * 특정 사용자가 특정 파티에 탈퇴하기 + 파티가 진행 중인 상태에만 & 파티원만!
      */
     @Transactional
     public void leave(Long userId, Long partyId) {
@@ -59,8 +57,14 @@ public class PartyJoinService {
         Party party = partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
 
+        PartyState partyState = party.getPartyState();
+        if (partyState.isEnd()) throw new PartyNotProceedingException();
+
         PartyJoin partyJoin = partyJoinQueryRepository.exists(userId, partyId)
                 .orElseThrow(PartyJoinNotFoundException::new);
+
+        Role role = partyJoin.getRole();
+        if (role.isLeader()) throw new PartyAccessDeniedException();
 
         party.minusMemberCount();
         partyJoinRepository.delete(partyJoin);

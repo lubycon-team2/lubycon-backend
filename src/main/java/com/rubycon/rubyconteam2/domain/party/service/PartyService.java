@@ -3,10 +3,7 @@ package com.rubycon.rubyconteam2.domain.party.service;
 import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyAccessDeniedException;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinDuplicatedException;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinNotFoundException;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyNotFoundException;
+import com.rubycon.rubyconteam2.domain.party.exception.*;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinQueryRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
@@ -86,11 +83,14 @@ public class PartyService {
                 .orElseThrow(UserNotFoundException::new);
         Party party = this.findById(partyId);
 
+        PartyState partyState = party.getPartyState();
+        if (partyState.isEnd()) throw new PartyNotProceedingException();
+
         PartyJoin partyJoin = partyJoinQueryRepository.exists(userId, partyId)
                 .orElseThrow(PartyJoinNotFoundException::new);
 
         Role role = partyJoin.getRole();
-        if (!role.deleteAuthorization()) throw new PartyAccessDeniedException();
+        if (role.isMember()) throw new PartyAccessDeniedException();
 
         party.setStateEnd();
     }
