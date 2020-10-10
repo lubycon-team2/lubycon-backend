@@ -102,7 +102,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleIntervalException(Exception e) {
-        log.error("handleIntervalException {}", e.getMessage());
+        log.error("handleIntervalException : ", e);
         return ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 

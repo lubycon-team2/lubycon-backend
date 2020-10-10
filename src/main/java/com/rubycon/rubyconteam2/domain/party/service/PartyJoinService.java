@@ -1,9 +1,6 @@
 package com.rubycon.rubyconteam2.domain.party.service;
 
-import com.rubycon.rubyconteam2.domain.party.domain.Party;
-import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
-import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
-import com.rubycon.rubyconteam2.domain.party.domain.Role;
+import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.exception.*;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinQueryRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinRepository;
@@ -31,7 +28,8 @@ public class PartyJoinService {
 
     /**
      * 특정 사용자가 특정 파티에 참여하기
-     * TODO : 서비스 별 1개 파티만 참여 가능하도록 (최대 4개 파티, 종료된 파티 제외)
+     * + 서비스 별 1개 파티만 참여 가능하도록 (최대 4개 파티, 종료된 파티 제외)
+     * + 파티 최대 인원 수를 초과했으면 참가 X
      */
     @Transactional
     public PartyJoin join(Long userId, Long partyId) {
@@ -40,11 +38,14 @@ public class PartyJoinService {
         Party party = partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
 
+        ServiceType service = party.getServiceType();
+        if (service.isOverMemberCount(party)) throw new PartyOverMaxCountException();
+
         Optional<PartyJoin> optional = partyJoinQueryRepository.exists(userId, partyId);
         if (optional.isPresent()) throw new PartyJoinDuplicatedException();
 
         party.plusMemberCount();
-        return partyJoinRepository.save(PartyJoin.of(user, party));
+        return partyJoinRepository.save(PartyJoin.of(user, party, Role.MEMBER));
     }
 
     /**

@@ -5,6 +5,7 @@ import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
 import com.rubycon.rubyconteam2.domain.user.dto.request.ProfilePartyRequest;
 import com.rubycon.rubyconteam2.domain.user.dto.response.ProfilePartyResponse;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
+import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,8 @@ public class ProfileController {
             @AuthenticationPrincipal OAuth2User oAuth2User,
             @RequestParam("partyState") @Valid ProfilePartyRequest profileDto
     ){
+        if (oAuth2User == null) throw new AuthenticationException();
+
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
         List<PartyJoin> partyJoins = partyJoinService.findAllMyPartyByState(userId, profileDto.getPartyState());
 

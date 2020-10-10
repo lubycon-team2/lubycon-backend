@@ -7,6 +7,7 @@ import com.rubycon.rubyconteam2.global.config.oauth.usertype.FacebookOAuth2User;
 import com.rubycon.rubyconteam2.global.config.oauth.usertype.GoogleOAuth2User;
 import com.rubycon.rubyconteam2.global.config.oauth.usertype.KakaoOAuth2User;
 import com.rubycon.rubyconteam2.global.config.security.constants.SecurityConstants;
+import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
 import com.rubycon.rubyconteam2.global.core.jwt.exception.*;
 import com.rubycon.rubyconteam2.global.core.jwt.service.JwtService;
 import io.jsonwebtoken.*;

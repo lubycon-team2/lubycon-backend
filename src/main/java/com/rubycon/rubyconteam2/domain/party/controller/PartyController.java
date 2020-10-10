@@ -7,6 +7,7 @@ import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
+import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
 import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -51,6 +52,8 @@ public class PartyController {
             @AuthenticationPrincipal OAuth2User oAuth2User,
             @RequestBody @Valid PartyCreateRequest partyDto
     ) {
+        if (oAuth2User == null) throw new AuthenticationException();
+
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
         Party party = partyService.save(userId, partyDto);
         return new PartyResponse(party);
@@ -79,11 +82,13 @@ public class PartyController {
 
     @DeleteMapping("/{partyId}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "파티 삭제 API")
+    @ApiOperation(value = "파티 종료하기 API")
     public void deleteParty(
             @AuthenticationPrincipal OAuth2User oAuth2User,
             @PathVariable final Long partyId
     ){
+        if (oAuth2User == null) throw new AuthenticationException();
+
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
         partyService.delete(userId, partyId);
     }

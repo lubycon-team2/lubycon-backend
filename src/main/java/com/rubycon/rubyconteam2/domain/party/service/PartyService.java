@@ -12,13 +12,10 @@ import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.Part;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +56,7 @@ public class PartyService {
         Party partyEntity = partyDto.toEntity();
         Party party = partyRepository.save(partyEntity);
 
-        partyJoinRepository.save(PartyJoin.of(user, party));
+        partyJoinRepository.save(PartyJoin.of(user, party, Role.LEADER));
         return party;
     }
 
