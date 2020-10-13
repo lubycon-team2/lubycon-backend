@@ -9,6 +9,7 @@ import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
+import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PartyControllerTest extends WebMvcApiTest {
 
     @Test
-    @WithMockUser // 모두 허용하기
+    @WithMockUser // 권한 필요 없는 곳은 없애도 동작하도록 !
     void findAllParty() throws Exception {
         // Given
         PartyFindRequest partyDto = PartyFindRequest.builder()
@@ -58,33 +59,32 @@ class PartyControllerTest extends WebMvcApiTest {
         ;
     }
 
-    // TODO : oauth2user 해결 될때 까지 보류 - 1
-//    @Test
-//    @WithMockUser
-//    void saveParty() throws Exception {
-//        // Given
-//        PartyCreateRequest partyDto = PartyCreateRequest.builder()
-//                .title("넷플릭스 파티 모집") // 반환 될 때 한글 깨짐
-//                .leaderPrice(3400)
-//                .memberPrice(3600)
-//                .paymentCycle(PaymentCycle.MONTH_1.name())
-//                .serviceType(ServiceType.NETFLIX.name())
-//                .build();
-//
-//        Party party = partyDto.toEntity();
-//        given(partyService.save(any(PartyCreateRequest.class)))
-//                .willReturn(party);
-//
-//        // When & Then
-//        mockMvc.perform(post("/party")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .characterEncoding("UTF-8")
-//                .content(objectMapper.writeValueAsString(partyDto)))
-//                .andDo(print())
-//                .andExpect(status().isCreated())
-//        ;
-//    }
+    @Test
+    @WithMockCustomUser
+    void saveParty() throws Exception {
+        // Given
+        PartyCreateRequest partyDto = PartyCreateRequest.builder()
+                .title("넷플릭스 파티 모집") // 반환 될 때 한글 깨짐
+                .leaderPrice(3400)
+                .memberPrice(3600)
+                .paymentCycle(PaymentCycle.MONTH_1.name())
+                .serviceType(ServiceType.NETFLIX.name())
+                .build();
+
+        Party party = partyDto.toEntity();
+        given(partyService.save(any(Long.class), any(PartyCreateRequest.class)))
+                .willReturn(party);
+
+        // When & Then
+        mockMvc.perform(post("/party")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(objectMapper.writeValueAsString(partyDto)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+        ;
+    }
 
     @Test
     @WithMockUser
@@ -136,20 +136,19 @@ class PartyControllerTest extends WebMvcApiTest {
         ;
     }
 
-    // TODO : oauth2user 해결 될때 까지 보류 - 2
-//    @Test
-//    @WithMockUser
-//    void deleteParty() throws Exception {
-//        // Given
-//        int partyId = 1;
-//
-//        // When & Then
-//        mockMvc.perform(delete("/party/" + partyId)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .characterEncoding("UTF-8"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//        ;
-//    }
+    @Test
+    @WithMockCustomUser
+    void deleteParty() throws Exception {
+        // Given
+        int partyId = 1;
+
+        // When & Then
+        mockMvc.perform(delete("/party/{partyId}", partyId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8"))
+                .andDo(print())
+                .andExpect(status().isOk())
+        ;
+    }
 }
