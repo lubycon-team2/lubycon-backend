@@ -39,6 +39,7 @@ public class Party extends BaseTimeEntity {
 
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
+    @Setter
     private PartyState partyState;
 
     public void updateMyParty(PartyUpdateRequest partyDto){
@@ -55,5 +56,9 @@ public class Party extends BaseTimeEntity {
 
     public void minusMemberCount(){
         this.memberCount--;
+    }
+
+    public void setStateEnd() {
+        this.partyState = PartyState.END;
     }
 }

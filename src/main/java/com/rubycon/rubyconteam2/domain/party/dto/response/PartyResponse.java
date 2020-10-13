@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PartyResponse {
 
-
     @ApiModelProperty(value = "파티 ID", required = true, example = "1")
     private Long partyId;
 

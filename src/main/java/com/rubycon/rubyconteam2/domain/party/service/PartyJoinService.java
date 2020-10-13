@@ -1,10 +1,7 @@
 package com.rubycon.rubyconteam2.domain.party.service;
 
-import com.rubycon.rubyconteam2.domain.party.domain.Party;
-import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinDuplicatedException;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinNotFoundException;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyNotFoundException;
+import com.rubycon.rubyconteam2.domain.party.domain.*;
+import com.rubycon.rubyconteam2.domain.party.exception.*;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinQueryRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
@@ -16,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,7 +28,8 @@ public class PartyJoinService {
 
     /**
      * 특정 사용자가 특정 파티에 참여하기
-     * TODO : 서비스 별 1개 파티만 참여 가능하도록 (최대 4개 파티, 종료된 파티 제외)
+     * + 서비스 별 1개 파티만 참여 가능하도록 (최대 4개 파티, 종료된 파티 제외)
+     * + 파티 최대 인원 수를 초과했으면 참가 X
      */
     @Transactional
     public PartyJoin join(Long userId, Long partyId) {
@@ -39,16 +38,18 @@ public class PartyJoinService {
         Party party = partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
 
+        ServiceType service = party.getServiceType();
+        if (service.isOverMemberCount(party)) throw new PartyOverMaxCountException();
+
         Optional<PartyJoin> optional = partyJoinQueryRepository.exists(userId, partyId);
         if (optional.isPresent()) throw new PartyJoinDuplicatedException();
 
         party.plusMemberCount();
-        return partyJoinRepository.save(PartyJoin.of(user, party));
+        return partyJoinRepository.save(PartyJoin.of(user, party, Role.MEMBER));
     }
 
     /**
-     * 특정 사용자가 특정 파티에 탈퇴하기
-     * TODO : 파티가 진행 중인 상태에만 !
+     * 특정 사용자가 특정 파티에 탈퇴하기 + 파티가 진행 중인 상태에만 & 파티원만!
      */
     @Transactional
     public void leave(Long userId, Long partyId) {
@@ -57,10 +58,28 @@ public class PartyJoinService {
         Party party = partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
 
+        PartyState partyState = party.getPartyState();
+        if (partyState.isEnd()) throw new PartyNotProceedingException();
+
         PartyJoin partyJoin = partyJoinQueryRepository.exists(userId, partyId)
                 .orElseThrow(PartyJoinNotFoundException::new);
 
+        Role role = partyJoin.getRole();
+        if (role.isLeader()) throw new PartyAccessDeniedException();
+
         party.minusMemberCount();
         partyJoinRepository.delete(partyJoin);
+    }
+
+    /**
+     * 특정 사용자가 가입한 파티 조회 ( 파티 상태 별 )
+     * TODO : 메서드 위치가 이곳이 맞는지?
+     */
+    @Transactional
+    public List<PartyJoin> findAllMyPartyByState(Long userId, PartyState partyState){
+        userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        return partyJoinQueryRepository.findAllMyPartyByState(userId, partyState);
     }
 }

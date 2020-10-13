@@ -32,11 +32,11 @@ public class PartyJoin {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public static PartyJoin of(User user, Party party){
+    public static PartyJoin of(User user, Party party, Role role){
         return PartyJoin.builder()
                 .user(user)
                 .party(party)
-                .role(Role.MEMBER)
+                .role(role)
                 .build();
     }
 }

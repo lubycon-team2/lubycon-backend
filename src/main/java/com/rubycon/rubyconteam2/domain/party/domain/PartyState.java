@@ -6,10 +6,19 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum PartyState {
-    RECRUITING("파티 모집 중"),
-    START("파티 시작"),
+    PROCEEDING("파티 진행 중"),
     END("파티 종료")
     ;
 
     private final String title;
+
+    public Boolean isProceeding(){
+        if (this.equals(PartyState.PROCEEDING)) return Boolean.TRUE;
+        else return Boolean.FALSE;
+    }
+
+    public Boolean isEnd(){
+        if (this.equals(PartyState.END)) return Boolean.TRUE;
+        else return Boolean.FALSE;
+    }
 }

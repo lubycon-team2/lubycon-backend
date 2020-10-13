@@ -6,6 +6,7 @@ import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPVerifyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +17,11 @@ public class UserService {
     /**
      * User Phone Number 업데이트 메서드
      */
+    @Transactional
     public User update(Long userId, NCPVerifyRequest ncpVerifyRequest){
         String phoneNumber = ncpVerifyRequest.getTo();
 
-        User user = userRepository.findById(userId) // 임시로 1번 유저만
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         user.updatePhoneNumber(phoneNumber);

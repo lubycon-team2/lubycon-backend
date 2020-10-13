@@ -14,4 +14,9 @@ public enum ServiceType {
 
     private final String title;
     private final int maxSharedAccountsCount;
+
+    public Boolean isOverMemberCount(Party party){
+        if (party.getMemberCount() >= this.getMaxSharedAccountsCount()) return Boolean.TRUE;
+        else return Boolean.FALSE;
+    }
 }

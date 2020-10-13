@@ -47,10 +47,10 @@ public class PartyCreateRequest {
                 .title(title)
                 .leaderPrice(leaderPrice)
                 .memberPrice(memberPrice)
-                .memberCount(0)
+                .memberCount(1)
                 .paymentCycle(PaymentCycle.valueOf(paymentCycle))
                 .serviceType(ServiceType.valueOf(serviceType))
-                .partyState(PartyState.RECRUITING)
+                .partyState(PartyState.PROCEEDING)
                 .build();
     }
 }
