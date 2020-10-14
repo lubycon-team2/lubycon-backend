@@ -1,10 +1,13 @@
 package com.rubycon.rubyconteam2.domain.party.controller;
 
 import com.rubycon.rubyconteam2.domain.party.domain.Party;
+import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
+import com.rubycon.rubyconteam2.domain.party.dto.response.PartyDetailsResponse;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
+import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 public class PartyController {
 
     private final PartyService partyService;
+    private final PartyJoinService partyJoinService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -61,12 +65,12 @@ public class PartyController {
 
     @GetMapping("/{partyId}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "특정 파티 1개 조회 API")
-    public PartyResponse findParty(
+    @ApiOperation(value = "파티 상세 조회 API")
+    public PartyDetailsResponse findPartyDetails(
             @PathVariable final Long partyId
     ){
-        Party party = partyService.findById(partyId);
-        return new PartyResponse(party);
+        List<PartyJoin> partyJoins = partyJoinService.findAllByPartyId(partyId);
+        return new PartyDetailsResponse(partyJoins);
     }
 
     @PutMapping("/{partyId}")

@@ -82,4 +82,12 @@ public class PartyJoinService {
 
         return partyJoinQueryRepository.findAllMyPartyByState(userId, partyState);
     }
+
+    @Transactional
+    public List<PartyJoin> findAllByPartyId(Long partyId){
+        partyRepository.findById(partyId)
+                .orElseThrow(PartyNotFoundException::new);
+
+        return partyJoinQueryRepository.findAllByPartyId(partyId);
+    }
 }

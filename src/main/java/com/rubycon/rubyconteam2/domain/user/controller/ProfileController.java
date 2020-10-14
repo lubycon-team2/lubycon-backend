@@ -3,7 +3,7 @@ package com.rubycon.rubyconteam2.domain.user.controller;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
 import com.rubycon.rubyconteam2.domain.user.dto.request.ProfilePartyRequest;
-import com.rubycon.rubyconteam2.domain.user.dto.response.ProfilePartyResponse;
+import com.rubycon.rubyconteam2.domain.user.dto.response.PartyWithRoleResponse;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +29,7 @@ public class ProfileController {
     @GetMapping("/party")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "내가 가입한 파티 조회 API")
-    public List<ProfilePartyResponse> findAllMyParty(
+    public List<PartyWithRoleResponse> findAllMyParty(
             @AuthenticationPrincipal OAuth2User oAuth2User,
             @RequestParam("partyState") @Valid ProfilePartyRequest profileDto
     ){
@@ -39,7 +39,7 @@ public class ProfileController {
         List<PartyJoin> partyJoins = partyJoinService.findAllMyPartyByState(userId, profileDto.getPartyState());
 
         return partyJoins.stream()
-                .map(ProfilePartyResponse::new)
+                .map(PartyWithRoleResponse::new)
                 .collect(Collectors.toList());
     }
 }
