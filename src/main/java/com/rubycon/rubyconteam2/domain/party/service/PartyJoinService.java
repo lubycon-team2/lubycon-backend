@@ -42,10 +42,17 @@ public class PartyJoinService {
         if (service.isOverMemberCount(party)) throw new PartyOverMaxCountException();
 
         Optional<PartyJoin> optional = partyJoinQueryRepository.exists(userId, partyId);
-        if (optional.isPresent()) throw new PartyJoinDuplicatedException();
+        if (!optional.isPresent()) {
+            party.plusMemberCount();
+            return partyJoinRepository.save(PartyJoin.of(user, party, Role.MEMBER));
+        }
+
+        PartyJoin partyJoin = optional.get();
+        if (!partyJoin.isDeleted()) throw new PartyJoinDuplicatedException();
 
         party.plusMemberCount();
-        return partyJoinRepository.save(PartyJoin.of(user, party, Role.MEMBER));
+        partyJoin.setIsDeleted(Boolean.FALSE);
+        return partyJoin;
     }
 
     /**
@@ -67,8 +74,10 @@ public class PartyJoinService {
         Role role = partyJoin.getRole();
         if (role.isLeader()) throw new PartyAccessDeniedException();
 
+        if(partyJoin.isDeleted()) throw new PartyAlreadyLeaveException();
+
         party.minusMemberCount();
-        partyJoinRepository.delete(partyJoin);
+        partyJoin.setIsDeleted(Boolean.TRUE);
     }
 
     /**
