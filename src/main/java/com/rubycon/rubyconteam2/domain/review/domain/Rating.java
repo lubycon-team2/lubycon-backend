@@ -19,6 +19,18 @@ public class Rating {
     @Enumerated(EnumType.STRING)
     private Content content;
 
-    @Column
-    private int count;
+    /**
+     * Rating과 Review를 양방향 맺은 이유
+     * 단방향으로 맺으면 save시 update 되는 이슈 때문
+     */
+    @ManyToOne
+    @JoinColumn(name = "reviewId")
+    private Review review;
+
+    public static Rating of(Content content, Review review){
+        return Rating.builder()
+                .content(content)
+                .review(review)
+                .build();
+    }
 }

@@ -32,6 +32,15 @@ public class ErrorResponse {
                 .build();
     }
 
+    public static ErrorResponse of(final ErrorCode errorCode, final Exception e) {
+        return ErrorResponse.builder()
+                .code(errorCode.getCode())
+                .message(e.getMessage())
+                .status(errorCode.getStatus())
+                .errors(new ArrayList<>())
+                .build();
+    }
+
     public static ErrorResponse of(final ErrorCode errorCode, final List<FieldError> errors) {
         return ErrorResponse.builder()
                 .code(errorCode.getCode())

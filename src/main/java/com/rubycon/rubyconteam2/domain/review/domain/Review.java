@@ -12,6 +12,9 @@ import java.util.List;
 @Builder
 @ToString
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"reviewerId", "targetId"})
+})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +28,14 @@ public class Review {
     @JoinColumn(name = "targetId")
     private User target;
 
-    @OneToMany
-    @JoinColumn(name = "reviewId")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> rating;
+
+    public static Review of(User reviewer, User target, List<Rating> rating) {
+        return Review.builder()
+                .reviewer(reviewer)
+                .target(target)
+                .rating(rating)
+                .build();
+    }
 }

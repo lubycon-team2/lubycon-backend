@@ -1,7 +1,7 @@
 package com.rubycon.rubyconteam2.domain.party.dto.request;
 
 import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
-import com.rubycon.rubyconteam2.global.common.model.ValueOfEnum;
+import com.rubycon.rubyconteam2.global.common.anotation.ValueOfEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
