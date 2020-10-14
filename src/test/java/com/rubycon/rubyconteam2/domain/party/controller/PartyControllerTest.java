@@ -1,13 +1,11 @@
 package com.rubycon.rubyconteam2.domain.party.controller;
 
-import com.rubycon.rubyconteam2.domain.party.domain.Party;
-import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
-import com.rubycon.rubyconteam2.domain.party.domain.PaymentCycle;
-import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
+import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
+import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
 import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;
 import org.junit.jupiter.api.Test;
@@ -88,14 +86,25 @@ class PartyControllerTest extends WebMvcApiTest {
 
     @Test
     @WithMockUser
-    void findParty() throws Exception {
+    void findPartyDetails() throws Exception {
         // Given
         int partyId = 1;
 
+        User user = User.builder()
+                .userId(1L)
+                .build();
         Party party = new Party(1L, "넷플릭스 파티 모집 - Details", 3600, 3400, 0, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.PROCEEDING );
 
-        given(partyService.findById(any(Long.class)))
-                .willReturn(party);
+        List<PartyJoin> partyJoins = new ArrayList<>();
+        PartyJoin partyJoin = PartyJoin.builder()
+                .user(user)
+                .party(party)
+                .role(Role.LEADER)
+                .build();
+        partyJoins.add(partyJoin);
+
+        given(partyJoinService.findAllByPartyId(any(Long.class)))
+                .willReturn(partyJoins);
 
         // When & Then
         mockMvc.perform(get("/party/" + partyId)
