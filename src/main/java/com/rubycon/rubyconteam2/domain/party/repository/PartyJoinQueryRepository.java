@@ -3,6 +3,7 @@ package com.rubycon.rubyconteam2.domain.party.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
+import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +28,17 @@ public class PartyJoinQueryRepository {
                 .selectFrom(partyJoin)
                 .where(partyJoin.user.userId.eq(userId))
                 .where(partyJoin.party.partyId.eq(partyId))
+                .fetchOne();
+        return Optional.ofNullable(pj);
+    }
+
+    public Optional<PartyJoin> findByUserIdAndTypeAndState(Long userId, ServiceType serviceType, PartyState partyState){
+        PartyJoin pj = queryFactory
+                .selectFrom(partyJoin)
+                .where(partyJoin.user.userId.eq(userId))
+                .where(partyJoin.party.serviceType.eq(serviceType))
+                .where(partyJoin.party.partyState.eq(partyState))
+                .where(partyJoin.isDeleted.eq(Boolean.FALSE))
                 .fetchOne();
         return Optional.ofNullable(pj);
     }

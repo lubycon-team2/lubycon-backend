@@ -49,4 +49,6 @@ public class PartyJoin {
     public Boolean isDeleted() {
         return this.isDeleted;
     }
+
+    public Boolean isPresent() { return this.isDeleted ? Boolean.FALSE : Boolean.TRUE; }
 }

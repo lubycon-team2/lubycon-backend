@@ -38,8 +38,18 @@ public class PartyJoinService {
         Party party = partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
 
+        PartyState partyState = party.getPartyState();
+        if (partyState.isEnd()) throw new PartyNotProceedingException();
+
         ServiceType service = party.getServiceType();
         if (service.isOverMemberCount(party)) throw new PartyOverMaxCountException();
+
+        // 진행 중이고 동일한 서비스에 가입했는지 검사
+        partyJoinQueryRepository
+                .findByUserIdAndTypeAndState(userId, service, partyState)
+                .ifPresent(partyJoin -> {
+                    throw new PartyAlreadyJoinException();
+                });
 
         Optional<PartyJoin> optional = partyJoinQueryRepository.exists(userId, partyId);
         if (!optional.isPresent()) {
@@ -48,7 +58,6 @@ public class PartyJoinService {
         }
 
         PartyJoin partyJoin = optional.get();
-        if (!partyJoin.isDeleted()) throw new PartyJoinDuplicatedException();
 
         party.plusMemberCount();
         partyJoin.setIsDeleted(Boolean.FALSE);
@@ -56,7 +65,8 @@ public class PartyJoinService {
     }
 
     /**
-     * 특정 사용자가 특정 파티에 탈퇴하기 + 파티가 진행 중인 상태에만 & 파티원만!
+     * 특정 사용자가 특정 파티에 탈퇴하기
+     * + 파티가 진행 중인 상태에만 & 파티원만!
      */
     @Transactional
     public void leave(Long userId, Long partyId) {
@@ -74,7 +84,7 @@ public class PartyJoinService {
         Role role = partyJoin.getRole();
         if (role.isLeader()) throw new PartyAccessDeniedException();
 
-        if(partyJoin.isDeleted()) throw new PartyAlreadyLeaveException();
+        if (partyJoin.isDeleted()) throw new PartyAlreadyLeaveException();
 
         party.minusMemberCount();
         partyJoin.setIsDeleted(Boolean.TRUE);
@@ -85,7 +95,7 @@ public class PartyJoinService {
      * TODO : 메서드 위치가 이곳이 맞는지?
      */
     @Transactional
-    public List<PartyJoin> findAllMyPartyByState(Long userId, PartyState partyState){
+    public List<PartyJoin> findAllMyPartyByState(Long userId, PartyState partyState) {
         userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -93,7 +103,7 @@ public class PartyJoinService {
     }
 
     @Transactional
-    public List<PartyJoin> findAllByPartyId(Long partyId){
+    public List<PartyJoin> findAllByPartyId(Long partyId) {
         partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
 
