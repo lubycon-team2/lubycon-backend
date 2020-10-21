@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ContentType {
-    COMPLIMENT("칭찬"),
+    COMPLIMENTS("칭찬"),
     IMPROVEMENTS("개선점")
     ;
 

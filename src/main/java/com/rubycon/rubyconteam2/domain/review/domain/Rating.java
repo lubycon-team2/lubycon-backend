@@ -23,7 +23,7 @@ public class Rating {
      * Rating과 Review를 양방향 맺은 이유
      * 단방향으로 맺으면 save시 update 되는 이슈 때문
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reviewId")
     private Review review;
 

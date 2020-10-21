@@ -27,4 +27,14 @@ public class UserService {
         user.updatePhoneNumber(phoneNumber);
         return userRepository.save(user);
     }
+
+    /**
+     * User 검색
+     */
+    @Transactional
+    public User findById(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        return user;
+    }
 }

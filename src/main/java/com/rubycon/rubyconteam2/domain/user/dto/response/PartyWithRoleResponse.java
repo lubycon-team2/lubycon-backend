@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// TODO : DTO가 이 위치가 맞는지?
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PartyWithRoleResponse {

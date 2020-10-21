@@ -10,7 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Entity
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"reviewerId", "targetId"})
@@ -20,11 +19,11 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reviewerId")
     private User reviewer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "targetId")
     private User target;
 

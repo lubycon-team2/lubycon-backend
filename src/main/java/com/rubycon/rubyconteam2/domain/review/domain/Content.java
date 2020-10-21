@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 public enum Content {
 
     // 칭찬
-    COMPLIMENT_1("친절하고 매너가 좋아요.", ContentType.COMPLIMENT),
-    COMPLIMENT_2("책임감 있는 파티장이에요.", ContentType.COMPLIMENT),
-    COMPLIMENT_3("답변이 빨라요.", ContentType.COMPLIMENT),
-    COMPLIMENT_4("금액을 공평하게 설정했어요.", ContentType.COMPLIMENT),
-    COMPLIMENT_5("정해진 입금 날짜를 잘 지켜요.", ContentType.COMPLIMENT),
+    COMPLIMENTS_1("친절하고 매너가 좋아요.", ContentType.COMPLIMENTS),
+    COMPLIMENTS_2("책임감 있는 파티장이에요.", ContentType.COMPLIMENTS),
+    COMPLIMENTS_3("답변이 빨라요.", ContentType.COMPLIMENTS),
+    COMPLIMENTS_4("금액을 공평하게 설정했어요.", ContentType.COMPLIMENTS),
+    COMPLIMENTS_5("정해진 입금 날짜를 잘 지켜요.", ContentType.COMPLIMENTS),
 
     // 개선점
     IMPROVEMENTS_1("불친절해요.", ContentType.IMPROVEMENTS),

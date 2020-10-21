@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ReviewRequest {
 
     @NotEmpty(message = "리뷰 내용을 입력해주세요 \n['COMPLIMENT_1','COMPLIMENT_2'] | ['IMPROVEMENTS_1','IMPROVEMENTS_2']")
-    @ApiModelProperty(value = "리뷰 내용 - Multi Select 가능", required = true, example = "['COMPLIMENT_1','COMPLIMENT_2'] | ['IMPROVEMENTS_1','IMPROVEMENTS_2']")
+    @ApiModelProperty(value = "리뷰 내용 - Multi Select 가능", required = true, example = "Array('COMPLIMENT_1','COMPLIMENT_2') | Array('IMPROVEMENTS_1','IMPROVEMENTS_2')")
     @ListOfEnum(enumClass = Content.class)
     private List<String> contents;
 

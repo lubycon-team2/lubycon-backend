@@ -30,7 +30,6 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ReviewQueryRepository reviewQueryRepository;
-    private final RatingRepository ratingRepository;
     private final UserRepository userRepository;
 
     /**
@@ -55,5 +54,15 @@ public class ReviewService {
         ratingList.forEach(rating -> review.getRating().add(rating));
 
         reviewRepository.save(review);
+    }
+
+    /**
+     * 특정 사용자의 모든 리뷰 조회
+     * @param targetId 리뷰 조회할 사용자 ID
+     * @return
+     */
+    @Transactional
+    public List<Review> findAllReview(Long targetId){
+        return reviewQueryRepository.findAllReviewByTargetId(targetId);
     }
 }
