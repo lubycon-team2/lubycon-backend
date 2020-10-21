@@ -34,7 +34,6 @@ public class JwtTestController {
 
         userRepository.findByOauthKey(key).orElseGet(() -> {
             User user = User.builder()
-                    .email("test@naver.com")
                     .name(name)
                     .oauthKey(key)
                     .providerType("google")

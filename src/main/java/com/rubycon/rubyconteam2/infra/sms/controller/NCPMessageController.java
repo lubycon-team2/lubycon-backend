@@ -3,6 +3,7 @@ package com.rubycon.rubyconteam2.infra.sms.controller;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.service.UserService;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
+import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
 import com.rubycon.rubyconteam2.infra.sms.dto.response.NCPResponse;
 import com.rubycon.rubyconteam2.infra.sms.service.NCPMessageService;
 import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPSendRequest;
@@ -55,7 +56,9 @@ public class NCPMessageController {
             @ApiIgnore HttpSession httpSession,
             @RequestBody @Valid NCPVerifyRequest ncpVerifyRequest
     ){
-        Long userId = oAuth2User.getAttribute(OAuthConstants.ID);
+        if (oAuth2User == null) throw new AuthenticationException();
+
+        Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
         ncpMessageService.verifyAuthenticationCode(httpSession, userId, ncpVerifyRequest);
         return new NCPResponse("Success verify phone number");
     }

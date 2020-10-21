@@ -3,6 +3,7 @@ package com.rubycon.rubyconteam2.domain.party.domain;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import lombok.*;
 
+import javax.crypto.BadPaddingException;
 import javax.persistence.*;
 
 @Getter
@@ -32,11 +33,22 @@ public class PartyJoin {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column
+    @Setter
+    private Boolean isDeleted;
+
     public static PartyJoin of(User user, Party party, Role role){
         return PartyJoin.builder()
                 .user(user)
                 .party(party)
                 .role(role)
+                .isDeleted(Boolean.FALSE)
                 .build();
     }
+
+    public Boolean isDeleted() {
+        return this.isDeleted;
+    }
+
+    public Boolean isPresent() { return this.isDeleted ? Boolean.FALSE : Boolean.TRUE; }
 }

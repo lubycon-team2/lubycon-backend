@@ -4,7 +4,7 @@ import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
 import com.rubycon.rubyconteam2.domain.party.domain.PaymentCycle;
 import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
-import com.rubycon.rubyconteam2.global.common.model.ValueOfEnum;
+import com.rubycon.rubyconteam2.global.common.anotation.ValueOfEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 

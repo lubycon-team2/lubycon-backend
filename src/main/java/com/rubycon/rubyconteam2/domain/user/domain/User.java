@@ -24,9 +24,6 @@ public class User extends BaseTimeEntity {
     private String name;
 
     @Column
-    private String email;
-
-    @Column
     @Convert(converter = StringAttributeConverter.class)
     private String phoneNumber;
 
