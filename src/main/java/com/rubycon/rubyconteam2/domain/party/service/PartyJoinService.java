@@ -93,6 +93,36 @@ public class PartyJoinService {
     }
 
     /**
+     * 특정 사용자 파티에서 강퇴하기
+     * + 파티장만 파티원 강퇴 가능
+     * (우선 강퇴 당해도 다시 들어올 수 있음)
+     */
+    @Transactional
+    public void kickOff(Long userId, Long targetId, Long partyId) {
+        userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        userRepository.findById(targetId)
+                .orElseThrow(UserNotFoundException::new);
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(PartyNotFoundException::new);
+
+        PartyState partyState = party.getPartyState();
+        if (partyState.isDeleted()) throw new PartyNotProceedingException();
+
+        PartyJoin myPartyJoin = partyJoinQueryRepository.exists(userId, partyId)
+                .orElseThrow(PartyJoinNotFoundException::new);
+
+        Role role = myPartyJoin.getRole();
+        if (role.isMember()) throw new PartyAccessDeniedException();
+
+        PartyJoin targetPartyJoin = partyJoinQueryRepository.exists(targetId, partyId)
+                .orElseThrow(PartyJoinNotFoundException::new);
+
+        party.minusMemberCount();
+        targetPartyJoin.setIsDeleted(Boolean.TRUE);
+    }
+
+    /**
      * 특정 사용자가 가입한 파티 조회 ( 파티 상태 별 )
      * TODO : 메서드 위치가 이곳이 맞는지?
      */
@@ -104,6 +134,9 @@ public class PartyJoinService {
         return partyJoinQueryRepository.findAllMyPartyByState(userId, partyState);
     }
 
+    /**
+     * 파티 상세 조회 (파티 정보 + 가입한 유저 정보)
+     */
     @Transactional
     public List<PartyJoin> findAllByPartyId(Long partyId) {
         partyRepository.findById(partyId)

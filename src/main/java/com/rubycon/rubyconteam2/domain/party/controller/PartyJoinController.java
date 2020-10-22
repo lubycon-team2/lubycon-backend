@@ -47,4 +47,18 @@ public class PartyJoinController {
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
         partyJoinService.leave(userId, partyId);
     }
+
+    @DeleteMapping("/{partyId}/users/{targetId}/kick-off")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "파티원 강퇴하기 API")
+    public void kickOff(
+            @AuthenticationPrincipal OAuth2User oAuth2User,
+            @PathVariable final Long partyId,
+            @PathVariable final Long targetId
+    ) {
+        if (oAuth2User == null) throw new AuthenticationException();
+
+        Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
+        partyJoinService.kickOff(userId, targetId, partyId);
+    }
 }
