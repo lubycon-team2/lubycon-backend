@@ -42,10 +42,9 @@ public class Party extends BaseTimeEntity {
 
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
-    @Setter
     private PartyState partyState;
 
-    public void updateMyParty(PartyUpdateRequest partyDto){
+    public void updateMyParty(PartyUpdateRequest partyDto) {
         this.title = partyDto.getTitle();
         this.leaderPrice = partyDto.getLeaderPrice();
         this.memberPrice = partyDto.getMemberPrice();
@@ -53,12 +52,20 @@ public class Party extends BaseTimeEntity {
         this.kakaoOpenChatUrl = partyDto.getKakaoOpenChatUrl();
     }
 
-    public void plusMemberCount(){
+    public void plusMemberCount() {
         this.memberCount++;
     }
 
-    public void minusMemberCount(){
+    public void minusMemberCount() {
         this.memberCount--;
+    }
+
+    public void setStateRecruiting() {
+        this.partyState = PartyState.RECRUITING;
+    }
+
+    public void setStateCompleted() {
+        this.partyState = PartyState.COMPLETED;
     }
 
     public void setStateDeleted() {

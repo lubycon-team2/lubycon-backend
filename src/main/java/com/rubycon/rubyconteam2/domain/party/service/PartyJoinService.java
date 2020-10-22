@@ -43,6 +43,7 @@ public class PartyJoinService {
 
         ServiceType service = party.getServiceType();
         if (service.isOverMemberCount(party)) throw new PartyOverMaxCountException();
+        if (service.isRecruitingCompleted(party)) party.setStateCompleted();
 
         // 진행 중이고 동일한 서비스에 가입했는지 검사
         partyJoinQueryRepository
@@ -77,6 +78,7 @@ public class PartyJoinService {
 
         PartyState partyState = party.getPartyState();
         if (partyState.isDeleted()) throw new PartyNotProceedingException();
+        if (partyState.isCompleted()) party.setStateRecruiting();
 
         PartyJoin partyJoin = partyJoinQueryRepository.exists(userId, partyId)
                 .orElseThrow(PartyJoinNotFoundException::new);

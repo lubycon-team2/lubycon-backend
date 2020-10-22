@@ -18,6 +18,11 @@ public enum PartyState {
         else return Boolean.FALSE;
     }
 
+    public Boolean isCompleted(){
+        if (this.equals(PartyState.COMPLETED)) return Boolean.TRUE;
+        else return Boolean.FALSE;
+    }
+
     public Boolean isDeleted(){
         if (this.equals(PartyState.DELETED)) return Boolean.TRUE;
         else return Boolean.FALSE;
