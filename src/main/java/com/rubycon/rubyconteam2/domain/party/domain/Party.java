@@ -29,6 +29,9 @@ public class Party extends BaseTimeEntity {
     @Column
     private int memberCount;
 
+    @Column
+    private String kakaoOpenChatUrl;
+
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
     private PaymentCycle paymentCycle;
@@ -47,7 +50,7 @@ public class Party extends BaseTimeEntity {
         this.leaderPrice = partyDto.getLeaderPrice();
         this.memberPrice = partyDto.getMemberPrice();
         this.paymentCycle = partyDto.getPaymentCycle();
-        this.partyState = partyDto.getPartyState();
+        this.kakaoOpenChatUrl = partyDto.getKakaoOpenChatUrl();
     }
 
     public void plusMemberCount(){
@@ -58,7 +61,7 @@ public class Party extends BaseTimeEntity {
         this.memberCount--;
     }
 
-    public void setStateEnd() {
-        this.partyState = PartyState.END;
+    public void setStateDeleted() {
+        this.partyState = PartyState.DELETED;
     }
 }

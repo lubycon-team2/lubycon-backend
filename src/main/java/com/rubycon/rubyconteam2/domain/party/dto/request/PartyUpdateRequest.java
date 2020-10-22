@@ -1,6 +1,5 @@
 package com.rubycon.rubyconteam2.domain.party.dto.request;
 
-import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
 import com.rubycon.rubyconteam2.domain.party.domain.PaymentCycle;
 import com.rubycon.rubyconteam2.global.common.anotation.ValueOfEnum;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,22 +29,17 @@ public class PartyUpdateRequest {
     @ApiModelProperty(value = "파티원 금액", required = true, example = "3400")
     private Integer memberPrice;
 
+    @NotEmpty(message= "카카오톡 오픈 채팅방 링크를 입력해주세요.")
+    @ApiModelProperty(value = "카카오톡 오픈 채팅방", required = true, example = "Ex) 카카오 오픈 채팅방 링크")
+    private String kakaoOpenChatUrl;
+
     @NotEmpty(message = "결제 주기를 입력해주세요 \nMONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
     @ValueOfEnum(enumClass = PaymentCycle.class)
     @ApiModelProperty(value = "결제 주기", required = true, example = "MONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
     private String paymentCycle;
 
-    @NotEmpty(message = "파티 상태를 입력해주세요 \nRECRUITING | START | END")
-    @ValueOfEnum(enumClass = PartyState.class)
-    @ApiModelProperty(value = "현재 파티 상태", required = true, example = "RECRUITING | START | END")
-    private String partyState;
-
     public PaymentCycle getPaymentCycle() {
         return PaymentCycle.valueOf(paymentCycle);
-    }
-
-    public PartyState getPartyState() {
-        return PartyState.valueOf(partyState);
     }
 }
 

@@ -81,7 +81,7 @@ public class PartyService {
         Party party = this.findById(partyId);
 
         PartyState partyState = party.getPartyState();
-        if (partyState.isEnd()) throw new PartyNotProceedingException();
+        if (partyState.isDeleted()) throw new PartyNotProceedingException();
 
         PartyJoin partyJoin = partyJoinQueryRepository.exists(userId, partyId)
                 .orElseThrow(PartyJoinNotFoundException::new);
@@ -89,6 +89,6 @@ public class PartyService {
         Role role = partyJoin.getRole();
         if (role.isMember()) throw new PartyAccessDeniedException();
 
-        party.setStateEnd();
+        party.setStateDeleted();
     }
 }

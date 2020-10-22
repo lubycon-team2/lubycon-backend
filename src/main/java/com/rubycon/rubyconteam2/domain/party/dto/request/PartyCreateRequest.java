@@ -32,6 +32,10 @@ public class PartyCreateRequest {
     @ApiModelProperty(value = "파티원 금액", required = true, example = "3400")
     private Integer memberPrice;
 
+    @NotEmpty(message= "카카오톡 오픈 채팅방 링크를 입력해주세요.")
+    @ApiModelProperty(value = "카카오톡 오픈 채팅방", required = true, example = "Ex) 카카오 오픈 채팅방 링크")
+    private String kakaoOpenChatUrl;
+
     @NotEmpty(message = "결제 주기를 입력해주세요 \nMONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
     @ValueOfEnum(enumClass = PaymentCycle.class)
     @ApiModelProperty(value = "결제 주기", required = true, example = "MONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
@@ -47,10 +51,11 @@ public class PartyCreateRequest {
                 .title(title)
                 .leaderPrice(leaderPrice)
                 .memberPrice(memberPrice)
-                .memberCount(1)
+                .kakaoOpenChatUrl(kakaoOpenChatUrl)
                 .paymentCycle(PaymentCycle.valueOf(paymentCycle))
                 .serviceType(ServiceType.valueOf(serviceType))
-                .partyState(PartyState.PROCEEDING)
+                .memberCount(1)
+                .partyState(PartyState.RECRUITING)
                 .build();
     }
 }

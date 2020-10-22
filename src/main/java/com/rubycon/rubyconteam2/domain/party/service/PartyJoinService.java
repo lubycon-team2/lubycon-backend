@@ -39,7 +39,7 @@ public class PartyJoinService {
                 .orElseThrow(PartyNotFoundException::new);
 
         PartyState partyState = party.getPartyState();
-        if (partyState.isEnd()) throw new PartyNotProceedingException();
+        if (partyState.isDeleted()) throw new PartyNotProceedingException();
 
         ServiceType service = party.getServiceType();
         if (service.isOverMemberCount(party)) throw new PartyOverMaxCountException();
@@ -76,7 +76,7 @@ public class PartyJoinService {
                 .orElseThrow(PartyNotFoundException::new);
 
         PartyState partyState = party.getPartyState();
-        if (partyState.isEnd()) throw new PartyNotProceedingException();
+        if (partyState.isDeleted()) throw new PartyNotProceedingException();
 
         PartyJoin partyJoin = partyJoinQueryRepository.exists(userId, partyId)
                 .orElseThrow(PartyJoinNotFoundException::new);

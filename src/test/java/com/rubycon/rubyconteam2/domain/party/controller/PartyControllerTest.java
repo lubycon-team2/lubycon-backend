@@ -4,13 +4,10 @@ import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
-import com.rubycon.rubyconteam2.domain.party.service.PartyService;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
 import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -26,7 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PartyControllerTest extends WebMvcApiTest {
 
     @Test
-    @WithMockUser // 권한 필요 없는 곳은 없애도 동작하도록 !
+    @WithMockUser
+        // 권한 필요 없는 곳은 없애도 동작하도록 !
     void findAllParty() throws Exception {
         // Given
         PartyFindRequest partyDto = PartyFindRequest.builder()
@@ -36,9 +34,9 @@ class PartyControllerTest extends WebMvcApiTest {
         List<Party> partyList = new ArrayList<>();
 
         // TODO : 더 좋은 방법 -> Factory 패턴 사용해서?
-        Party party1 = new Party(1L, "넷플릭스 파티 모집", 3600, 3400, 0, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.PROCEEDING );
-        Party party2 = new Party(2L, "넷플릭스 파티 모집 - 2", 3600, 3400, 0, PaymentCycle.MONTH_3, ServiceType.NETFLIX, PartyState.PROCEEDING );
-        Party party3 = new Party(3L, "넷플릭스 파티 모집 - 3", 3600, 3400, 0, PaymentCycle.YEAR_1, ServiceType.NETFLIX, PartyState.PROCEEDING );
+        Party party1 = new Party(1L, "넷플릭스 파티 모집", 3600, 3400, 0, null, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.RECRUITING);
+        Party party2 = new Party(2L, "넷플릭스 파티 모집 - 2", 3600, 3400, 0, null, PaymentCycle.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
+        Party party3 = new Party(3L, "넷플릭스 파티 모집 - 3", 3600, 3400, 0, null, PaymentCycle.YEAR_1, ServiceType.NETFLIX, PartyState.RECRUITING);
         partyList.add(party1);
         partyList.add(party2);
         partyList.add(party3);
@@ -65,6 +63,7 @@ class PartyControllerTest extends WebMvcApiTest {
                 .title("넷플릭스 파티 모집") // 반환 될 때 한글 깨짐
                 .leaderPrice(3400)
                 .memberPrice(3600)
+                .kakaoOpenChatUrl("https://kakao.open.com")
                 .paymentCycle(PaymentCycle.MONTH_1.name())
                 .serviceType(ServiceType.NETFLIX.name())
                 .build();
@@ -93,7 +92,7 @@ class PartyControllerTest extends WebMvcApiTest {
         User user = User.builder()
                 .userId(1L)
                 .build();
-        Party party = new Party(1L, "넷플릭스 파티 모집 - Details", 3600, 3400, 0, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.PROCEEDING );
+        Party party = new Party(1L, "넷플릭스 파티 모집 - Details", 3600, 3400, 0, null, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.RECRUITING);
 
         List<PartyJoin> partyJoins = new ArrayList<>();
         PartyJoin partyJoin = PartyJoin.builder()
@@ -126,11 +125,11 @@ class PartyControllerTest extends WebMvcApiTest {
                 .title("넷플릭스 파티 모집 - Update") // 반환 될 때 한글 깨짐
                 .leaderPrice(3400)
                 .memberPrice(3600)
+                .kakaoOpenChatUrl("https://kakao.open.com")
                 .paymentCycle(PaymentCycle.MONTH_1.name())
-                .partyState(PartyState.PROCEEDING.name())
                 .build();
 
-        Party party = new Party(1L, "넷플릭스 파티 모집 - Update", 3600, 3400, 0, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.PROCEEDING );
+        Party party = new Party(1L, "넷플릭스 파티 모집 - Update", 3600, 3400, 0, null, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.RECRUITING);
         given(partyService.update(any(Long.class), any(PartyUpdateRequest.class)))
                 .willReturn(party);
 
