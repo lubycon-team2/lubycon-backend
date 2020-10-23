@@ -4,6 +4,7 @@ import com.rubycon.rubyconteam2.domain.review.domain.Content;
 import com.rubycon.rubyconteam2.domain.review.domain.ContentType;
 import com.rubycon.rubyconteam2.domain.review.domain.Rating;
 import com.rubycon.rubyconteam2.domain.review.domain.Review;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class ProfileReviewResponse {
             this.reviews.add(
                     ReviewGroupByType.builder()
                         .type(type)
-                        .reviews(group)
+                        .review(group)
                         .build()
             );
         }
@@ -47,7 +48,15 @@ public class ProfileReviewResponse {
     @Builder
     public static class ReviewGroupByType {
 
+        @ApiModelProperty(value = "리뷰 타입", example = "COMPLIMENTS | IMPROVEMENTS")
         private ContentType type;
-        private Map<Content, Long> reviews;
+
+        @ApiModelProperty(
+                value = "리뷰 내용 및 개수",
+                example = "{ 'IMPROVEMENTS_1' : 1, 'IMPROVEMENTS_2' : 2 }",
+                dataType = "Map[Content, Long]",
+                reference = "Map"
+        )
+        private Map<Content, Long> review;
     }
 }

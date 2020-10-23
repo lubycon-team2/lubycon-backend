@@ -13,9 +13,9 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 public class ProfilePartyRequest {
 
-    @NotEmpty(message = "파티 상태를 입력해주세요 \nRECRUITING | START | END")
+    @NotEmpty(message = "파티 상태를 입력해주세요 \nRECRUITING | COMPLETED | DELETED")
     @ValueOfEnum(enumClass = PartyState.class)
-    @ApiModelProperty(value = "파티 상태", required = true, example = "RECRUITING | START | END")
+    @ApiModelProperty(value = "파티 상태", required = true, example = "RECRUITING | COMPLETED | DELETED")
     private String partyState;
 
     public PartyState getPartyState(){

@@ -8,6 +8,7 @@ import lombok.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotNull;
 public class PartyCreateRequest {
 
     @NotEmpty(message = "파티 제목을 입력해주세요.")
+    @Size(min=10, message="파티 제목은 10글자 이상 입력해야 합니다.")
     @ApiModelProperty(value = "파티 제목", required = true, example = "넷플릭스 파티 모집")
     private String title;
 
