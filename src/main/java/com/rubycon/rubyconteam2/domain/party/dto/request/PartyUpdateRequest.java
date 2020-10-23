@@ -41,7 +41,7 @@ public class PartyUpdateRequest {
 
     @NotEmpty(message = "서비스 기간을 입력해주세요 \nMONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
     @ValueOfEnum(enumClass = PartyPeriod.class)
-    @ApiModelProperty(value = "결제 주기", required = true, example = "MONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
+    @ApiModelProperty(value = "서비스 기간", required = true, example = "MONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
     private String partyPeriod;
 
     public PaymentCycle getPaymentCycle() {
