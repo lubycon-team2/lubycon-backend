@@ -34,9 +34,9 @@ class PartyControllerTest extends WebMvcApiTest {
         List<Party> partyList = new ArrayList<>();
 
         // TODO : 더 좋은 방법 -> Factory 패턴 사용해서?
-        Party party1 = new Party(1L, "넷플릭스 파티 모집", 3600, 3400, 0, null, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.RECRUITING);
-        Party party2 = new Party(2L, "넷플릭스 파티 모집 - 2", 3600, 3400, 0, null, PaymentCycle.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
-        Party party3 = new Party(3L, "넷플릭스 파티 모집 - 3", 3600, 3400, 0, null, PaymentCycle.YEAR_1, ServiceType.NETFLIX, PartyState.RECRUITING);
+        Party party1 = new Party(1L, "넷플릭스 파티 모집", 3600, 3400, 0, null, PaymentCycle.MONTH_1, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
+        Party party2 = new Party(2L, "넷플릭스 파티 모집 - 2", 3600, 3400, 0, null, PaymentCycle.MONTH_3, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
+        Party party3 = new Party(3L, "넷플릭스 파티 모집 - 3", 3600, 3400, 0, null, PaymentCycle.YEAR_1, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
         partyList.add(party1);
         partyList.add(party2);
         partyList.add(party3);
@@ -65,6 +65,7 @@ class PartyControllerTest extends WebMvcApiTest {
                 .memberPrice(3600)
                 .kakaoOpenChatUrl("https://kakao.open.com")
                 .paymentCycle(PaymentCycle.MONTH_1.name())
+                .partyPeriod(PartyPeriod.MONTH_3.name())
                 .serviceType(ServiceType.NETFLIX.name())
                 .build();
 
@@ -92,7 +93,7 @@ class PartyControllerTest extends WebMvcApiTest {
         User user = User.builder()
                 .userId(1L)
                 .build();
-        Party party = new Party(1L, "넷플릭스 파티 모집 - Details", 3600, 3400, 0, null, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.RECRUITING);
+        Party party = new Party(1L, "넷플릭스 파티 모집 - Details", 3600, 3400, 0, null, PaymentCycle.MONTH_1, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
 
         List<PartyJoin> partyJoins = new ArrayList<>();
         PartyJoin partyJoin = PartyJoin.builder()
@@ -127,9 +128,10 @@ class PartyControllerTest extends WebMvcApiTest {
                 .memberPrice(3600)
                 .kakaoOpenChatUrl("https://kakao.open.com")
                 .paymentCycle(PaymentCycle.MONTH_1.name())
+                .partyPeriod(PartyPeriod.MONTH_3.name())
                 .build();
 
-        Party party = new Party(1L, "넷플릭스 파티 모집 - Update", 3600, 3400, 0, null, PaymentCycle.MONTH_1, ServiceType.NETFLIX, PartyState.RECRUITING);
+        Party party = new Party(1L, "넷플릭스 파티 모집 - Update", 3600, 3400, 0, null, PaymentCycle.MONTH_1, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
         given(partyService.update(any(Long.class), any(PartyUpdateRequest.class)))
                 .willReturn(party);
 

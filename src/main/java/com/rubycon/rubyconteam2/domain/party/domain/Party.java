@@ -38,6 +38,10 @@ public class Party extends BaseTimeEntity {
 
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
+    private PartyPeriod partyPeriod;
+
+    @Column(nullable = false, length = 45)
+    @Enumerated(EnumType.STRING)
     private ServiceType serviceType;
 
     @Column(nullable = false, length = 45)
@@ -49,6 +53,7 @@ public class Party extends BaseTimeEntity {
         this.leaderPrice = partyDto.getLeaderPrice();
         this.memberPrice = partyDto.getMemberPrice();
         this.paymentCycle = partyDto.getPaymentCycle();
+        this.partyPeriod = partyDto.getPartyPeriod();
         this.kakaoOpenChatUrl = partyDto.getKakaoOpenChatUrl();
     }
 

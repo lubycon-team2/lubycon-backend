@@ -1,9 +1,6 @@
 package com.rubycon.rubyconteam2.domain.party.dto.request;
 
-import com.rubycon.rubyconteam2.domain.party.domain.Party;
-import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
-import com.rubycon.rubyconteam2.domain.party.domain.PaymentCycle;
-import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
+import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.global.common.anotation.ValueOfEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -41,6 +38,11 @@ public class PartyCreateRequest {
     @ApiModelProperty(value = "결제 주기", required = true, example = "MONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
     private String paymentCycle;
 
+    @NotEmpty(message = "서비스 기간을 입력해주세요 \nMONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
+    @ValueOfEnum(enumClass = PartyPeriod.class)
+    @ApiModelProperty(value = "결제 주기", required = true, example = "MONTH_1 | MONTH_2 | MONTH_6 | YEAR_1")
+    private String partyPeriod;
+
     @NotEmpty(message = "서비스 타입을 입력해주세요 \nNETFLIX | WATCHA | WAAVE | APPLE_MUSIC")
     @ValueOfEnum(enumClass = ServiceType.class)
     @ApiModelProperty(value = "서비스 타입", required = true, example = "NETFLIX | WATCHA | WAAVE | APPLE_MUSIC")
@@ -53,6 +55,7 @@ public class PartyCreateRequest {
                 .memberPrice(memberPrice)
                 .kakaoOpenChatUrl(kakaoOpenChatUrl)
                 .paymentCycle(PaymentCycle.valueOf(paymentCycle))
+                .partyPeriod(PartyPeriod.valueOf(partyPeriod))
                 .serviceType(ServiceType.valueOf(serviceType))
                 .memberCount(1)
                 .partyState(PartyState.RECRUITING)

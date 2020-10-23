@@ -6,8 +6,7 @@ public final class SecurityConstants {
     public static final String DEFAULT_LOGIN_REDIRECT_URL = "{baseUrl}/login/oauth2/code/{registrationId}";
 
     // Redirect Client URL
-//    public static final String CLIENT_REDIRECT_URL = "http://rubycon-team-2.s3-website.ap-northeast-2.amazonaws.com/oauth2/redirect";
-    public static final String CLIENT_REDIRECT_URL = "http://localhost:3000/oauth2/redirect";
+    public static final String CLIENT_REDIRECT_URL = "http://rubycon-team-2.s3-website.ap-northeast-2.amazonaws.com/oauth2/redirect";
 
     // KAKAO URL
     public static final String KAKAO_AUTHORIZATION_URL = "https://kauth.kakao.com/oauth/authorize";
