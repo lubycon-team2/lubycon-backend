@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +63,8 @@ public class PartyJoinService {
 
         party.plusMemberCount();
         partyJoin.setIsDeleted(Boolean.FALSE);
+        partyJoin.setJoinDate(LocalDateTime.now());
+        partyJoin.setLeaveDate(null);
         return partyJoin;
     }
 
@@ -78,7 +81,7 @@ public class PartyJoinService {
 
         PartyState partyState = party.getPartyState();
         if (partyState.isDeleted()) throw new PartyNotProceedingException();
-        if (partyState.isCompleted()) party.setStateRecruiting();
+        if (partyState.isCompleted()) party.setStateAdditionalRecruiting();
 
         PartyJoin partyJoin = partyJoinQueryRepository.exists(userId, partyId)
                 .orElseThrow(PartyJoinNotFoundException::new);
@@ -90,6 +93,7 @@ public class PartyJoinService {
 
         party.minusMemberCount();
         partyJoin.setIsDeleted(Boolean.TRUE);
+        partyJoin.setLeaveDate(LocalDateTime.now());
     }
 
     /**
@@ -108,6 +112,7 @@ public class PartyJoinService {
 
         PartyState partyState = party.getPartyState();
         if (partyState.isDeleted()) throw new PartyNotProceedingException();
+        if (partyState.isCompleted()) party.setStateAdditionalRecruiting();
 
         PartyJoin myPartyJoin = partyJoinQueryRepository.exists(userId, partyId)
                 .orElseThrow(PartyJoinNotFoundException::new);
@@ -120,6 +125,7 @@ public class PartyJoinService {
 
         party.minusMemberCount();
         targetPartyJoin.setIsDeleted(Boolean.TRUE);
+        targetPartyJoin.setLeaveDate(LocalDateTime.now());
     }
 
     /**

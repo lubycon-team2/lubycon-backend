@@ -43,6 +43,7 @@ public enum ErrorCode {
 
     // REVIEW
     REVIEW_DUPLICATED(400, "R001", "이미 리뷰를 한 사용자입니다."),
+    IS_NOT_REVIEWABLE(403, "R002", "추가 모집 상태 or 모집 완료 상태에만 리뷰할 수 있습니다."),
 
     // EX) Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),

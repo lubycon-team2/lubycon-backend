@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.crypto.BadPaddingException;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -35,6 +36,14 @@ public class PartyJoin {
 
     @Column
     @Setter
+    private LocalDateTime joinDate;
+
+    @Column
+    @Setter
+    private LocalDateTime leaveDate;
+
+    @Column
+    @Setter
     private Boolean isDeleted;
 
     public static PartyJoin of(User user, Party party, Role role){
@@ -42,13 +51,15 @@ public class PartyJoin {
                 .user(user)
                 .party(party)
                 .role(role)
+                .joinDate(LocalDateTime.now())
+                .leaveDate(null)
                 .isDeleted(Boolean.FALSE)
                 .build();
     }
 
-    public Boolean isDeleted() {
+    public boolean isDeleted() {
         return this.isDeleted;
     }
 
-    public Boolean isPresent() { return this.isDeleted ? Boolean.FALSE : Boolean.TRUE; }
+    public boolean isPresent() { return this.isDeleted ? Boolean.FALSE : Boolean.TRUE; }
 }

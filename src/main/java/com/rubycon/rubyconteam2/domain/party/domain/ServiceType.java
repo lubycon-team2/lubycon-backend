@@ -17,16 +17,14 @@ public enum ServiceType {
     /**
      * 최대 파티 인원 수를 넘었는지 체크
      */
-    public Boolean isOverMemberCount(Party party) {
-        if (party.getMemberCount() >= this.getMaxSharedAccountsCount()) return Boolean.TRUE;
-        else return Boolean.FALSE;
+    public boolean isOverMemberCount(Party party) {
+        return party.getMemberCount() >= this.getMaxSharedAccountsCount();
     }
 
     /**
      * 모집 완료 상태인지 체크
      */
-    public Boolean isRecruitingCompleted(Party party) {
-        if (party.getMemberCount() + 1 == this.getMaxSharedAccountsCount()) return Boolean.TRUE;
-        else return Boolean.FALSE;
+    public boolean isRecruitingCompleted(Party party) {
+        return party.getMemberCount() + 1 == this.getMaxSharedAccountsCount();
     }
 }

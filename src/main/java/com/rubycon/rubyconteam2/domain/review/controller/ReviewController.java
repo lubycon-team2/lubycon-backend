@@ -15,23 +15,24 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/reviews")
+@RequestMapping("/party")
 @RequiredArgsConstructor
 public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("/{targetId}")
+    @PostMapping("/{partyId}/users/{targetId}/review")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "특정 사용자에게 리뷰 하기 API")
     public void review(
             @AuthenticationPrincipal OAuth2User oAuth2User,
+            @PathVariable final Long partyId,
             @PathVariable final Long targetId,
             @RequestBody @Valid ReviewRequest reviewDto
     ) {
         if (oAuth2User == null) throw new AuthenticationException();
 
         Long reviewerId = oAuth2User.getAttribute(OAuthConstants.KEY);
-        reviewService.review(reviewerId, targetId, reviewDto);
+        reviewService.review(reviewerId, targetId, partyId, reviewDto);
     }
 }

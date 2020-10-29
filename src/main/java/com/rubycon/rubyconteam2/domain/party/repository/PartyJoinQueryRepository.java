@@ -38,7 +38,7 @@ public class PartyJoinQueryRepository {
                 .where(partyJoin.user.userId.eq(userId))
                 .where(partyJoin.party.serviceType.eq(serviceType))
                 .where(partyJoin.party.partyState.eq(partyState))
-                .where(partyJoin.isDeleted.eq(Boolean.FALSE))
+                .where(partyJoin.isDeleted.eq(false))
                 .fetchOne();
         return Optional.ofNullable(pj);
     }

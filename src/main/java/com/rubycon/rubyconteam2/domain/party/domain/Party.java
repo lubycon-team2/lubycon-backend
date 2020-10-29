@@ -65,9 +65,7 @@ public class Party extends BaseTimeEntity {
         this.memberCount--;
     }
 
-    public void setStateRecruiting() {
-        this.partyState = PartyState.RECRUITING;
-    }
+    public void setStateAdditionalRecruiting() { this.partyState = PartyState.ADDITIONAL_RECRUITING; }
 
     public void setStateCompleted() {
         this.partyState = PartyState.COMPLETED;
