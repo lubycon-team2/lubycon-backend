@@ -1,6 +1,7 @@
-package com.rubycon.rubyconteam2.domain.party.dto.response;
+package com.rubycon.rubyconteam2.domain.party_join.dto.response;
 
-import com.rubycon.rubyconteam2.domain.party.domain.*;
+import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.domain.Role;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Getter;

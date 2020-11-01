@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.domain.party.exception;
+package com.rubycon.rubyconteam2.domain.party_join.exception;
 
 import com.rubycon.rubyconteam2.global.error.ErrorCode;
 import com.rubycon.rubyconteam2.global.error.exception.BusinessException;

@@ -1,10 +1,15 @@
-package com.rubycon.rubyconteam2.domain.party.service;
+package com.rubycon.rubyconteam2.domain.party_join.service;
 
 import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.exception.*;
-import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinQueryRepository;
-import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinRepository;
+import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinQueryRepository;
+import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
+import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.domain.Role;
+import com.rubycon.rubyconteam2.domain.party_join.exception.PartyAlreadyJoinException;
+import com.rubycon.rubyconteam2.domain.party_join.exception.PartyAlreadyLeaveException;
+import com.rubycon.rubyconteam2.domain.party_join.exception.PartyJoinNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
@@ -13,8 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,10 +46,11 @@ public class PartyJoinService {
                 .orElseThrow(PartyNotFoundException::new);
 
         PartyState partyState = party.getPartyState();
-        if (partyState.isEnd()) throw new PartyNotProceedingException();
+        if (partyState.isDeleted()) throw new PartyNotProceedingException();
 
         ServiceType service = party.getServiceType();
         if (service.isOverMemberCount(party)) throw new PartyOverMaxCountException();
+        if (service.isRecruitingCompleted(party)) party.setStateCompleted();
 
         // 진행 중이고 동일한 서비스에 가입했는지 검사
         partyJoinQueryRepository
@@ -61,6 +69,8 @@ public class PartyJoinService {
 
         party.plusMemberCount();
         partyJoin.setIsDeleted(Boolean.FALSE);
+        partyJoin.setJoinDate(LocalDateTime.now());
+        partyJoin.setLeaveDate(null);
         return partyJoin;
     }
 
@@ -76,7 +86,8 @@ public class PartyJoinService {
                 .orElseThrow(PartyNotFoundException::new);
 
         PartyState partyState = party.getPartyState();
-        if (partyState.isEnd()) throw new PartyNotProceedingException();
+        if (partyState.isDeleted()) throw new PartyNotProceedingException();
+        if (partyState.isCompleted()) party.setStateAdditionalRecruiting();
 
         PartyJoin partyJoin = partyJoinQueryRepository.exists(userId, partyId)
                 .orElseThrow(PartyJoinNotFoundException::new);
@@ -88,11 +99,43 @@ public class PartyJoinService {
 
         party.minusMemberCount();
         partyJoin.setIsDeleted(Boolean.TRUE);
+        partyJoin.setLeaveDate(LocalDateTime.now());
+    }
+
+    /**
+     * 특정 사용자 파티에서 강퇴하기
+     * + 파티장만 파티원 강퇴 가능
+     * (우선 강퇴 당해도 다시 들어올 수 있음)
+     */
+    @Transactional
+    public void kickOff(Long userId, Long targetId, Long partyId) {
+        userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        userRepository.findById(targetId)
+                .orElseThrow(UserNotFoundException::new);
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(PartyNotFoundException::new);
+
+        PartyState partyState = party.getPartyState();
+        if (partyState.isDeleted()) throw new PartyNotProceedingException();
+        if (partyState.isCompleted()) party.setStateAdditionalRecruiting();
+
+        PartyJoin myPartyJoin = partyJoinQueryRepository.exists(userId, partyId)
+                .orElseThrow(PartyJoinNotFoundException::new);
+
+        Role role = myPartyJoin.getRole();
+        if (role.isMember()) throw new PartyAccessDeniedException();
+
+        PartyJoin targetPartyJoin = partyJoinQueryRepository.exists(targetId, partyId)
+                .orElseThrow(PartyJoinNotFoundException::new);
+
+        party.minusMemberCount();
+        targetPartyJoin.setIsDeleted(Boolean.TRUE);
+        targetPartyJoin.setLeaveDate(LocalDateTime.now());
     }
 
     /**
      * 특정 사용자가 가입한 파티 조회 ( 파티 상태 별 )
-     * TODO : 메서드 위치가 이곳이 맞는지?
      */
     @Transactional
     public List<PartyJoin> findAllMyPartyByState(Long userId, PartyState partyState) {
@@ -102,11 +145,39 @@ public class PartyJoinService {
         return partyJoinQueryRepository.findAllMyPartyByState(userId, partyState);
     }
 
+    /**
+     * 파티 상세 조회 (파티 정보 + 가입한 유저 정보)
+     */
     @Transactional
     public List<PartyJoin> findAllByPartyId(Long partyId) {
         partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
 
-        return partyJoinQueryRepository.findAllByPartyId(partyId);
+        List<PartyJoin> partyJoins = partyJoinQueryRepository.findAllByPartyId(partyId);
+        return partyJoins.stream()
+                .filter(PartyJoin::isPresent)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 현재 내가 리뷰 가능한 사용자 리스트 조회
+     */
+    @Transactional
+    public List<PartyJoin> findAllReviewableUsers(Long userId, Long partyId){
+        userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        partyRepository.findById(partyId)
+                .orElseThrow(PartyNotFoundException::new);
+
+        List<PartyJoin> partyJoins = partyJoinQueryRepository.findAllByPartyId(partyId);
+        PartyJoin myPartyJoin = partyJoins.stream()
+                .filter(partyJoin -> partyJoin.isEquals(userId))
+                .findFirst()
+                .orElseThrow(PartyJoinNotFoundException::new);
+
+        return partyJoins.stream()
+                .filter(partyJoin -> partyJoin.isNotEquals(userId))
+                .filter(partyJoin -> partyJoin.isReviewable(myPartyJoin))
+                .collect(Collectors.toList());
     }
 }

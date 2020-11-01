@@ -31,7 +31,7 @@ public enum ErrorCode {
 
     // PARTY
     PARTY_NOT_FOUND(404, "P001", "파티를 찾을 수 없습니다."),
-    PARTY_ACCESS_DENIED(403, "P002", "파티장만 파티를 삭제할 수 있고 파티원만 파티를 탈퇴할 수 있습니다."),
+    PARTY_ACCESS_DENIED(403, "P002", "파티장만 파티원 강퇴, 파티를 삭제할 수 있고 파티원만 파티를 탈퇴할 수 있습니다."),
     PARTY_NOT_PROCEEDING(400, "P003", "이미 파티를 탈퇴했거나 종료된 상태입니다."),
     PARTY_OVER_MAX_COUNT(400, "P004", "파티 최대 인원을 초과해서 참여할 수 없습니다."),
     PARTY_ALREADY_LEAVE(403, "P005", "이미 탈퇴한 파티입니다."),
@@ -43,6 +43,7 @@ public enum ErrorCode {
 
     // REVIEW
     REVIEW_DUPLICATED(400, "R001", "이미 리뷰를 한 사용자입니다."),
+    IS_NOT_REVIEWABLE(403, "R002", "추가 모집 상태 or 모집 완료 상태에만 리뷰할 수 있습니다."),
 
     // EX) Member
     EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),

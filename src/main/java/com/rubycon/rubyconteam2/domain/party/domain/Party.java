@@ -29,9 +29,16 @@ public class Party extends BaseTimeEntity {
     @Column
     private int memberCount;
 
+    @Column
+    private String kakaoOpenChatUrl;
+
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
     private PaymentCycle paymentCycle;
+
+    @Column(nullable = false, length = 45)
+    @Enumerated(EnumType.STRING)
+    private PartyPeriod partyPeriod;
 
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
@@ -39,26 +46,32 @@ public class Party extends BaseTimeEntity {
 
     @Column(nullable = false, length = 45)
     @Enumerated(EnumType.STRING)
-    @Setter
     private PartyState partyState;
 
-    public void updateMyParty(PartyUpdateRequest partyDto){
+    public void updateMyParty(PartyUpdateRequest partyDto) {
         this.title = partyDto.getTitle();
         this.leaderPrice = partyDto.getLeaderPrice();
         this.memberPrice = partyDto.getMemberPrice();
         this.paymentCycle = partyDto.getPaymentCycle();
-        this.partyState = partyDto.getPartyState();
+        this.partyPeriod = partyDto.getPartyPeriod();
+        this.kakaoOpenChatUrl = partyDto.getKakaoOpenChatUrl();
     }
 
-    public void plusMemberCount(){
+    public void plusMemberCount() {
         this.memberCount++;
     }
 
-    public void minusMemberCount(){
+    public void minusMemberCount() {
         this.memberCount--;
     }
 
-    public void setStateEnd() {
-        this.partyState = PartyState.END;
+    public void setStateAdditionalRecruiting() { this.partyState = PartyState.ADDITIONAL_RECRUITING; }
+
+    public void setStateCompleted() {
+        this.partyState = PartyState.COMPLETED;
+    }
+
+    public void setStateDeleted() {
+        this.partyState = PartyState.DELETED;
     }
 }
