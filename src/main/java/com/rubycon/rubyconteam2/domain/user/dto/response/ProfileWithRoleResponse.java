@@ -21,8 +21,8 @@ public class ProfileWithRoleResponse {
     @ApiModelProperty(value = "파티 권한", example = "파티장 | 파티원")
     private Role role;
 
-    @ApiModelProperty(value = "파티 참여 중 여부", example = "true | false")
-    private boolean isParticipating;
+    @ApiModelProperty(value = "현재 파티에 참여 중인지", example = "true | false")
+    private Boolean isParticipating;
 
     public ProfileWithRoleResponse(PartyJoin partyJoin) {
         User user = partyJoin.getUser();
@@ -30,6 +30,6 @@ public class ProfileWithRoleResponse {
         this.userId = user.getUserId();
         this.name = user.getName();
         this.role = partyJoin.getRole();
-        this.isParticipating = !partyJoin.getIsDeleted();
+        this.isParticipating = partyJoin.isPresent();
     }
 }
