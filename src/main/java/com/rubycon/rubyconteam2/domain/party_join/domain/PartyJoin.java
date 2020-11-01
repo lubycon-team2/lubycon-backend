@@ -67,6 +67,10 @@ public class PartyJoin {
         return this.user.getUserId().equals(userId);
     }
 
+    public boolean isNotEquals(Long userId) {
+        return !this.user.getUserId().equals(userId);
+    }
+
     /**
      * 리뷰 가능한 조건에 부합하는지 검사
      * 자신의 참가 시점 > 특정 사용자 탈퇴 시점 : 제외

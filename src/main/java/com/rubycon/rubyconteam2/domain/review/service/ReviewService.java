@@ -35,6 +35,7 @@ public class ReviewService {
 
     /**
      * 특정 사용자에게 리뷰하기
+     * TODO : 같은 파티인지, 리뷰 가능한지 (탈퇴 시점, 참여 시점 비교?) 
      * @param reviewerId : 리뷰 하는 사용자 ID (현재 사용자)
      * @param targetId : 리뷰 할 사용자 ID
      * @param reviewDto : 리뷰 내용 DTO

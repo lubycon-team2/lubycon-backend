@@ -176,7 +176,7 @@ public class PartyJoinService {
                 .orElseThrow(PartyJoinNotFoundException::new);
 
         return partyJoins.stream()
-                .filter(partyJoin -> !partyJoin.isEquals(userId))
+                .filter(partyJoin -> partyJoin.isNotEquals(userId))
                 .filter(partyJoin -> partyJoin.isReviewable(myPartyJoin))
                 .collect(Collectors.toList());
     }
