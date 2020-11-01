@@ -102,6 +102,7 @@ class PartyControllerTest extends WebMvcApiTest {
                 .user(user)
                 .party(party)
                 .role(Role.LEADER)
+                .isDeleted(false)
                 .build();
         partyJoins.add(partyJoin);
 
