@@ -1,9 +1,9 @@
-package com.rubycon.rubyconteam2.domain.party.domain;
+package com.rubycon.rubyconteam2.domain.party_join.domain;
 
+import com.rubycon.rubyconteam2.domain.party.domain.Party;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import lombok.*;
 
-import javax.crypto.BadPaddingException;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -34,7 +34,7 @@ public class PartyJoin {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column
+    @Column(nullable = false)
     @Setter
     private LocalDateTime joinDate;
 
@@ -62,4 +62,21 @@ public class PartyJoin {
     }
 
     public boolean isPresent() { return this.isDeleted ? Boolean.FALSE : Boolean.TRUE; }
+
+    public boolean isEquals(Long userId) {
+        return this.user.getUserId().equals(userId);
+    }
+
+    /**
+     * 리뷰 가능한 조건에 부합하는지 검사
+     * 자신의 참가 시점 > 특정 사용자 탈퇴 시점 : 제외
+     */
+    public boolean isReviewable(PartyJoin myPartyJoin) {
+
+        if (this.isPresent()) return true;
+        if (this.leaveDate == null) return false;
+
+        LocalDateTime myJoinDate = myPartyJoin.getJoinDate();
+        return myJoinDate.isBefore(this.leaveDate);
+    }
 }

@@ -1,7 +1,7 @@
-package com.rubycon.rubyconteam2.domain.party.repository;
+package com.rubycon.rubyconteam2.domain.party_join.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
 import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-import static com.rubycon.rubyconteam2.domain.party.domain.QPartyJoin.partyJoin;
+import static com.rubycon.rubyconteam2.domain.party_join.domain.QPartyJoin.partyJoin;
 
 /**
  * https://jojoldu.tistory.com/516

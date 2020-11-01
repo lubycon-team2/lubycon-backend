@@ -1,8 +1,10 @@
-package com.rubycon.rubyconteam2.domain.party.controller;
+package com.rubycon.rubyconteam2.domain.party_join.controller;
 
-import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
-import com.rubycon.rubyconteam2.domain.party.dto.response.PartyJoinResponse;
-import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
+import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.dto.response.PartyJoinResponse;
+import com.rubycon.rubyconteam2.domain.party_join.service.PartyJoinService;
+import com.rubycon.rubyconteam2.domain.party_join.dto.request.MyPartyRequest;
+import com.rubycon.rubyconteam2.domain.party_join.dto.response.PartyWithRoleResponse;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +15,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/party")
 @RequiredArgsConstructor
@@ -20,6 +26,23 @@ import org.springframework.web.bind.annotation.*;
 public class PartyJoinController {
 
     private final PartyJoinService partyJoinService;
+
+    @GetMapping("/me")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "내가 가입한 파티 조회 API")
+    public List<PartyWithRoleResponse> findAllMyParty(
+            @AuthenticationPrincipal OAuth2User oAuth2User,
+            @RequestParam("partyState") @Valid MyPartyRequest profileDto
+    ){
+        if (oAuth2User == null) throw new AuthenticationException();
+
+        Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
+        List<PartyJoin> partyJoins = partyJoinService.findAllMyPartyByState(userId, profileDto.getPartyState());
+
+        return partyJoins.stream()
+                .map(PartyWithRoleResponse::new)
+                .collect(Collectors.toList());
+    }
 
     @PostMapping("/{partyId}/join")
     @ResponseStatus(HttpStatus.CREATED)

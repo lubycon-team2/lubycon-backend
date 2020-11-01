@@ -1,14 +1,13 @@
-package com.rubycon.rubyconteam2.domain.user.dto.response;
+package com.rubycon.rubyconteam2.domain.party_join.dto.response;
 
-import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
-import com.rubycon.rubyconteam2.domain.party.domain.Role;
+import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.domain.Role;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-// TODO : DTO가 이 위치가 맞는지?
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PartyWithRoleResponse {

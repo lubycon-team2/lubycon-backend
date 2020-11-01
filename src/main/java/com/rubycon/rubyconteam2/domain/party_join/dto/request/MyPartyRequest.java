@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.domain.user.dto.request;
+package com.rubycon.rubyconteam2.domain.party_join.dto.request;
 
 import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
 import com.rubycon.rubyconteam2.global.common.anotation.ValueOfEnum;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class ProfilePartyRequest {
+public class MyPartyRequest {
 
     @NotEmpty(message = "파티 상태를 입력해주세요 \nRECRUITING | COMPLETED | DELETED")
     @ValueOfEnum(enumClass = PartyState.class)

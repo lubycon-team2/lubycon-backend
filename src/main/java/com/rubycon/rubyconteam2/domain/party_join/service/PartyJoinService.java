@@ -1,10 +1,15 @@
-package com.rubycon.rubyconteam2.domain.party.service;
+package com.rubycon.rubyconteam2.domain.party_join.service;
 
 import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.exception.*;
-import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinQueryRepository;
-import com.rubycon.rubyconteam2.domain.party.repository.PartyJoinRepository;
+import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinQueryRepository;
+import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
+import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.domain.Role;
+import com.rubycon.rubyconteam2.domain.party_join.exception.PartyAlreadyJoinException;
+import com.rubycon.rubyconteam2.domain.party_join.exception.PartyAlreadyLeaveException;
+import com.rubycon.rubyconteam2.domain.party_join.exception.PartyJoinNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
@@ -16,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -130,7 +136,6 @@ public class PartyJoinService {
 
     /**
      * 특정 사용자가 가입한 파티 조회 ( 파티 상태 별 )
-     * TODO : 메서드 위치가 이곳이 맞는지?
      */
     @Transactional
     public List<PartyJoin> findAllMyPartyByState(Long userId, PartyState partyState) {
@@ -148,6 +153,31 @@ public class PartyJoinService {
         partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
 
-        return partyJoinQueryRepository.findAllByPartyId(partyId);
+        List<PartyJoin> partyJoins = partyJoinQueryRepository.findAllByPartyId(partyId);
+        return partyJoins.stream()
+                .filter(PartyJoin::isPresent)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 현재 내가 리뷰 가능한 사용자 리스트 조회
+     */
+    @Transactional
+    public List<PartyJoin> findAllReviewableUsers(Long userId, Long partyId){
+        userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        partyRepository.findById(partyId)
+                .orElseThrow(PartyNotFoundException::new);
+
+        List<PartyJoin> partyJoins = partyJoinQueryRepository.findAllByPartyId(partyId);
+        PartyJoin myPartyJoin = partyJoins.stream()
+                .filter(partyJoin -> partyJoin.isEquals(userId))
+                .findFirst()
+                .orElseThrow(PartyJoinNotFoundException::new);
+
+        return partyJoins.stream()
+                .filter(partyJoin -> !partyJoin.isEquals(userId))
+                .filter(partyJoin -> partyJoin.isReviewable(myPartyJoin))
+                .collect(Collectors.toList());
     }
 }

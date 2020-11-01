@@ -1,20 +1,13 @@
 package com.rubycon.rubyconteam2.domain.user.controller;
 
-import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
-import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
-import com.rubycon.rubyconteam2.domain.review.domain.Content;
-import com.rubycon.rubyconteam2.domain.review.domain.Rating;
 import com.rubycon.rubyconteam2.domain.review.domain.Review;
 import com.rubycon.rubyconteam2.domain.review.service.ReviewService;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
-import com.rubycon.rubyconteam2.domain.user.dto.request.ProfilePartyRequest;
-import com.rubycon.rubyconteam2.domain.user.dto.response.PartyWithRoleResponse;
 import com.rubycon.rubyconteam2.domain.user.dto.response.ProfileResponse;
 import com.rubycon.rubyconteam2.domain.user.dto.response.ProfileReviewResponse;
 import com.rubycon.rubyconteam2.domain.user.service.UserService;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
-import com.sun.el.stream.Stream;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,9 +16,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/profiles")
@@ -33,7 +24,6 @@ import java.util.stream.Collectors;
 @Validated // For @RequestParam Exception
 public class ProfileController {
 
-    private final PartyJoinService partyJoinService;
     private final ReviewService reviewService;
     private final UserService userService;
 
@@ -48,23 +38,6 @@ public class ProfileController {
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
         User user = userService.findById(userId);
         return new ProfileResponse(user);
-    }
-
-    @GetMapping("/party")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "내가 가입한 파티 조회 API")
-    public List<PartyWithRoleResponse> findAllMyParty(
-            @AuthenticationPrincipal OAuth2User oAuth2User,
-            @RequestParam("partyState") @Valid ProfilePartyRequest profileDto
-    ){
-        if (oAuth2User == null) throw new AuthenticationException();
-
-        Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
-        List<PartyJoin> partyJoins = partyJoinService.findAllMyPartyByState(userId, profileDto.getPartyState());
-
-        return partyJoins.stream()
-                .map(PartyWithRoleResponse::new)
-                .collect(Collectors.toList());
     }
 
     // TODO : 권한 허용

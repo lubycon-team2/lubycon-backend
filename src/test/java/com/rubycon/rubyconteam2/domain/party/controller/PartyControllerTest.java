@@ -4,6 +4,8 @@ import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
+import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.domain.Role;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
 import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;

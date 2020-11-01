@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.domain.party.domain;
+package com.rubycon.rubyconteam2.domain.party_join.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

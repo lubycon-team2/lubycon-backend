@@ -1,13 +1,13 @@
 package com.rubycon.rubyconteam2.domain.party.controller;
 
 import com.rubycon.rubyconteam2.domain.party.domain.Party;
-import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
-import com.rubycon.rubyconteam2.domain.party.dto.response.PartyDetailsResponse;
+import com.rubycon.rubyconteam2.domain.party_join.dto.response.PartyDetailsResponse;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
-import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
+import com.rubycon.rubyconteam2.domain.party_join.service.PartyJoinService;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
@@ -65,7 +65,7 @@ public class PartyController {
 
     @GetMapping("/{partyId}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "파티 상세 조회 API")
+    @ApiOperation(value = "파티 상세 조회 API - 파티 정보 + 참여자 정보")
     public PartyDetailsResponse findPartyDetails(
             @PathVariable final Long partyId
     ){

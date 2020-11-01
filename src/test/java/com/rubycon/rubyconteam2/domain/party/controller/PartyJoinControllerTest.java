@@ -1,19 +1,15 @@
 package com.rubycon.rubyconteam2.domain.party.controller;
 
 import com.rubycon.rubyconteam2.domain.party.domain.*;
-import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
-import com.rubycon.rubyconteam2.domain.party.service.PartyJoinService;
-import com.rubycon.rubyconteam2.domain.party.service.PartyService;
+import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.domain.Role;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
 import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

@@ -1,19 +1,14 @@
 package com.rubycon.rubyconteam2.domain.review.service;
 
 import com.rubycon.rubyconteam2.domain.party.domain.Party;
-import com.rubycon.rubyconteam2.domain.party.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyJoinDuplicatedException;
 import com.rubycon.rubyconteam2.domain.party.exception.PartyNotFoundException;
-import com.rubycon.rubyconteam2.domain.party.exception.PartyNotProceedingException;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
-import com.rubycon.rubyconteam2.domain.review.domain.Content;
 import com.rubycon.rubyconteam2.domain.review.domain.Rating;
 import com.rubycon.rubyconteam2.domain.review.domain.Review;
 import com.rubycon.rubyconteam2.domain.review.dto.request.ReviewRequest;
 import com.rubycon.rubyconteam2.domain.review.exception.IsNotReviewableException;
 import com.rubycon.rubyconteam2.domain.review.exception.ReviewDuplicatedException;
-import com.rubycon.rubyconteam2.domain.review.repository.RatingRepository;
 import com.rubycon.rubyconteam2.domain.review.repository.ReviewQueryRepository;
 import com.rubycon.rubyconteam2.domain.review.repository.ReviewRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
@@ -27,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
