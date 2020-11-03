@@ -5,7 +5,11 @@ import com.rubycon.rubyconteam2.domain.user.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -33,14 +37,21 @@ public class Review {
     private Party party;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Rating> rating;
+    private List<Rating> ratings;
 
-    public static Review of(User reviewer, User target, Party party, List<Rating> rating) {
+    public static Review of(User reviewer, User target, Party party) {
         return Review.builder()
                 .reviewer(reviewer)
                 .target(target)
                 .party(party)
-                .rating(rating)
+                .ratings(new ArrayList<>())
                 .build();
+    }
+
+    public static Map<Content, Long> groupingByContent(List<Review> reviews){
+        return reviews.stream()
+                .map(Review::getRatings)
+                .flatMap(Collection::stream)
+                .collect(Collectors.groupingBy(Rating::getContent, Collectors.counting()));
     }
 }

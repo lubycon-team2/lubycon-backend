@@ -55,10 +55,10 @@ public class ReviewService {
         Optional<Review> optional = reviewQueryRepository.exists(reviewerId, targetId, partyId);
         if (optional.isPresent()) throw new ReviewDuplicatedException();
 
-        Review review = Review.of(reviewer, target, party, new ArrayList<>());
+        Review review = Review.of(reviewer, target, party);
 
         List<Rating> ratingList = reviewDto.getRatingList(review);
-        ratingList.forEach(rating -> review.getRating().add(rating));
+        ratingList.forEach(rating -> review.getRatings().add(rating));
 
         reviewRepository.save(review);
     }

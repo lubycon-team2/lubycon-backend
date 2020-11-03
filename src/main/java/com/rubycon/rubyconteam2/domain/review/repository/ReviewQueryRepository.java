@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static com.rubycon.rubyconteam2.domain.review.domain.QRating.rating;
 import static com.rubycon.rubyconteam2.domain.review.domain.QReview.review;
 
 @RequiredArgsConstructor
@@ -25,10 +26,12 @@ public class ReviewQueryRepository {
         return Optional.ofNullable(rv);
     }
 
-    // TODO : N+1 쿼리 나는 듯
     public List<Review> findAllReviewByTargetId(Long targetId){
         return queryFactory
                 .selectFrom(review)
+                .join(review.ratings, rating)
+                .fetchJoin()
+                .distinct()
                 .where(review.target.userId.eq(targetId))
                 .fetch();
     }

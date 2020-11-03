@@ -17,27 +17,23 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileReviewResponse {
 
-    private List<ReviewGroupByType> reviews;
+    private List<ReviewGroupByType> reviews = new ArrayList<>();;
 
     public ProfileReviewResponse(List<Review> reviews) {
-        Map<Content, Long> groups = reviews.stream()
-                .map(Review::getRating)
-                .flatMap(Collection::stream)
-                .collect(Collectors.groupingBy(Rating::getContent, Collectors.counting()));
-
-        this.reviews = new ArrayList<>();
+        Map<Content, Long> groups = Review.groupingByContent(reviews);
 
         for (ContentType type : ContentType.values()){
             Map<Content, Long> group = groups.entrySet().stream()
                     .filter(e -> e.getKey().getContentType().equals(type))
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-            this.reviews.add(
+            ReviewGroupByType reviewGroupByType =
                     ReviewGroupByType.builder()
                         .type(type)
                         .review(group)
-                        .build()
-            );
+                        .build();
+
+            this.reviews.add(reviewGroupByType);
         }
 //        Map<ContentType, List<Map.Entry<Content, Long>>> response = groups.entrySet().stream()
 //                .collect(Collectors.groupingBy(o-> o.getKey().getContentType()));

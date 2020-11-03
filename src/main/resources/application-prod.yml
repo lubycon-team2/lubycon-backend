@@ -9,8 +9,5 @@ spring:
 
 logging:
   level:
-    com:
-      rubycon:
-        rubyconteam2: debug
-    root: info
-
+    org.hibernate.SQL: debug
+#    org.hibernate.type: trace
