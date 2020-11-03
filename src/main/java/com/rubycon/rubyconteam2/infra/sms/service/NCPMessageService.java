@@ -11,7 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +26,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -42,11 +47,10 @@ public class NCPMessageService {
     private final String HEADER_TIMESTAMP = "x-ncp-apigw-timestamp";
     private final String HEADER_ACCESS_KEY = "x-ncp-iam-access-key";
     private final String HEADER_SIGNATURE = "x-ncp-apigw-signature-v2";
+    private final String AUTH_MESSAGE = "[Rubycon Party-ing]\n인증번호 : ";
 
     private String SEND_REQUEST_URL;
-
     private final RestTemplate restTemplate;
-
     private final UserService userService;
 
     public NCPMessageService(RestTemplateBuilder restTemplateBuilder, UserService userService) {
@@ -61,44 +65,25 @@ public class NCPMessageService {
 
     // NCP SENS 서비스를 이용한 SMS 보내기
     public void sendSMS(HttpSession httpSession, NCPSendRequest ncpSendRequest) throws InvalidKeyException, NoSuchAlgorithmException {
-        String url = BASE_URL + SEND_REQUEST_URL;
-        String message = "[Rubycon Party-ing]\n인증번호 : ";
-        String authCode = generateAuthCode();
+        final String url = BASE_URL + SEND_REQUEST_URL;
+        final String authCode = generateAuthCode();
 
-        // TODO : 더 좋은 방법?
-        List<Map<String, String>> list = new ArrayList<>();
-        Map<String, String> user = new HashMap<>();
-        user.put("to", ncpSendRequest.getTo());
-        list.add(user);
+        // Create headers
+        HttpHeaders headers = this.createHeaders();
 
-        // create headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        // Create a map for post parameters
+        Map<String, Object> map = this.createPostParameters(authCode, ncpSendRequest);
 
-        // set custom header
-        headers.set(HEADER_TIMESTAMP, getTimestamp());
-        headers.set(HEADER_ACCESS_KEY, NCP_ACCESS_KEY);
-        headers.set(HEADER_SIGNATURE, getSignature());
-
-        // create a map for post parameters
-        Map<String, Object> map = new HashMap<>();
-        map.put("type", "SMS");
-        map.put("contentType", "COMM");
-        map.put("countryCode", "82");
-        map.put("from", "01065009697");
-        map.put("content", message + authCode);
-        map.put("messages", list);
-
-        // build the request
+        // Build the request
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, headers);
 
-        // send POST request
+        // Send POST request
         try {
             ResponseEntity<String> response = this.restTemplate.postForEntity(url, entity, String.class);
             log.info(String.valueOf(response));
 
             httpSession.setAttribute(ncpSendRequest.getTo(), authCode);
-            httpSession.setMaxInactiveInterval(60); // 5분
+            httpSession.setMaxInactiveInterval(300); // 5분
         } catch (Exception e) {
             throw new BusinessException(e, ErrorCode.INTERNAL_SERVER_ERROR);
         }
@@ -119,6 +104,34 @@ public class NCPMessageService {
         // 일치할 경우
         httpSession.removeAttribute(phoneNumber);
         userService.update(userId, ncpVerifyRequest);
+    }
+
+    /**
+     * Header 생성
+     */
+    private HttpHeaders createHeaders() throws InvalidKeyException, NoSuchAlgorithmException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // Set custom header
+        headers.set(HEADER_TIMESTAMP, getTimestamp());
+        headers.set(HEADER_ACCESS_KEY, NCP_ACCESS_KEY);
+        headers.set(HEADER_SIGNATURE, getSignature());
+        return headers;
+    }
+
+    /**
+     * NCP 에 전달할 POST parameter
+     */
+    private Map<String, Object> createPostParameters(String authCode, NCPSendRequest ncpSendRequest){
+        Map<String, Object> map = new HashMap<>();
+        map.put("type", "SMS");
+        map.put("contentType", "COMM");
+        map.put("countryCode", "82");
+        map.put("from", "01065009697");
+        map.put("content", AUTH_MESSAGE + authCode);
+        map.put("messages", ncpSendRequest.createMessages());
+        return map;
     }
 
     /**

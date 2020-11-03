@@ -1,17 +1,13 @@
 package com.rubycon.rubyconteam2.infra.sms.controller;
 
-import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.domain.user.service.UserService;
 import com.rubycon.rubyconteam2.global.config.oauth.constants.OAuthConstants;
 import com.rubycon.rubyconteam2.global.config.security.exception.AuthenticationException;
-import com.rubycon.rubyconteam2.infra.sms.dto.response.NCPResponse;
-import com.rubycon.rubyconteam2.infra.sms.service.NCPMessageService;
 import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPSendRequest;
 import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPVerifyRequest;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
+import com.rubycon.rubyconteam2.infra.sms.dto.response.NCPResponse;
+import com.rubycon.rubyconteam2.infra.sms.service.NCPMessageService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,8 +30,6 @@ public class NCPMessageController {
     final NCPMessageService ncpMessageService;
 
     final UserService userService;
-
-    final UserRepository userRepository;
 
     @PostMapping("/send")
     @ResponseStatus(HttpStatus.OK)
