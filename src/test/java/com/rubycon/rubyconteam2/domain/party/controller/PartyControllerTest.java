@@ -1,27 +1,19 @@
 package com.rubycon.rubyconteam2.domain.party.controller;
 
-import com.rubycon.rubyconteam2.domain.party.domain.*;
+import com.rubycon.rubyconteam2.domain.party.domain.Party;
+import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
 import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
-import com.rubycon.rubyconteam2.domain.party_join.domain.Role;
-import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
 import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;
 import com.rubycon.rubyconteam2.global.factory.TestPartyFactory;
-import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeAll;
+import com.rubycon.rubyconteam2.global.factory.TestPartyJoinFactory;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -81,25 +73,13 @@ class PartyControllerTest extends WebMvcApiTest {
         // Given
         int partyId = 1;
 
-        User user = User.builder()
-                .userId(1L)
-                .build();
-        Party party = new Party(1L, "넷플릭스 파티 모집 - Details", 3600, 3400, 0, null, PaymentCycle.MONTH_1, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
-
-        List<PartyJoin> partyJoins = new ArrayList<>();
-        PartyJoin partyJoin = PartyJoin.builder()
-                .user(user)
-                .party(party)
-                .role(Role.LEADER)
-                .isDeleted(false)
-                .build();
-        partyJoins.add(partyJoin);
+        List<PartyJoin> partyJoins = TestPartyJoinFactory.findAllPartyJoins();
 
         given(partyJoinService.findAllByPartyId(any(Long.class)))
                 .willReturn(partyJoins);
 
         // When & Then
-        mockMvc.perform(get("/party/" + partyId)
+        mockMvc.perform(get("/party/{partyId}", partyId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"))
@@ -114,21 +94,16 @@ class PartyControllerTest extends WebMvcApiTest {
         // Given
         int partyId = 1;
 
-        PartyUpdateRequest partyDto = PartyUpdateRequest.builder()
-                .title("넷플릭스 파티 모집 - Update") // 반환 될 때 한글 깨짐
-                .leaderPrice(3400)
-                .memberPrice(3600)
-                .kakaoOpenChatUrl("https://kakao.open.com")
-                .paymentCycle(PaymentCycle.MONTH_1.name())
-                .partyPeriod(PartyPeriod.MONTH_3.name())
-                .build();
+        PartyUpdateRequest partyDto = TestPartyFactory.updatePartyDto();
 
-        Party party = new Party(1L, "넷플릭스 파티 모집 - Update", 3600, 3400, 0, null, PaymentCycle.MONTH_1, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
+        Party party = TestPartyFactory.createParty(1L, ServiceType.APPLE_MUSIC);
+        party.updateMyParty(partyDto);
+
         given(partyService.update(any(Long.class), any(PartyUpdateRequest.class)))
                 .willReturn(party);
 
         // When & Then
-        mockMvc.perform(put("/party/" + partyId)
+        mockMvc.perform(put("/party/{partyId}", partyId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
