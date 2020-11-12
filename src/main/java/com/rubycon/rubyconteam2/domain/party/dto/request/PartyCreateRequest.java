@@ -5,10 +5,7 @@ import com.rubycon.rubyconteam2.global.common.anotation.ValueOfEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,6 +29,7 @@ public class PartyCreateRequest {
     private Integer memberPrice;
 
     @NotEmpty(message= "카카오톡 오픈 채팅방 링크를 입력해주세요.")
+    @Pattern(regexp="^https://open.kakao.com/o/.+$")
     @ApiModelProperty(value = "카카오톡 오픈 채팅방", required = true, example = "Ex) 카카오 오픈 채팅방 링크")
     private String kakaoOpenChatUrl;
 

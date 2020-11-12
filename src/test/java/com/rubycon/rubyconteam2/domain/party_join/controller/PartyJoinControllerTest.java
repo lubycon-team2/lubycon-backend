@@ -1,6 +1,7 @@
 package com.rubycon.rubyconteam2.domain.party_join.controller;
 
-import com.rubycon.rubyconteam2.domain.party.domain.*;
+import com.rubycon.rubyconteam2.domain.party.domain.Party;
+import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
 import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party_join.domain.Role;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
@@ -11,7 +12,6 @@ import com.rubycon.rubyconteam2.global.factory.TestPartyJoinFactory;
 import com.rubycon.rubyconteam2.global.factory.TestUserFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
