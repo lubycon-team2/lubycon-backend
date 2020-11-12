@@ -48,6 +48,11 @@ public class Review {
                 .build();
     }
 
+    public void addAllRatings(List<Rating> ratings){
+        ratings.forEach(rating -> rating.setReview(this));
+        this.ratings = ratings;
+    }
+
     public static Map<Content, Long> groupingByContent(List<Review> reviews){
         return reviews.stream()
                 .map(Review::getRatings)

@@ -33,4 +33,8 @@ public class Rating {
                 .review(review)
                 .build();
     }
+
+    public void setReview(Review review){
+        this.review = review;
+    }
 }

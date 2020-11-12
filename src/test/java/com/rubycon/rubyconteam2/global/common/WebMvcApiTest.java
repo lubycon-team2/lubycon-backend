@@ -5,6 +5,9 @@ import com.rubycon.rubyconteam2.domain.party.controller.PartyController;
 import com.rubycon.rubyconteam2.domain.party_join.controller.PartyJoinController;
 import com.rubycon.rubyconteam2.domain.party_join.service.PartyJoinService;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
+import com.rubycon.rubyconteam2.domain.review.service.ReviewService;
+import com.rubycon.rubyconteam2.domain.user.controller.ProfileController;
+import com.rubycon.rubyconteam2.domain.user.service.UserService;
 import com.rubycon.rubyconteam2.global.config.SecurityTestConfig;
 import com.rubycon.rubyconteam2.global.config.security.SecurityConfig;
 import com.rubycon.rubyconteam2.global.config.security.filter.JwtAuthorizationFilter;
@@ -25,7 +28,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @WebMvcTest(
         controllers = {
                 PartyController.class,
-                PartyJoinController.class
+                PartyJoinController.class,
+                ProfileController.class
         },
         excludeFilters = {
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
@@ -61,4 +65,10 @@ public abstract class WebMvcApiTest {
 
     @MockBean
     protected PartyJoinService partyJoinService;
+
+    @MockBean
+    protected ReviewService reviewService;
+
+    @MockBean
+    protected UserService userService;
 }
