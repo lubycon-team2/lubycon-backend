@@ -8,6 +8,8 @@ import com.rubycon.rubyconteam2.domain.party.service.PartyService;
 import com.rubycon.rubyconteam2.global.config.SecurityTestConfig;
 import com.rubycon.rubyconteam2.global.config.security.SecurityConfig;
 import com.rubycon.rubyconteam2.global.config.security.filter.JwtAuthorizationFilter;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,6 +18,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @WebMvcTest(
         controllers = {
@@ -28,10 +33,22 @@ import org.springframework.test.web.servlet.MockMvc;
         }
 )
 @Import(SecurityTestConfig.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class WebMvcApiTest {
 
     @Autowired
     protected MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext ctx;
+
+    @BeforeAll
+    public void init() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
+                .build();
+    }
+
 
     @Autowired
     protected ObjectMapper objectMapper;

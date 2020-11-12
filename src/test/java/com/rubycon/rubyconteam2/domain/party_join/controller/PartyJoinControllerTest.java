@@ -1,4 +1,4 @@
-package com.rubycon.rubyconteam2.domain.party.controller;
+package com.rubycon.rubyconteam2.domain.party_join.controller;
 
 import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;

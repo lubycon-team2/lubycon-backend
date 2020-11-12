@@ -76,7 +76,7 @@ public class PartyJoin {
      * 리뷰 가능한 조건에 부합하는지 검사
      * 자신의 참가 시점 > 특정 사용자 탈퇴 시점 : 제외
      */
-    public boolean  isReviewable(PartyJoin myPartyJoin) {
+    public boolean isReviewable(PartyJoin myPartyJoin) {
 
         if (this.isPresent()) return true;
         if (this.leaveDate == null) return false;

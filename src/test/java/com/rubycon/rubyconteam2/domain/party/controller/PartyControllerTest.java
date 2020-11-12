@@ -9,9 +9,17 @@ import com.rubycon.rubyconteam2.domain.party_join.domain.Role;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
 import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;
+import com.rubycon.rubyconteam2.global.factory.TestPartyFactory;
+import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,23 +33,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PartyControllerTest extends WebMvcApiTest {
 
     @Test
-    @WithMockUser
-        // 권한 필요 없는 곳은 없애도 동작하도록 !
+    @WithMockUser    // 권한 필요 없는 곳은 없애도 동작하도록 !
     void findAllParty() throws Exception {
         // Given
-        PartyFindRequest partyDto = PartyFindRequest.builder()
-                .serviceType(ServiceType.NETFLIX.name())
-                .build();
+        PartyFindRequest partyDto = TestPartyFactory.findPartyDto();
 
-        List<Party> partyList = new ArrayList<>();
-
-        // TODO : 더 좋은 방법 -> Factory 패턴 사용해서?
-        Party party1 = new Party(1L, "넷플릭스 파티 모집", 3600, 3400, 0, null, PaymentCycle.MONTH_1, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
-        Party party2 = new Party(2L, "넷플릭스 파티 모집 - 2", 3600, 3400, 0, null, PaymentCycle.MONTH_3, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
-        Party party3 = new Party(3L, "넷플릭스 파티 모집 - 3", 3600, 3400, 0, null, PaymentCycle.YEAR_1, PartyPeriod.MONTH_3, ServiceType.NETFLIX, PartyState.RECRUITING);
-        partyList.add(party1);
-        partyList.add(party2);
-        partyList.add(party3);
+        List<Party> partyList = TestPartyFactory.findAllNetflixParties();
 
         given(partyService.findAll(any(ServiceType.class)))
                 .willReturn(partyList);
@@ -61,15 +58,7 @@ class PartyControllerTest extends WebMvcApiTest {
     @WithMockCustomUser
     void saveParty() throws Exception {
         // Given
-        PartyCreateRequest partyDto = PartyCreateRequest.builder()
-                .title("넷플릭스 파티 모집") // 반환 될 때 한글 깨짐
-                .leaderPrice(3400)
-                .memberPrice(3600)
-                .kakaoOpenChatUrl("https://kakao.open.com")
-                .paymentCycle(PaymentCycle.MONTH_1.name())
-                .partyPeriod(PartyPeriod.MONTH_3.name())
-                .serviceType(ServiceType.NETFLIX.name())
-                .build();
+        PartyCreateRequest partyDto = TestPartyFactory.createPartyDto();
 
         Party party = partyDto.toEntity();
         given(partyService.save(any(Long.class), any(PartyCreateRequest.class)))
