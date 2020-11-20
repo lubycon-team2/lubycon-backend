@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.2.RELEASE'
+	id 'org.springframework.boot' version '2.3.3.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 	id 'io.franzbecker.gradle-lombok' version '1.8'
@@ -35,6 +35,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	// spring-data-redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 	// AOP
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
 
@@ -56,6 +59,9 @@ dependencies {
 
 	// H2
 	runtimeOnly 'com.h2database:h2'
+
+	// embedded-redis
+	implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
 	// QueryDSL
 	implementation 'com.querydsl:querydsl-jpa'

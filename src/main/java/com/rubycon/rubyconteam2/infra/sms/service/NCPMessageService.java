@@ -3,10 +3,12 @@ package com.rubycon.rubyconteam2.infra.sms.service;
 import com.rubycon.rubyconteam2.domain.user.service.UserService;
 import com.rubycon.rubyconteam2.global.error.ErrorCode;
 import com.rubycon.rubyconteam2.global.error.exception.BusinessException;
+import com.rubycon.rubyconteam2.infra.sms.domain.NCPAuthCode;
 import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPSendRequest;
 import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPVerifyRequest;
 import com.rubycon.rubyconteam2.infra.sms.exception.SMSCodeExpiredException;
 import com.rubycon.rubyconteam2.infra.sms.exception.SMSNotMatchingCodeException;
+import com.rubycon.rubyconteam2.infra.sms.repository.NCPAuthCodeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,11 +23,11 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -52,10 +54,12 @@ public class NCPMessageService {
     private String SEND_REQUEST_URL;
     private final RestTemplate restTemplate;
     private final UserService userService;
+    private final NCPAuthCodeRepository ncpAuthCodeRepository;
 
-    public NCPMessageService(RestTemplateBuilder restTemplateBuilder, UserService userService) {
+    public NCPMessageService(RestTemplateBuilder restTemplateBuilder, UserService userService, NCPAuthCodeRepository ncpAuthCodeRepository) {
         this.restTemplate = restTemplateBuilder.build();
         this.userService = userService;
+        this.ncpAuthCodeRepository = ncpAuthCodeRepository;
     }
 
     @PostConstruct
@@ -64,7 +68,7 @@ public class NCPMessageService {
     }
 
     // NCP SENS 서비스를 이용한 SMS 보내기
-    public void sendSMS(HttpSession httpSession, NCPSendRequest ncpSendRequest) throws InvalidKeyException, NoSuchAlgorithmException {
+    public void sendSMS(NCPSendRequest ncpSendRequest) throws InvalidKeyException, NoSuchAlgorithmException {
         final String url = BASE_URL + SEND_REQUEST_URL;
         final String authCode = generateAuthCode();
 
@@ -82,8 +86,8 @@ public class NCPMessageService {
             ResponseEntity<String> response = this.restTemplate.postForEntity(url, entity, String.class);
             log.info(String.valueOf(response));
 
-            httpSession.setAttribute(ncpSendRequest.getTo(), authCode);
-            httpSession.setMaxInactiveInterval(300); // 5분
+            NCPAuthCode ncpAuthCode = ncpSendRequest.toEntity(authCode);
+            ncpAuthCodeRepository.save(ncpAuthCode);
         } catch (Exception e) {
             throw new BusinessException(e, ErrorCode.INTERNAL_SERVER_ERROR);
         }
@@ -91,18 +95,22 @@ public class NCPMessageService {
 
     /**
      * 인증 코드 검증 로직
-     * @param httpSession, ncpVerifyRequest
+     * @param ncpVerifyRequest
      * @return 검증 성공 여부
      */
-    public void verifyAuthenticationCode (HttpSession httpSession, Long userId, NCPVerifyRequest ncpVerifyRequest){
+    public void verifyAuthenticationCode (Long userId, NCPVerifyRequest ncpVerifyRequest){
         String phoneNumber = ncpVerifyRequest.getTo();
-        String code = (String) httpSession.getAttribute(phoneNumber);
-        if(code == null) throw new SMSCodeExpiredException();
+        String code = ncpVerifyRequest.getCode();
 
-        if (!ncpVerifyRequest.getCode().equals(code)) throw new SMSNotMatchingCodeException();
+        String id = NCPAuthCode.generateId(phoneNumber, LocalDateTime.now());
+        NCPAuthCode ncpAuthCode = ncpAuthCodeRepository.findById(id)
+                .orElseThrow(SMSCodeExpiredException::new);
+        System.out.println(ncpAuthCode);
+
+        if (ncpAuthCode.isNotEqualCode(code)) throw new SMSNotMatchingCodeException();
 
         // 일치할 경우
-        httpSession.removeAttribute(phoneNumber);
+        ncpAuthCodeRepository.delete(ncpAuthCode);
         userService.update(userId, ncpVerifyRequest);
     }
 

@@ -1,10 +1,12 @@
 package com.rubycon.rubyconteam2.infra.sms.dto.request;
 
+import com.rubycon.rubyconteam2.infra.sms.domain.NCPAuthCode;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,5 +30,12 @@ public class NCPSendRequest {
         list.add(user);
 
         return list;
+    }
+
+    public NCPAuthCode toEntity(String authCode) {
+        return NCPAuthCode.builder()
+                .id(NCPAuthCode.generateId(this.to, LocalDateTime.now()))
+                .authCode(authCode)
+                .build();
     }
 }

@@ -12,6 +12,8 @@ import com.rubycon.rubyconteam2.domain.user.service.UserService;
 import com.rubycon.rubyconteam2.global.config.SecurityTestConfig;
 import com.rubycon.rubyconteam2.global.config.security.SecurityConfig;
 import com.rubycon.rubyconteam2.global.config.security.filter.JwtAuthorizationFilter;
+import com.rubycon.rubyconteam2.infra.sms.controller.NCPMessageController;
+import com.rubycon.rubyconteam2.infra.sms.service.NCPMessageService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.modelmapper.ModelMapper;
@@ -31,7 +33,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
                 PartyController.class,
                 PartyJoinController.class,
                 ProfileController.class,
-                ReviewController.class
+                ReviewController.class,
+                NCPMessageController.class
         },
         excludeFilters = {
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
@@ -55,7 +58,6 @@ public abstract class WebMvcApiTest {
                 .build();
     }
 
-
     @Autowired
     protected ObjectMapper objectMapper;
 
@@ -73,4 +75,7 @@ public abstract class WebMvcApiTest {
 
     @MockBean
     protected UserService userService;
+
+    @MockBean
+    protected NCPMessageService ncpMessageService;
 }
