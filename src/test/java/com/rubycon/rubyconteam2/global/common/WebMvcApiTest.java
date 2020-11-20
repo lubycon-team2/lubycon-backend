@@ -5,6 +5,7 @@ import com.rubycon.rubyconteam2.domain.party.controller.PartyController;
 import com.rubycon.rubyconteam2.domain.party_join.controller.PartyJoinController;
 import com.rubycon.rubyconteam2.domain.party_join.service.PartyJoinService;
 import com.rubycon.rubyconteam2.domain.party.service.PartyService;
+import com.rubycon.rubyconteam2.domain.review.controller.ReviewController;
 import com.rubycon.rubyconteam2.domain.review.service.ReviewService;
 import com.rubycon.rubyconteam2.domain.user.controller.ProfileController;
 import com.rubycon.rubyconteam2.domain.user.service.UserService;
@@ -29,7 +30,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
         controllers = {
                 PartyController.class,
                 PartyJoinController.class,
-                ProfileController.class
+                ProfileController.class,
+                ReviewController.class
         },
         excludeFilters = {
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
