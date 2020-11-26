@@ -68,7 +68,7 @@ public class ReviewService {
      * @param targetId 리뷰 조회할 사용자 ID
      * @return
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Review> findAllReview(Long targetId){
         return reviewQueryRepository.findAllReviewByTargetId(targetId);
     }

@@ -37,6 +37,7 @@ public class ProfileController {
 
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
         User user = userService.findById(userId);
+
         return new ProfileResponse(user);
     }
 

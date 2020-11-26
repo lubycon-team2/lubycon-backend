@@ -137,7 +137,7 @@ public class PartyJoinService {
     /**
      * 특정 사용자가 가입한 파티 조회 ( 파티 상태 별 )
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PartyJoin> findAllMyPartyByState(Long userId, PartyState partyState) {
         userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
@@ -148,7 +148,7 @@ public class PartyJoinService {
     /**
      * 파티 상세 조회 (파티 정보 + 가입한 유저 정보)
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PartyJoin> findAllByPartyId(Long partyId) {
         partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
@@ -162,7 +162,7 @@ public class PartyJoinService {
     /**
      * 현재 내가 리뷰 가능한 사용자 리스트 조회
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<PartyJoin> findAllReviewableUsers(Long userId, Long partyId){
         userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);

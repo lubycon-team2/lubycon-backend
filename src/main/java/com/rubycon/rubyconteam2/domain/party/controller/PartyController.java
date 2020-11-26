@@ -42,7 +42,6 @@ public class PartyController {
             @RequestParam("serviceType") @Valid PartyFindRequest partyDto
     ) {
         List<Party> partyList = partyService.findAll(partyDto.getServiceType());
-        if (partyList.isEmpty()) throw new NoContentException();
 
         return partyList.stream()
                 .map(PartyResponse::new)

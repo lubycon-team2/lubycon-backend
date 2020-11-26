@@ -31,10 +31,9 @@ public class UserService {
     /**
      * User 검색
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public User findById(Long userId){
-        User user = userRepository.findById(userId)
+        return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
-        return user;
     }
 }

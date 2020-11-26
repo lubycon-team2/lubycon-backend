@@ -13,6 +13,7 @@ import com.rubycon.rubyconteam2.domain.party_join.exception.PartyJoinNotFoundExc
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
+import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,23 +34,18 @@ public class PartyService {
     /**
      * 서비스 타입에 따른 전체 모집 중 파티 검색
      */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Party> findAll(ServiceType serviceType) {
-        return partyRepository.findByServiceTypeIs(serviceType);
-    }
+        List<Party> partyList = partyRepository.findByServiceTypeIs(serviceType);
+        if (partyList.isEmpty()) throw new NoContentException();
 
-    /**
-     * 특정 파티 1개 조회
-     */
-    @Transactional
-    public Party findById(Long partyId) {
-        return partyRepository.findById(partyId)
-                .orElseThrow(PartyNotFoundException::new);
+        return partyList;
     }
 
     /**
      * 모집 파티 생성 + 파티장 권한으로 가입
      * TODO : 파티는 각 서비스별 1개씩만 가입 되어있어야함!!
+     * user id만으로 save?
      */
     @Transactional
     public Party save(Long userId, PartyCreateRequest partyDto){
@@ -68,7 +64,8 @@ public class PartyService {
      */
     @Transactional
     public Party update(Long partyId, PartyUpdateRequest partyDto){
-        Party party = this.findById(partyId);
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(PartyNotFoundException::new);
         party.updateMyParty(partyDto);
 
         return partyRepository.save(party);
@@ -81,7 +78,8 @@ public class PartyService {
     public void delete(Long userId, Long partyId){
         userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
-        Party party = this.findById(partyId);
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(PartyNotFoundException::new);
 
         PartyState partyState = party.getPartyState();
         if (partyState.isDeleted()) throw new PartyNotProceedingException();
