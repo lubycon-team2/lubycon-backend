@@ -1,6 +1,7 @@
 package com.rubycon.rubyconteam2.domain.user.service;
 
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.domain.user.dto.response.ProfileResponse;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import com.rubycon.rubyconteam2.infra.sms.dto.request.NCPVerifyRequest;
@@ -32,8 +33,9 @@ public class UserService {
      * User 검색
      */
     @Transactional(readOnly = true)
-    public User findById(Long userId){
-        return userRepository.findById(userId)
+    public ProfileResponse findById(Long userId){
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+        return new ProfileResponse(user);
     }
 }

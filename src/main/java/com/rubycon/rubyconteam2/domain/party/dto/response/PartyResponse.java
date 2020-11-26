@@ -5,12 +5,12 @@ import com.rubycon.rubyconteam2.domain.party.domain.PartyState;
 import com.rubycon.rubyconteam2.domain.party.domain.PaymentCycle;
 import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class PartyResponse {
 
     @ApiModelProperty(value = "파티 ID", required = true, example = "1")

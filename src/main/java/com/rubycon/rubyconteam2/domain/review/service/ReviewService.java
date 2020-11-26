@@ -12,6 +12,7 @@ import com.rubycon.rubyconteam2.domain.review.exception.ReviewDuplicatedExceptio
 import com.rubycon.rubyconteam2.domain.review.repository.ReviewQueryRepository;
 import com.rubycon.rubyconteam2.domain.review.repository.ReviewRepository;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.domain.user.dto.response.ProfileReviewResponse;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +70,8 @@ public class ReviewService {
      * @return
      */
     @Transactional(readOnly = true)
-    public List<Review> findAllReview(Long targetId){
-        return reviewQueryRepository.findAllReviewByTargetId(targetId);
+    public ProfileReviewResponse findAllReview(Long targetId){
+        List<Review> reviews = reviewQueryRepository.findAllReviewByTargetId(targetId);
+        return new ProfileReviewResponse(reviews);
     }
 }

@@ -36,9 +36,7 @@ public class ProfileController {
         if (oAuth2User == null) throw new AuthenticationException();
 
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
-        User user = userService.findById(userId);
-
-        return new ProfileResponse(user);
+        return userService.findById(userId);
     }
 
     // TODO : 권한 허용
@@ -48,8 +46,6 @@ public class ProfileController {
     public ProfileReviewResponse findAllReview(
             @PathVariable final Long userId
     ){
-        List<Review> reviews = reviewService.findAllReview(userId);
-
-        return new ProfileReviewResponse(reviews);
+        return reviewService.findAllReview(userId);
     }
 }

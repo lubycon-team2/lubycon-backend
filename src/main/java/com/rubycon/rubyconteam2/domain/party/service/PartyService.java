@@ -3,6 +3,7 @@ package com.rubycon.rubyconteam2.domain.party.service;
 import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
+import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.exception.*;
 import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinQueryRepository;
 import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinRepository;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,11 +37,13 @@ public class PartyService {
      * 서비스 타입에 따른 전체 모집 중 파티 검색
      */
     @Transactional(readOnly = true)
-    public List<Party> findAll(ServiceType serviceType) {
+    public List<PartyResponse> findAll(ServiceType serviceType) {
         List<Party> partyList = partyRepository.findByServiceTypeIs(serviceType);
         if (partyList.isEmpty()) throw new NoContentException();
 
-        return partyList;
+        return partyList.stream()
+                .map(PartyResponse::new)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -48,7 +52,7 @@ public class PartyService {
      * user id만으로 save?
      */
     @Transactional
-    public Party save(Long userId, PartyCreateRequest partyDto){
+    public PartyResponse save(Long userId, PartyCreateRequest partyDto){
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -56,19 +60,19 @@ public class PartyService {
         Party party = partyRepository.save(partyEntity);
 
         partyJoinRepository.save(PartyJoin.of(user, party, Role.LEADER));
-        return party;
+        return new PartyResponse(party);
     }
 
     /**
      * 모집 파티 수정
      */
     @Transactional
-    public Party update(Long partyId, PartyUpdateRequest partyDto){
+    public PartyResponse update(Long partyId, PartyUpdateRequest partyDto){
         Party party = partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
         party.updateMyParty(partyDto);
 
-        return partyRepository.save(party);
+        return new PartyResponse(party);
     }
 
     /**

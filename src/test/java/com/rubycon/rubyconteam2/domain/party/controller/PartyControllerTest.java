@@ -5,7 +5,9 @@ import com.rubycon.rubyconteam2.domain.party.domain.ServiceType;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyFindRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
+import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
+import com.rubycon.rubyconteam2.domain.party_join.dto.response.PartyDetailsResponse;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
 import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;
 import com.rubycon.rubyconteam2.global.factory.TestPartyFactory;
@@ -15,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -31,9 +34,12 @@ class PartyControllerTest extends WebMvcApiTest {
         PartyFindRequest partyDto = TestPartyFactory.findPartyDto();
 
         List<Party> partyList = TestPartyFactory.findAllNetflixParties();
+        List<PartyResponse> partyResponseList = partyList.stream()
+                .map(PartyResponse::new)
+                .collect(Collectors.toList());
 
         given(partyService.findAll(any(ServiceType.class)))
-                .willReturn(partyList);
+                .willReturn(partyResponseList);
 
         // When & Then
         mockMvc.perform(get("/party")
@@ -53,8 +59,10 @@ class PartyControllerTest extends WebMvcApiTest {
         PartyCreateRequest partyDto = TestPartyFactory.createPartyDto();
 
         Party party = partyDto.toEntity();
+        PartyResponse partyResponse = new PartyResponse(party);
+
         given(partyService.save(any(Long.class), any(PartyCreateRequest.class)))
-                .willReturn(party);
+                .willReturn(partyResponse);
 
         // When & Then
         mockMvc.perform(post("/party")
@@ -73,10 +81,12 @@ class PartyControllerTest extends WebMvcApiTest {
         // Given
         int partyId = 1;
 
+        Party party = TestPartyFactory.createParty(1L, ServiceType.APPLE_MUSIC);
         List<PartyJoin> partyJoins = TestPartyJoinFactory.findAllPartyJoins();
+        PartyDetailsResponse partyDetailsResponse = new PartyDetailsResponse(party, partyJoins);
 
         given(partyJoinService.findAllByPartyId(any(Long.class)))
-                .willReturn(partyJoins);
+                .willReturn(partyDetailsResponse);
 
         // When & Then
         mockMvc.perform(get("/party/{partyId}", partyId)
@@ -98,9 +108,10 @@ class PartyControllerTest extends WebMvcApiTest {
 
         Party party = TestPartyFactory.createParty(1L, ServiceType.APPLE_MUSIC);
         party.updateMyParty(partyDto);
+        PartyResponse partyResponse = new PartyResponse(party);
 
         given(partyService.update(any(Long.class), any(PartyUpdateRequest.class)))
-                .willReturn(party);
+                .willReturn(partyResponse);
 
         // When & Then
         mockMvc.perform(put("/party/{partyId}", partyId)

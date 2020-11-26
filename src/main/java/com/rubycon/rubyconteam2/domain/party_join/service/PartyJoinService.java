@@ -2,6 +2,9 @@ package com.rubycon.rubyconteam2.domain.party_join.service;
 
 import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.exception.*;
+import com.rubycon.rubyconteam2.domain.party_join.dto.response.PartyDetailsResponse;
+import com.rubycon.rubyconteam2.domain.party_join.dto.response.PartyJoinResponse;
+import com.rubycon.rubyconteam2.domain.party_join.dto.response.PartyWithRoleResponse;
 import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinQueryRepository;
 import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
@@ -11,6 +14,7 @@ import com.rubycon.rubyconteam2.domain.party_join.exception.PartyAlreadyJoinExce
 import com.rubycon.rubyconteam2.domain.party_join.exception.PartyAlreadyLeaveException;
 import com.rubycon.rubyconteam2.domain.party_join.exception.PartyJoinNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.domain.user.dto.response.ProfileWithRoleResponse;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +43,7 @@ public class PartyJoinService {
      * + 파티 최대 인원 수를 초과했으면 참가 X
      */
     @Transactional
-    public PartyJoin join(Long userId, Long partyId) {
+    public PartyJoinResponse join(Long userId, Long partyId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         Party party = partyRepository.findById(partyId)
@@ -62,7 +66,8 @@ public class PartyJoinService {
         Optional<PartyJoin> optional = partyJoinQueryRepository.exists(userId, partyId);
         if (!optional.isPresent()) {
             party.plusMemberCount();
-            return partyJoinRepository.save(PartyJoin.of(user, party, Role.MEMBER));
+            PartyJoin partyJoin = partyJoinRepository.save(PartyJoin.of(user, party, Role.MEMBER));
+            return new PartyJoinResponse(partyJoin);
         }
 
         PartyJoin partyJoin = optional.get();
@@ -71,7 +76,7 @@ public class PartyJoinService {
         partyJoin.setIsDeleted(Boolean.FALSE);
         partyJoin.setJoinDate(LocalDateTime.now());
         partyJoin.setLeaveDate(null);
-        return partyJoin;
+        return new PartyJoinResponse(partyJoin);
     }
 
     /**
@@ -138,32 +143,37 @@ public class PartyJoinService {
      * 특정 사용자가 가입한 파티 조회 ( 파티 상태 별 )
      */
     @Transactional(readOnly = true)
-    public List<PartyJoin> findAllMyPartyByState(Long userId, PartyState partyState) {
+    public List<PartyWithRoleResponse> findAllMyPartyByState(Long userId, PartyState partyState) {
         userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        return partyJoinQueryRepository.findAllMyPartyByState(userId, partyState);
+        List<PartyJoin> partyJoins = partyJoinQueryRepository.findAllMyPartyByState(userId, partyState);
+        return partyJoins.stream()
+                .map(PartyWithRoleResponse::new)
+                .collect(Collectors.toList());
     }
 
     /**
      * 파티 상세 조회 (파티 정보 + 가입한 유저 정보)
      */
     @Transactional(readOnly = true)
-    public List<PartyJoin> findAllByPartyId(Long partyId) {
-        partyRepository.findById(partyId)
+    public PartyDetailsResponse findAllByPartyId(Long partyId) {
+        Party party = partyRepository.findById(partyId)
                 .orElseThrow(PartyNotFoundException::new);
 
         List<PartyJoin> partyJoins = partyJoinQueryRepository.findAllByPartyId(partyId);
-        return partyJoins.stream()
+        partyJoins = partyJoins.stream()
                 .filter(PartyJoin::isPresent)
                 .collect(Collectors.toList());
+
+        return new PartyDetailsResponse(party, partyJoins);
     }
 
     /**
      * 현재 내가 리뷰 가능한 사용자 리스트 조회
      */
     @Transactional(readOnly = true)
-    public List<PartyJoin> findAllReviewableUsers(Long userId, Long partyId){
+    public List<ProfileWithRoleResponse> findAllReviewableUsers(Long userId, Long partyId){
         userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         partyRepository.findById(partyId)
@@ -178,6 +188,7 @@ public class PartyJoinService {
         return partyJoins.stream()
                 .filter(partyJoin -> partyJoin.isNotEquals(userId))
                 .filter(partyJoin -> partyJoin.isReviewable(myPartyJoin))
+                .map(ProfileWithRoleResponse::new)
                 .collect(Collectors.toList());
     }
 }
