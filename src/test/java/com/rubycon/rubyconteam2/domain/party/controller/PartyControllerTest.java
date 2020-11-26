@@ -10,9 +10,13 @@ import com.rubycon.rubyconteam2.domain.party_join.domain.PartyJoin;
 import com.rubycon.rubyconteam2.domain.party_join.dto.response.PartyDetailsResponse;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
 import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;
+import com.rubycon.rubyconteam2.global.common.page.PageRequest;
 import com.rubycon.rubyconteam2.global.factory.TestPartyFactory;
 import com.rubycon.rubyconteam2.global.factory.TestPartyJoinFactory;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
@@ -33,16 +37,19 @@ class PartyControllerTest extends WebMvcApiTest {
         // Given
         PartyFindRequest partyDto = TestPartyFactory.findPartyDto();
 
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setPage(0);
+        pageRequest.setSize(10);
+        pageRequest.setDirection(Sort.Direction.ASC);
         List<Party> partyList = TestPartyFactory.findAllNetflixParties();
-        List<PartyResponse> partyResponseList = partyList.stream()
-                .map(PartyResponse::new)
-                .collect(Collectors.toList());
+        Page<Party> pages = new PageImpl<>(partyList, pageRequest.of(), 10);
+        Page<PartyResponse> responses = pages.map(PartyResponse::new);
 
-        given(partyService.findAll(any(ServiceType.class)))
-                .willReturn(partyResponseList);
+        given(partyService.findAll(any(ServiceType.class), any(PageRequest.class)))
+                .willReturn(responses);
 
         // When & Then
-        mockMvc.perform(get("/party")
+        mockMvc.perform(get("/party?size=10&page=0&sort=ASC")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")

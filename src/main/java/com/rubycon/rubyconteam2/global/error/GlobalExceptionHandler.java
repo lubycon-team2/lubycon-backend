@@ -26,6 +26,7 @@ import java.util.Set;
 /**
  * extends ResponseEntityExceptionHandler
  * 위 핸들러는 스프링에서 기본적으로 제공해주는 Exception을 제공
+ * IllegalArgumentException.class 에러 추가해야함 (Paging)
  */
 
 @Slf4j
@@ -74,6 +75,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
         log.debug("handleAccessDeniedException : {}", e.getMessage());
         final ErrorResponse response = ErrorResponse.of(ErrorCode.HANDLE_ACCESS_DENIED);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+    }
+
+    /**
+     * Assert Exception
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        log.debug("handleIllegalArgumentException : {}", e.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, e);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
