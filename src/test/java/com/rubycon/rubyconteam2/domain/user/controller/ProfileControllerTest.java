@@ -2,6 +2,8 @@ package com.rubycon.rubyconteam2.domain.user.controller;
 
 import com.rubycon.rubyconteam2.domain.review.domain.Review;
 import com.rubycon.rubyconteam2.domain.user.domain.User;
+import com.rubycon.rubyconteam2.domain.user.dto.response.ProfileResponse;
+import com.rubycon.rubyconteam2.domain.user.dto.response.ProfileReviewResponse;
 import com.rubycon.rubyconteam2.global.common.WebMvcApiTest;
 import com.rubycon.rubyconteam2.global.common.WithMockCustomUser;
 import com.rubycon.rubyconteam2.global.factory.TestReviewFactory;
@@ -23,9 +25,10 @@ class ProfileControllerTest extends WebMvcApiTest {
     void me() throws Exception {
         // Given
         User user = TestUserFactory.createUser(1L);
+        ProfileResponse response = new ProfileResponse(user);
 
         given(userService.findById(1L))
-                .willReturn(user);
+                .willReturn(response);
 
         // When & Then
         mockMvc.perform(get("/profiles/me")
@@ -41,9 +44,10 @@ class ProfileControllerTest extends WebMvcApiTest {
     void findAllReview() throws Exception {
         // Given
         List<Review> reviews = TestReviewFactory.findAllReviews();
+        ProfileReviewResponse response = new ProfileReviewResponse(reviews);
 
         given(reviewService.findAllReview(1L))
-                .willReturn(reviews);
+                .willReturn(response);
 
         int userId = 1;
         // When & Then

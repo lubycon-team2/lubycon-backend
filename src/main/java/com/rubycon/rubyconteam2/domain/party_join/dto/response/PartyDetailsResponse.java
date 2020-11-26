@@ -18,12 +18,7 @@ public class PartyDetailsResponse {
     private PartyResponse party;
     private List<ProfileWithRoleResponse> users = new ArrayList<>();
 
-    public PartyDetailsResponse(List<PartyJoin> partyJoins) {
-        Party party = partyJoins.stream()
-                .findFirst()
-                .map(PartyJoin::getParty)
-                .orElseGet(Party::new);
-
+    public PartyDetailsResponse(Party party, List<PartyJoin> partyJoins) {
         this.party = new PartyResponse(party);
 
         partyJoins.forEach(partyJoin -> this.users.add(new ProfileWithRoleResponse(partyJoin)));

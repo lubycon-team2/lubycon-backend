@@ -39,10 +39,7 @@ public class ReviewController {
         if (oAuth2User == null) throw new AuthenticationException();
 
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
-        List<PartyJoin> partyJoins = partyJoinService.findAllReviewableUsers(userId, partyId);
-        return partyJoins.stream()
-                .map(ProfileWithRoleResponse::new)
-                .collect(Collectors.toList());
+        return partyJoinService.findAllReviewableUsers(userId, partyId);
     }
 
     @PostMapping("/{partyId}/users/{targetId}/review")

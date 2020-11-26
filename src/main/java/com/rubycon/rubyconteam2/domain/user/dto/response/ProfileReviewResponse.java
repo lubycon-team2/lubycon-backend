@@ -2,13 +2,11 @@ package com.rubycon.rubyconteam2.domain.user.dto.response;
 
 import com.rubycon.rubyconteam2.domain.review.domain.Content;
 import com.rubycon.rubyconteam2.domain.review.domain.ContentType;
-import com.rubycon.rubyconteam2.domain.review.domain.Rating;
 import com.rubycon.rubyconteam2.domain.review.domain.Review;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,26 +15,15 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileReviewResponse {
 
-    private List<ReviewGroupByType> reviews = new ArrayList<>();;
+    private List<ReviewGroupByType> reviews = new ArrayList<>();
 
     public ProfileReviewResponse(List<Review> reviews) {
         Map<Content, Long> groups = Review.groupingByContent(reviews);
 
-        for (ContentType type : ContentType.values()){
-            Map<Content, Long> group = groups.entrySet().stream()
-                    .filter(e -> e.getKey().getContentType().equals(type))
-                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-            ReviewGroupByType reviewGroupByType =
-                    ReviewGroupByType.builder()
-                        .type(type)
-                        .review(group)
-                        .build();
-
-            this.reviews.add(reviewGroupByType);
+        for (ContentType type : ContentType.values()) {
+            ReviewGroupByType review = ReviewGroupByType.of(type, groups);
+            this.reviews.add(review);
         }
-//        Map<ContentType, List<Map.Entry<Content, Long>>> response = groups.entrySet().stream()
-//                .collect(Collectors.groupingBy(o-> o.getKey().getContentType()));
     }
 
     @Getter
@@ -54,5 +41,16 @@ public class ProfileReviewResponse {
                 reference = "Map"
         )
         private Map<Content, Long> review;
+
+        public static ReviewGroupByType of(ContentType type, Map<Content, Long> groups) {
+            Map<Content, Long> reviewWithCount = groups.entrySet().stream()
+                    .filter(e -> e.getKey().getContentType().equals(type))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+            return ReviewGroupByType.builder()
+                    .type(type)
+                    .review(reviewWithCount)
+                    .build();
+        }
     }
 }

@@ -41,12 +41,7 @@ public class PartyController {
     public List<PartyResponse> findAllParty(
             @RequestParam("serviceType") @Valid PartyFindRequest partyDto
     ) {
-        List<Party> partyList = partyService.findAll(partyDto.getServiceType());
-        if (partyList.isEmpty()) throw new NoContentException();
-
-        return partyList.stream()
-                .map(PartyResponse::new)
-                .collect(Collectors.toList());
+        return partyService.findAll(partyDto.getServiceType());
     }
 
     @PostMapping
@@ -59,8 +54,7 @@ public class PartyController {
         if (oAuth2User == null) throw new AuthenticationException();
 
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
-        Party party = partyService.save(userId, partyDto);
-        return new PartyResponse(party);
+        return partyService.save(userId, partyDto);
     }
 
     @GetMapping("/{partyId}")
@@ -69,8 +63,7 @@ public class PartyController {
     public PartyDetailsResponse findPartyDetails(
             @PathVariable final Long partyId
     ){
-        List<PartyJoin> partyJoins = partyJoinService.findAllByPartyId(partyId);
-        return new PartyDetailsResponse(partyJoins);
+        return partyJoinService.findAllByPartyId(partyId);
     }
 
     @PutMapping("/{partyId}")
@@ -80,8 +73,7 @@ public class PartyController {
             @PathVariable final Long partyId,
             @RequestBody @Valid PartyUpdateRequest partyDto
     ){
-        Party party = partyService.update(partyId, partyDto);
-        return new PartyResponse(party);
+        return partyService.update(partyId, partyDto);
     }
 
     @DeleteMapping("/{partyId}")

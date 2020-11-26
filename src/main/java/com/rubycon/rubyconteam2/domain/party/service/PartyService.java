@@ -3,6 +3,7 @@ package com.rubycon.rubyconteam2.domain.party.service;
 import com.rubycon.rubyconteam2.domain.party.domain.*;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
+import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.exception.*;
 import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinQueryRepository;
 import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinRepository;
@@ -13,12 +14,14 @@ import com.rubycon.rubyconteam2.domain.party_join.exception.PartyJoinNotFoundExc
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
+import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,26 +36,23 @@ public class PartyService {
     /**
      * 서비스 타입에 따른 전체 모집 중 파티 검색
      */
-    @Transactional
-    public List<Party> findAll(ServiceType serviceType) {
-        return partyRepository.findByServiceTypeIs(serviceType);
-    }
+    @Transactional(readOnly = true)
+    public List<PartyResponse> findAll(ServiceType serviceType) {
+        List<Party> partyList = partyRepository.findByServiceTypeIs(serviceType);
+        if (partyList.isEmpty()) throw new NoContentException();
 
-    /**
-     * 특정 파티 1개 조회
-     */
-    @Transactional
-    public Party findById(Long partyId) {
-        return partyRepository.findById(partyId)
-                .orElseThrow(PartyNotFoundException::new);
+        return partyList.stream()
+                .map(PartyResponse::new)
+                .collect(Collectors.toList());
     }
 
     /**
      * 모집 파티 생성 + 파티장 권한으로 가입
      * TODO : 파티는 각 서비스별 1개씩만 가입 되어있어야함!!
+     * user id만으로 save?
      */
     @Transactional
-    public Party save(Long userId, PartyCreateRequest partyDto){
+    public PartyResponse save(Long userId, PartyCreateRequest partyDto){
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -60,18 +60,19 @@ public class PartyService {
         Party party = partyRepository.save(partyEntity);
 
         partyJoinRepository.save(PartyJoin.of(user, party, Role.LEADER));
-        return party;
+        return new PartyResponse(party);
     }
 
     /**
      * 모집 파티 수정
      */
     @Transactional
-    public Party update(Long partyId, PartyUpdateRequest partyDto){
-        Party party = this.findById(partyId);
+    public PartyResponse update(Long partyId, PartyUpdateRequest partyDto){
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(PartyNotFoundException::new);
         party.updateMyParty(partyDto);
 
-        return partyRepository.save(party);
+        return new PartyResponse(party);
     }
 
     /**
@@ -81,7 +82,8 @@ public class PartyService {
     public void delete(Long userId, Long partyId){
         userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
-        Party party = this.findById(partyId);
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(PartyNotFoundException::new);
 
         PartyState partyState = party.getPartyState();
         if (partyState.isDeleted()) throw new PartyNotProceedingException();

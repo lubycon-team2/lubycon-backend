@@ -37,11 +37,7 @@ public class PartyJoinController {
         if (oAuth2User == null) throw new AuthenticationException();
 
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
-        List<PartyJoin> partyJoins = partyJoinService.findAllMyPartyByState(userId, profileDto.getPartyState());
-
-        return partyJoins.stream()
-                .map(PartyWithRoleResponse::new)
-                .collect(Collectors.toList());
+        return partyJoinService.findAllMyPartyByState(userId, profileDto.getPartyState());
     }
 
     @PostMapping("/{partyId}/join")
@@ -54,8 +50,7 @@ public class PartyJoinController {
         if (oAuth2User == null) throw new AuthenticationException();
 
         Long userId = oAuth2User.getAttribute(OAuthConstants.KEY);
-        PartyJoin partyJoin = partyJoinService.join(userId, partyId);
-        return new PartyJoinResponse(partyJoin);
+        return partyJoinService.join(userId, partyId);
     }
 
     @DeleteMapping("/{partyId}/leave")
