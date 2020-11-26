@@ -5,6 +5,7 @@ import com.rubycon.rubyconteam2.domain.party.dto.request.PartyCreateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.request.PartyUpdateRequest;
 import com.rubycon.rubyconteam2.domain.party.dto.response.PartyResponse;
 import com.rubycon.rubyconteam2.domain.party.exception.*;
+import com.rubycon.rubyconteam2.domain.party.repository.PartyQueryRepository;
 import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinQueryRepository;
 import com.rubycon.rubyconteam2.domain.party_join.repository.PartyJoinRepository;
 import com.rubycon.rubyconteam2.domain.party.repository.PartyRepository;
@@ -14,9 +15,11 @@ import com.rubycon.rubyconteam2.domain.party_join.exception.PartyJoinNotFoundExc
 import com.rubycon.rubyconteam2.domain.user.domain.User;
 import com.rubycon.rubyconteam2.domain.user.exception.UserNotFoundException;
 import com.rubycon.rubyconteam2.domain.user.repository.UserRepository;
+import com.rubycon.rubyconteam2.global.common.page.PageRequest;
 import com.rubycon.rubyconteam2.global.error.exception.NoContentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +33,7 @@ public class PartyService {
 
     private final UserRepository userRepository;
     private final PartyRepository partyRepository;
+    private final PartyQueryRepository partyQueryRepository;
     private final PartyJoinRepository partyJoinRepository;
     private final PartyJoinQueryRepository partyJoinQueryRepository;
 
@@ -37,13 +41,11 @@ public class PartyService {
      * 서비스 타입에 따른 전체 모집 중 파티 검색
      */
     @Transactional(readOnly = true)
-    public List<PartyResponse> findAll(ServiceType serviceType) {
-        List<Party> partyList = partyRepository.findByServiceTypeIs(serviceType);
-        if (partyList.isEmpty()) throw new NoContentException();
+    public Page<PartyResponse> findAll(ServiceType serviceType, PageRequest pageRequest) {
+        Page<Party> partyList = partyQueryRepository.findByServiceTypeIs(serviceType, pageRequest.of());
+        if (partyList.getContent().isEmpty()) throw new NoContentException();
 
-        return partyList.stream()
-                .map(PartyResponse::new)
-                .collect(Collectors.toList());
+        return partyList.map(PartyResponse::new);
     }
 
     /**
